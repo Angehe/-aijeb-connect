@@ -282,7 +282,7 @@ onclick="forgotAIJEBPassword()">Mot de passe oublié ?</button>
 <script>
 // Nettoyage de sécurité : retire d'anciens paramètres email/password de l'URL.
 try {
-  const u = new URL(window.location.href);
+  const u = new window.URL(window.location.href);
   if (u.searchParams.has('email') || u.searchParams.has('password')) {
     u.searchParams.delete('email');
     u.searchParams.delete('password');
@@ -290,9 +290,9 @@ try {
   }
 } catch(e) {}
 
-const URL='https://davftivuspiigcbshsuo.supabase.co';
+const SUPABASE_URL_MAIN='https://davftivuspiigcbshsuo.supabase.co';
 const KEY='sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
-const sb = window.__aijebSb || ((window.supabase && window.supabase.createClient) ? window.supabase.createClient(URL,KEY) : null);
+const sb = window.__aijebSb || ((window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL_MAIN,KEY) : null);
 if (sb) window.__aijebSb = sb;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
