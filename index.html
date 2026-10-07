@@ -209,7 +209,24 @@ label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}input,selec
     grid-template-columns:1fr;
   }
 }‹
-</style>
+.finance-badge{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  text-transform:capitalize;
+}
+
+.finance-badge.income{
+  background:#e8f7ee;
+  color:#08713f;
+}
+
+.finance-badge.expense{
+  background:#fdecec;
+  color:#b42318;
+}</style>
 </head>
 <body>
 <div id="login" class="login">
@@ -487,7 +504,7 @@ $('#financeBalance').textContent=money(inc-out);
  $('#adhBody').innerHTML=data.adh.map(a=>`<tr><td>${esc((a.membres?.nom||'')+' '+(a.membres?.prenoms||''))}</td><td>${money(a.montant)}</td><td>${esc(a.date_paiement||'')}</td><td>${esc(a.mode_paiement||'')}</td><td><span class="badge">${esc(a.statut)}</span></td><td>${['paye','valide'].includes(a.statut)?`<button class="btn outline" onclick="fiche('${a.id}')">PDF</button>`:'—'}</td></tr>`).join('');$('#adhEmpty').style.display=data.adh.length?'none':'block';
 
  $('#duesBody').innerHTML=data.dues.map(x=>`<tr><td>${esc((x.membres?.nom||'')+' '+(x.membres?.prenoms||''))}</td><td>${esc(x.periode||'')}</td><td>${money(x.montant_paye)}</td><td>${esc(x.date_paiement||'')}</td><td>${esc(x.mode_paiement||'')}</td><td><span class="badge">${esc(x.statut)}</span></td></tr>`).join('');$('#duesEmpty').style.display=data.dues.length?'none':'block';
- $('#financeBody').innerHTML=data.finance.map(x=>`<tr><td>${esc(x.date_operation||'')}</td><td>${esc(x.libelle||'')}</td><td>${esc(x.categorie||'')}</td><td>${esc(x.source_revenu||'')}</td><td>${esc(x.type_operation||'')}</td><td>${money(x.montant)}</td></tr>`).join('');$('#financeEmpty').style.display=data.finance.length?'none':'block';
+ $('#financeBody').innerHTML=data.finance.map(x=>`<tr><td>${esc(x.date_operation||'')}</td><td><span class="finance-badge ${x.type_operation==='recette'?'income':'expense'}">${esc(x.type_operation||'')}</span></td><td><span class="finance-badge ${x.type_operation==='recette'?'income':'expense'}">${esc(x.type_operation||'')}</span></td><td>${esc(x.categorie||'')}</td><td>${esc(x.source_revenu||'')}</td><td>${esc(x.type_operation||'')}</td><td>${money(x.montant)}</td></tr>`).join('');$('#financeEmpty').style.display=data.finance.length?'none':'block';
  $('#activitiesList').innerHTML=data.activities.map(x=>`<div class="card"><h3>${esc(x.titre)}</h3><p>${esc(x.date_debut?.slice(0,10)||'')}</p><p>${esc([x.ville,x.pays].filter(Boolean).join(', '))}</p></div>`).join('');
  $('#projectsList').innerHTML=data.projects.map(x=>`<div class="card"><h3>${esc(x.nom)}</h3><p>${esc(x.pays||'')}</p><p>${esc(x.statut||'')}</p></div>`).join('');
  $('#partnersList').innerHTML=data.partners.map(x=>`<div class="card"><h3>${esc(x.nom)}</h3><p>${esc(x.pays||'')}</p><p>${esc(x.type_partenariat||'')}</p></div>`).join('');
