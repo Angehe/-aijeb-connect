@@ -177,7 +177,38 @@ label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}input,selec
 .nav button.active {
   box-shadow: inset 3px 0 0 #f5c400;
 }
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
 
+.stat-card{
+  background:#ffffff;
+  border:1px solid rgba(7,92,55,.12);
+  border-radius:16px;
+  padding:18px 20px;
+  box-shadow:0 8px 22px rgba(9,70,44,.06);
+}
+
+.stat-label{
+  font-size:14px;
+  color:#66756d;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.stat-value{
+  font-size:24px;
+  font-weight:800;
+  color:#10281d;
+}
+
+@media (max-width:800px){
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+}‹
 </style>
 </head>
 <body>
