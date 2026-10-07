@@ -267,7 +267,22 @@ onclick="forgotAIJEBPassword()">Mot de passe oublié ?</button>
   <h2>Finances</h2>
   <button class="btn primary" data-open="finance">Nouvelle opération</button>
 </div>
+<div class="stats-grid" style="margin-bottom:18px;">
+  <div class="stat-card">
+    <div class="stat-label :">Recettes totales</div>
+    <div class="stat-value" id="financeIncome">0 FCFA</div>
+  </div>
 
+  <div class="stat-card">
+    <div class="stat-label">Dépenses totales</div>
+    <div class="stat-value" id="financeExpense">0 FCFA</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Solde</div>
+    <div class="stat-value" id="financeBalance">0 FCFA</div>
+  </div>
+</div>
 <div class="table-wrap">
   <table>
     <thead>
@@ -426,7 +441,12 @@ async function loadAll(){
 function render(){
  const active=data.members.filter(x=>x.statut==='actif').length;
  $('#mMembers').textContent=active;$('#mAdhesions').textContent=money(data.adh.reduce((a,x)=>a+Number(x.montant||0),0));$('#mDues').textContent=money(data.dues.reduce((a,x)=>a+Number(x.montant_paye||0),0));
- const inc=data.finance.filter(x=>x.type_operation==='recette').reduce((a,x)=>a+Number(x.montant||0),0),out=data.finance.filter(x=>x.type_operation==='depense').reduce((a,x)=>a+Number(x.montant||0),0);$('#mBalance').textContent=money(inc-out);
+ const inc=data.finance.filter(x=>x.type_operation==='recette').reduce((a,x)=>a+Number(x.montant||0),0),out=data.finance.filter(x=>x.type_operation==='depense').reduce((a,x)=>a+Number(x.montant||0),0);$('#mBalance').textContent=money(inc-out);$('#financeIncome').textContent=money(inc);
+$('#financeExpense').textContent=money(out);
+$('#financeBalance').textContent=money(inc-out);$('#financeIncome').textContent=money(inc);
+$('#financeExpense').textContent=money(out);
+$('#financeBalance').textContent=money(inc-out);$('#financeExpense').textContent=money(out);$('#financeBalance').textContent=money(inc-out);
+$('#financeBalance').textContent=money(inc-out);
  const sexes={};data.members.forEach(x=>sexes[x.sexe||'Non renseigné']=(sexes[x.sexe||'Non renseigné']||0)+1);$('#sexStats').innerHTML=Object.entries(sexes).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
  const countries={};data.members.forEach(x=>countries[x.pays_residence||'Non renseigné']=(countries[x.pays_residence||'Non renseigné']||0)+1);$('#countryStats').innerHTML=Object.entries(countries).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
 
