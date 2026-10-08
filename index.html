@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIJEB Connect V4</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>(function(){
   const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
 
@@ -498,7 +498,7 @@ $('#financeBalance').textContent=money(inc-out);
  const sexes={};data.members.forEach(x=>sexes[x.sexe||'Non renseigné']=(sexes[x.sexe||'Non renseigné']||0)+1);$('#sexStats').innerHTML=Object.entries(sexes).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
  const countries={};data.members.forEach(x=>countries[x.pays_residence||'Non renseigné']=(countries[x.pays_residence||'Non renseigné']||0)+1);$('#countryStats').innerHTML=Object.entries(countries).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
 
- $('#membersBody').innerHTML=data.members.map(m=>`<tr><td><b>${esc(m.nom+' '+m.prenoms)}</b><br><small>${esc(m.numero_membre||'')}</small></td><td>${esc(m.sexe||'Non renseigné')}</td><td>${esc(m.pays_residence||'')}</td><td>${esc(m.fonction_aijeb||'Membre')}</td><td>${esc(m.date_adhesion||'')}</td><td><span class="badge">${esc(m.statut||'actif')}</span></td><td class="row-actions"><button onclick="editMember('${m.id}')">Modifier</button></td></tr>`).join('');$('#membersEmpty').style.display=data.members.length?'none':'block';
+ $('#membersBody').innerHTML=data.members.map(m=>`<tr><td><b>${esc(m.nom+' '+m.prenoms)}</b><br><small>${esc(m.numero_membre||'')}</small></td><td>${esc(m.sexe||'Non renseigné')}</td><td>${esc(m.pays_residence||'')}</td><td>${esc(m.fonction_aijeb||'Membre')}</td><td>${esc(m.date_adhesion||'')}</td><td><span class="badge">${esc(m.statut||'actif')}</span></td><td class="row-actions"><button onclick="editMember('${m.id}')">Modifier</button><button onclick="generateAdhesionPDF('${m.id}')">Fiche d’adhésion PDF</button></td></tr>`).join('');$('#membersEmpty').style.display=data.members.length?'none':'block';
 
  $('#aTotal').textContent=money(data.adh.reduce((a,x)=>a+Number(x.montant||0),0));$('#aPaid').textContent=data.adh.filter(x=>x.statut==='paye').length;$('#aPending').textContent=data.adh.filter(x=>x.statut==='en_attente').length;$('#aValidated').textContent=data.adh.filter(x=>x.statut==='valide').length;
  $('#adhBody').innerHTML=data.adh.map(a=>`<tr><td>${esc((a.membres?.nom||'')+' '+(a.membres?.prenoms||''))}</td><td>${money(a.montant)}</td><td>${esc(a.date_paiement||'')}</td><td>${esc(a.mode_paiement||'')}</td><td><span class="badge">${esc(a.statut)}</span></td><td>${['paye','valide'].includes(a.statut)?`<button class="btn outline" onclick="fiche('${a.id}')">PDF</button>`:'—'}</td></tr>`).join('');$('#adhEmpty').style.display=data.adh.length?'none':'block';
@@ -538,7 +538,192 @@ $('#modalForm').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.ta
  const {error}=await q;if(error){alert(error.message);return}close();await loadAll()
 };
 
-window.fiche=id=>{const a=data.adh.find(x=>x.id===id);if(!a)return;const m=a.membres||{};const {jsPDF}=window.jspdf;const d=new jsPDF();d.setFillColor(7,92,55);d.rect(0,0,210,28,'F');d.setTextColor(255);d.setFontSize(18);d.text("AIJEB - FICHE D'ADHESION",105,17,{align:'center'});d.setTextColor(20);d.setFontSize(11);d.text("Amicale Internationale des Jeunes de l'Europe et du Benin",105,36,{align:'center'});let y=55;const rows=[['Nom et prenoms',(m.nom||'')+' '+(m.prenoms||'')],['Numero membre',m.numero_membre||'-'],['Sexe',m.sexe||'-'],['Pays',m.pays_residence||'-'],['Telephone',m.telephone||'-'],['Email',m.email||'-'],["Date adhesion",m.date_adhesion||'-'],["Frais adhesion",money(a.montant)],['Date paiement',a.date_paiement||'-'],['Mode',a.mode_paiement||'-'],['Reference',a.reference_paiement||'-'],['Statut',a.statut||'-']];rows.forEach(r=>{d.setFont(undefined,'bold');d.text(r[0],25,y);d.setFont(undefined,'normal');d.text(String(r[1]),80,y);y+=12});d.text("Administration AIJEB",150,265,{align:'center'});d.save(`Fiche_Adhesion_AIJEB_${(m.nom||'membre').replace(/\s/g,'_')}.pdf`)};
+window.generateAdhesionPDF=id=>{
+  const m=data.members.find(x=>x.id===id);
+  if(!m){alert("Membre introuvable.");return}
+
+  const a=data.adh.find(x=>x.membre_id===id || (x.membres && x.membres.id===id)) || {};
+
+  if(!window.jspdf || !window.jspdf.jsPDF){
+    alert("Le module PDF n'est pas encore chargé.");
+    return;
+  }
+
+  const {jsPDF}=window.jspdf;
+  const d=new jsPDF({unit:'mm',format:'a4'});
+
+  const green=[7,92,55];
+  const yellow=[245,196,0];
+  const red=[205,35,45];
+  const dark=[25,45,35];
+  const gray=[105,115,110];
+  const light=[247,250,248];
+
+  const value=v=>(v===null || v===undefined || v==='') ? '-' : String(v);
+
+  // En-tête
+  d.setFillColor(...green);
+  d.rect(0,0,210,30,'F');
+
+  d.setFillColor(...yellow);
+  d.rect(0,30,140,2,'F');
+
+  d.setFillColor(...red);
+  d.rect(140,30,70,2,'F');
+
+  d.setFillColor(255,255,255);
+  d.roundedRect(12,6,31,17,3,3,'F');
+
+  d.setTextColor(...green);
+  d.setFont('helvetica','bold');
+  d.setFontSize(14);
+  d.text('AIJEB',27.5,17,{align:'center'});
+
+  d.setTextColor(255,255,255);
+  d.setFontSize(16);
+  d.text("FICHE D'ADHESION",52,13);
+
+  d.setFont('helvetica','normal');
+  d.setFontSize(8.5);
+  d.text("Amicale Internationale des Jeunes de l'Europe et du Benin",52,20);
+
+  d.setFontSize(8);
+  d.text("Document individuel d'adhesion",52,25);
+
+  // Numéro membre
+  d.setFillColor(255,255,255);
+  d.roundedRect(159,8,39,13,3,3,'F');
+  d.setTextColor(...green);
+  d.setFont('helvetica','bold');
+  d.setFontSize(7);
+  d.text('NUMERO MEMBRE',178.5,13,{align:'center'});
+  d.setFontSize(9);
+  d.text(value(m.numero_membre),178.5,18,{align:'center'});
+
+  let y=40;
+
+  function section(title){
+    d.setFillColor(...green);
+    d.roundedRect(12,y,186,9,2,2,'F');
+    d.setTextColor(255,255,255);
+    d.setFont('helvetica','bold');
+    d.setFontSize(9);
+    d.text(title,17,y+6);
+    y+=13;
+  }
+
+  function field(x,w,label,val){
+    d.setFillColor(...light);
+    d.setDrawColor(220,230,224);
+    d.roundedRect(x,y,w,14,2,2,'FD');
+
+    d.setTextColor(...gray);
+    d.setFont('helvetica','normal');
+    d.setFontSize(6.5);
+    d.text(label,x+4,y+5);
+
+    d.setTextColor(...dark);
+    d.setFont('helvetica','bold');
+    d.setFontSize(8.5);
+
+    const txt=d.splitTextToSize(value(val),w-8);
+    d.text(txt[0],x+4,y+11);
+  }
+
+  function twoFields(l1,v1,l2,v2){
+    field(12,90,l1,v1);
+    field(108,90,l2,v2);
+    y+=18;
+  }
+
+  function fullField(label,val){
+    field(12,186,label,val);
+    y+=18;
+  }
+
+  section('1. IDENTITE DU MEMBRE');
+
+  twoFields('Nom',m.nom,'Prenoms',m.prenoms);
+  twoFields('Sexe',m.sexe,'Date de naissance',m.date_naissance);
+  twoFields('Lieu de naissance',m.lieu_naissance,'Nationalite',m.nationalite);
+  twoFields('Profession',m.profession,'Situation matrimoniale',m.situation_matrimoniale);
+
+  section('2. COORDONNEES ET RESIDENCE');
+
+  twoFields('Pays de residence',m.pays_residence,'Ville',m.ville);
+  twoFields('Departement',m.departement,'Commune',m.commune);
+  twoFields('Arrondissement',m.arrondissement,'Quartier / Village',m.quartier_village);
+  twoFields('Telephone',m.telephone,'WhatsApp',m.whatsapp);
+  fullField('Email',m.email);
+
+  section('3. INFORMATIONS AIJEB');
+
+  twoFields('Fonction AIJEB',m.fonction_aijeb,'Section AIJEB',m.section_aijeb);
+  twoFields("Date d'adhesion",m.date_adhesion,'Statut',m.statut);
+  twoFields("Frais d'adhesion",a.montant ? money(a.montant) : '-','Date de paiement',a.date_paiement);
+  twoFields('Mode de paiement',a.mode_paiement,'Reference paiement',a.reference_paiement);
+
+  // Engagement
+  y+=2;
+  d.setFillColor(255,249,224);
+  d.setDrawColor(...yellow);
+  d.roundedRect(12,y,186,31,3,3,'FD');
+
+  d.setTextColor(...dark);
+  d.setFont('helvetica','bold');
+  d.setFontSize(8);
+  d.text("DECLARATION D'ENGAGEMENT",17,y+7);
+
+  d.setFont('helvetica','normal');
+  d.setFontSize(7.2);
+
+  const engagement=
+    "Je declare adherer librement a l'AIJEB et m'engage a respecter ses statuts, son reglement interieur, ses valeurs et ses objectifs. Je m'engage egalement a contribuer, selon mes possibilites, aux activites et au rayonnement de l'association.";
+
+  const lines=d.splitTextToSize(engagement,176);
+  d.text(lines,17,y+13);
+
+  y+=39;
+
+  // Signatures
+  d.setTextColor(...dark);
+  d.setFont('helvetica','bold');
+  d.setFontSize(8);
+
+  d.text('Fait a : __________________________',15,y);
+  d.text('Le : ____ / ____ / ______',120,y);
+
+  y+=12;
+
+  d.text("Signature de l'adherent",42,y,{align:'center'});
+  d.text('Pour AIJEB',166,y,{align:'center'});
+
+  d.setDrawColor(160,170,165);
+  d.line(18,y+22,67,y+22);
+  d.line(142,y+22,190,y+22);
+
+  d.setFont('helvetica','normal');
+  d.setFontSize(6.5);
+  d.setTextColor(...gray);
+  d.text('Precedee de la mention "Lu et approuve"',42,y+27,{align:'center'});
+  d.text('Nom, signature et cachet',166,y+27,{align:'center'});
+
+  // Pied de page
+  d.setFillColor(...green);
+  d.rect(0,289,210,8,'F');
+
+  d.setTextColor(255,255,255);
+  d.setFontSize(6.5);
+  d.text('AIJEB Connect - Fiche generee automatiquement',105,294,{align:'center'});
+
+  const nomFichier=((m.nom||'membre')+'_'+(m.prenoms||''))
+    .replace(/\s+/g,'_')
+    .replace(/[^a-zA-Z0-9_-]/g,'');
+
+  d.save('Fiche_Adhesion_AIJEB_'+nomFichier+'.pdf');
+};
+
+window.fiche=window.generateAdhesionPDF;
 
 async function forgotAIJEBPassword(){
   try{
