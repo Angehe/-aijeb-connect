@@ -294,7 +294,7 @@ onclick="forgotAIJEBPassword()">Mot de passe oublié ?</button>
   </section>
 
   <section id="members" class="page">
-   <div class="section-head"><h2>Membres</h2><button class="btn primary" data-open="member">Nouveau membre</button></div>
+    <div class="section-head"><h2>Membres</h2><button class="btn primary" data-open="member">Nouveau membre</button></div>
    <div class="table-wrap"><table><thead><tr><th>Membre</th><th>Sexe</th><th>Pays</th><th>Fonction</th><th>Adhésion</th><th>Statut</th><th>Action</th></tr></thead><tbody id="membersBody"></tbody></table><div id="membersEmpty" class="empty">Aucun membre.</div></div>
   </section>
 
@@ -512,7 +512,7 @@ $('#financeBalance').textContent=money(inc-out);
 }
 
 const schema={
- member:[['Nom','nom','text',1],['Prénoms','prenoms','text',1],['Sexe','sexe','select',['Homme','Femme','Autre','Non renseigné']],['Pays','pays_residence','text',1],['Ville','ville','text'],['Téléphone','telephone','text'],['Email','email','email'],['Fonction AIJEB','fonction_aijeb','text'],["Date d'adhésion",'date_adhesion','date'],['Statut','statut','select',['actif','inactif','suspendu','demissionnaire','ancien_membre']]],
+  member:[['Nom','nom','text',1],['Prénoms','prenoms','text',1],['Sexe','sexe','select',['Homme','Femme','Autre','Non renseigné']],['Date de naissance','date_naissance','date'],['Lieu de naissance','lieu_naissance','text'],['Nationalité','nationalite','text'],['Profession','profession','text'],['Situation matrimoniale','situation_matrimoniale','select',['Célibataire','Marié(e)','Divorcé(e)','Veuf/Veuve','Autre']],['Pays de résidence','pays_residence','text',1],['Ville','ville','text'],['Département','departement','text'],['Commune','commune','text'],['Arrondissement','arrondissement','text'],['Quartier / Village','quartier_village','text'],['Téléphone','telephone','text'],['WhatsApp','whatsapp','text'],['Email','email','email'],['Fonction AIJEB','fonction_aijeb','text'],['Section AIJEB','section_aijeb','text'],["Date d'adhésion",'date_adhesion','date'],['Statut','statut','select',['actif','inactif','suspendu','demissionnaire','ancien_membre']]],
  adhesion:[['Membre','membre_id','member',1],["Montant frais d'adhésion",'montant','number',1],['Date paiement','date_paiement','date',1],['Mode','mode_paiement','select',['Mobile Money','Espèces','Virement','Autre']],['Référence','reference_paiement','text'],['Statut','statut','select',['en_attente','paye','valide']]],
  due:[['Membre','membre_id','member',1],['Période','periode','text',1],['Montant','montant_paye','number',1],['Date','date_paiement','date',1],['Mode','mode_paiement','select',['Mobile Money','Espèces','Virement','Autre']],['Statut','statut','select',['a_jour','partiel','en_retard','en_attente','exonere']]],
  finance:[['Date','date_operation','date',1],['Libellé','libelle','text',1],['Catégorie','categorie','text',1],['Type','type_operation','select',['recette','depense']],['Montant','montant','number',1]],
