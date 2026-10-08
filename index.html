@@ -79,16 +79,39 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<style>
+<style>.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:26px;
+}
 :root{--green:#075c37;--green2:#0b7a49;--yellow:#f5c400;--red:#d63131;--bg:#f5f8f6;--line:#dce7df;--muted:#6c7b71;--text:#14251b}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}
 .hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#eef8f1,#fff9dc)}
 .login-card{width:min(430px,92vw);background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 24px 70px #0a4f2b22}
-.login-card img{width:110px;display:block;margin:0 auto 16px}.login-card h1{text-align:center;margin:0 0 8px}.login-card p{text-align:center;color:var(--muted)}
+.login-card h1{text-align:center;margin:0 0 8px}.login-card img{
+  width:180px;
+  height:85px;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  margin:0 auto 20px;
+  background:transparent;
+}
 label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
 .btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}.primary{background:var(--green);color:#fff}.outline{background:#fff;border:1px solid var(--line);color:var(--green)}
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:#073d29;color:#fff;padding:20px;position:sticky;top:0;height:100vh;overflow:auto}
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:24px}.brand img{width:58px;height:58px;object-fit:contain;background:white;border-radius:14px;padding:5px}
+.brand img{
+  width:92px;
+  height:54px;
+  object-fit:contain;
+  object-position:center;
+  background:transparent;
+  border-radius:0;
+  padding:0;
+  display:block;
+  flex-shrink:0;
+}
 .brand strong{display:block;font-size:18px}.brand small{color:#cde1d4}.nav button{width:100%;text-align:left;background:transparent;color:#dfece4;border:0;border-radius:10px;padding:10px 12px;margin:2px 0;cursor:pointer}
 .nav button.active,.nav button:hover{background:#0b5c3d;color:white}.side-foot{margin-top:24px;font-size:12px;color:#b7d1c1}.main{padding:24px;min-width:0}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0}.user{font-size:13px;color:var(--muted)}.page{display:none}.page.active{display:block}
@@ -537,10 +560,12 @@ $('#modalForm').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.ta
  if(formType==='photo'){const file=fd.get('file');const path=`${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const up=await sb.storage.from('aijeb-gallery').upload(path,file,{contentType:file.type});if(up.error){alert(up.error.message);return}const pub=sb.storage.from('aijeb-gallery').getPublicUrl(path).data.publicUrl;q=sb.from('galerie_photos').insert({titre:o.titre,description:o.description||null,pays:o.pays||null,date_photo:o.date_photo||null,fichier_url:pub,storage_path:path})}
  const {error}=await q;if(error){alert(error.message);return}close();await loadAll()
 };
-
 window.generateAdhesionPDF=id=>{
   const m=data.members.find(x=>x.id===id);
-  if(!m){alert("Membre introuvable.");return}
+  if(!m){
+    alert("Membre introuvable.");
+    return;
+  }
 
   const a=data.adh.find(x=>x.membre_id===id || (x.membres && x.membres.id===id)) || {};
 
@@ -559,164 +584,239 @@ window.generateAdhesionPDF=id=>{
   const gray=[105,115,110];
   const light=[247,250,248];
 
-  const value=v=>(v===null || v===undefined || v==='') ? '-' : String(v);
+  const value=v=>(v===null || v===undefined || String(v).trim()==='') ? '-' : String(v).trim();
 
-  // En-tête
+  const propre=v=>{
+    const s=value(v);
+    if(s==='-') return s;
+    return s.charAt(0).toUpperCase()+s.slice(1);
+  };
+
+  const telephone=v=>{
+    if(!v) return '-';
+
+    let s=String(v).trim();
+    const plus=s.startsWith('+');
+    s=s.replace(/[^\d]/g,'');
+
+    if(!s) return '-';
+
+    const groupes=[];
+    while(s.length>2){
+      groupes.unshift(s.slice(-2));
+      s=s.slice(0,-2);
+    }
+    if(s) groupes.unshift(s);
+
+    return (plus?'+':'')+groupes.join(' ');
+  };
+
+  const numeroMembre=
+    value(m.numero_membre)!=='-'
+      ? m.numero_membre
+      : 'AIJEB-'+new Date().getFullYear()+'-'+String(m.id||'')
+          .replace(/-/g,'')
+          .slice(0,5)
+          .toUpperCase();
+
+  // EN-TÊTE
   d.setFillColor(...green);
-  d.rect(0,0,210,30,'F');
+  d.rect(0,0,210,32,'F');
 
   d.setFillColor(...yellow);
-  d.rect(0,30,140,2,'F');
+  d.rect(0,32,140,2,'F');
 
   d.setFillColor(...red);
-  d.rect(140,30,70,2,'F');
+  d.rect(140,32,70,2,'F');
 
-  d.setFillColor(255,255,255);
-  d.roundedRect(12,6,31,17,3,3,'F');
+  // Logo AIJEB sans déformation
+  try{
+    const logo=document.querySelector('.brand img') || document.querySelector('.login-card img');
 
-  d.setTextColor(...green);
-  d.setFont('helvetica','bold');
-  d.setFontSize(14);
-  d.text('AIJEB',27.5,17,{align:'center'});
+    if(logo && logo.src){
+      const maxW=34;
+      const maxH=18;
+      let w=maxW;
+      let h=maxH;
+
+      if(logo.naturalWidth && logo.naturalHeight){
+        const ratio=logo.naturalWidth/logo.naturalHeight;
+
+        if(ratio > maxW/maxH){
+          w=maxW;
+          h=maxW/ratio;
+        }else{
+          h=maxH;
+          w=maxH*ratio;
+        }
+      }
+
+      d.setFillColor(255,255,255);
+      d.roundedRect(12,6,36,20,3,3,'F');
+
+      d.addImage(
+        logo.src,
+        'PNG',
+        30-w/2,
+        16-h/2,
+        w,
+        h,
+        undefined,
+        'FAST'
+      );
+    }
+  }catch(e){}
 
   d.setTextColor(255,255,255);
+  d.setFont('helvetica','bold');
   d.setFontSize(16);
-  d.text("FICHE D'ADHESION",52,13);
+  d.text("FICHE D'ADHÉSION",54,13);
 
   d.setFont('helvetica','normal');
   d.setFontSize(8.5);
-  d.text("Amicale Internationale des Jeunes de l'Europe et du Benin",52,20);
+  d.text("Amicale Internationale des Jeunes de l'Europe et du Bénin",54,20);
 
   d.setFontSize(8);
-  d.text("Document individuel d'adhesion",52,25);
+  d.text("Document individuel d'adhésion",54,25);
 
-  // Numéro membre
   d.setFillColor(255,255,255);
-  d.roundedRect(159,8,39,13,3,3,'F');
+  d.roundedRect(158,7,40,14,3,3,'F');
+
   d.setTextColor(...green);
   d.setFont('helvetica','bold');
-  d.setFontSize(7);
-  d.text('NUMERO MEMBRE',178.5,13,{align:'center'});
-  d.setFontSize(9);
-  d.text(value(m.numero_membre),178.5,18,{align:'center'});
+  d.setFontSize(6.5);
+  d.text('NUMÉRO MEMBRE',178,12,{align:'center'});
 
-  let y=40;
+  d.setFontSize(8);
+  d.text(numeroMembre,178,18,{align:'center'});
+
+  let y=39;
 
   function section(title){
     d.setFillColor(...green);
-    d.roundedRect(12,y,186,9,2,2,'F');
+    d.roundedRect(12,y,186,7,2,2,'F');
+
     d.setTextColor(255,255,255);
     d.setFont('helvetica','bold');
-    d.setFontSize(9);
-    d.text(title,17,y+6);
-    y+=13;
+    d.setFontSize(8.5);
+    d.text(title,17,y+5);
+
+    y+=10;
   }
 
   function field(x,w,label,val){
     d.setFillColor(...light);
     d.setDrawColor(220,230,224);
-    d.roundedRect(x,y,w,14,2,2,'FD');
+    d.roundedRect(x,y,w,10,2,2,'FD');
 
     d.setTextColor(...gray);
     d.setFont('helvetica','normal');
-    d.setFontSize(6.5);
-    d.text(label,x+4,y+5);
+    d.setFontSize(5.8);
+    d.text(label,x+4,y+3.5);
 
     d.setTextColor(...dark);
     d.setFont('helvetica','bold');
-    d.setFontSize(8.5);
+    d.setFontSize(7.5);
 
     const txt=d.splitTextToSize(value(val),w-8);
-    d.text(txt[0],x+4,y+11);
+    d.text(txt[0],x+4,y+8);
   }
 
   function twoFields(l1,v1,l2,v2){
     field(12,90,l1,v1);
     field(108,90,l2,v2);
-    y+=18;
+    y+=12;
   }
 
   function fullField(label,val){
     field(12,186,label,val);
-    y+=18;
+    y+=12;
   }
 
-  section('1. IDENTITE DU MEMBRE');
+  section('1. IDENTITÉ DU MEMBRE');
 
-  twoFields('Nom',m.nom,'Prenoms',m.prenoms);
-  twoFields('Sexe',m.sexe,'Date de naissance',m.date_naissance);
-  twoFields('Lieu de naissance',m.lieu_naissance,'Nationalite',m.nationalite);
-  twoFields('Profession',m.profession,'Situation matrimoniale',m.situation_matrimoniale);
+  twoFields('Nom',propre(m.nom),'Prénoms',propre(m.prenoms));
+  twoFields('Sexe',propre(m.sexe),'Date de naissance',m.date_naissance);
+  twoFields('Lieu de naissance',propre(m.lieu_naissance),'Nationalité',propre(m.nationalite));
+  twoFields('Profession',propre(m.profession),'Situation matrimoniale',propre(m.situation_matrimoniale));
 
-  section('2. COORDONNEES ET RESIDENCE');
+  section('2. COORDONNÉES ET RÉSIDENCE');
 
-  twoFields('Pays de residence',m.pays_residence,'Ville',m.ville);
-  twoFields('Departement',m.departement,'Commune',m.commune);
-  twoFields('Arrondissement',m.arrondissement,'Quartier / Village',m.quartier_village);
-  twoFields('Telephone',m.telephone,'WhatsApp',m.whatsapp);
+  twoFields('Pays de résidence',propre(m.pays_residence),'Ville',propre(m.ville));
+  twoFields('Département',propre(m.departement),'Commune',propre(m.commune));
+  twoFields('Arrondissement',propre(m.arrondissement),'Quartier / Village',propre(m.quartier_village));
+  twoFields('Téléphone',telephone(m.telephone),'WhatsApp',telephone(m.whatsapp));
   fullField('Email',m.email);
 
   section('3. INFORMATIONS AIJEB');
 
-  twoFields('Fonction AIJEB',m.fonction_aijeb,'Section AIJEB',m.section_aijeb);
-  twoFields("Date d'adhesion",m.date_adhesion,'Statut',m.statut);
-  twoFields("Frais d'adhesion",a.montant ? money(a.montant) : '-','Date de paiement',a.date_paiement);
-  twoFields('Mode de paiement',a.mode_paiement,'Reference paiement',a.reference_paiement);
+  twoFields('Fonction AIJEB',propre(m.fonction_aijeb),'Section AIJEB',propre(m.section_aijeb));
+  twoFields("Date d'adhésion",m.date_adhesion,'Statut',propre(m.statut));
+  twoFields("Frais d'adhésion",a.montant ? money(a.montant) : '-','Date de paiement',a.date_paiement);
+  twoFields('Mode de paiement',propre(a.mode_paiement),'Référence paiement',a.reference_paiement);
 
-  // Engagement
+  // ENGAGEMENT
   y+=2;
+
   d.setFillColor(255,249,224);
   d.setDrawColor(...yellow);
-  d.roundedRect(12,y,186,31,3,3,'FD');
+  d.roundedRect(12,y,186,22,3,3,'FD');
 
   d.setTextColor(...dark);
   d.setFont('helvetica','bold');
-  d.setFontSize(8);
-  d.text("DECLARATION D'ENGAGEMENT",17,y+7);
-
-  d.setFont('helvetica','normal');
-  d.setFontSize(7.2);
-
-  const engagement=
-    "Je declare adherer librement a l'AIJEB et m'engage a respecter ses statuts, son reglement interieur, ses valeurs et ses objectifs. Je m'engage egalement a contribuer, selon mes possibilites, aux activites et au rayonnement de l'association.";
-
-  const lines=d.splitTextToSize(engagement,176);
-  d.text(lines,17,y+13);
-
-  y+=39;
-
-  // Signatures
-  d.setTextColor(...dark);
-  d.setFont('helvetica','bold');
-  d.setFontSize(8);
-
-  d.text('Fait a : __________________________',15,y);
-  d.text('Le : ____ / ____ / ______',120,y);
-
-  y+=12;
-
-  d.text("Signature de l'adherent",42,y,{align:'center'});
-  d.text('Pour AIJEB',166,y,{align:'center'});
-
-  d.setDrawColor(160,170,165);
-  d.line(18,y+22,67,y+22);
-  d.line(142,y+22,190,y+22);
+  d.setFontSize(7.5);
+  d.text("DÉCLARATION D'ENGAGEMENT",17,y+6);
 
   d.setFont('helvetica','normal');
   d.setFontSize(6.5);
-  d.setTextColor(...gray);
-  d.text('Precedee de la mention "Lu et approuve"',42,y+27,{align:'center'});
-  d.text('Nom, signature et cachet',166,y+27,{align:'center'});
 
-  // Pied de page
+  const engagement=
+    "Je déclare adhérer librement à l'AIJEB et m'engage à respecter ses statuts, son règlement intérieur, ses valeurs et ses objectifs. Je m'engage également à contribuer, selon mes possibilités, aux activités et au rayonnement de l'association.";
+
+  d.text(d.splitTextToSize(engagement,176),17,y+11);
+
+  y+=28;
+
+  // SIGNATURES
+  d.setTextColor(...dark);
+  d.setFont('helvetica','bold');
+  d.setFontSize(7.5);
+
+  d.text('Fait à : __________________________',15,y);
+  d.text('Le : ____ / ____ / ______',120,y);
+
+  y+=9;
+
+  d.text("Signature de l'adhérent",42,y,{align:'center'});
+  d.text('Pour AIJEB',166,y,{align:'center'});
+
+  d.setDrawColor(160,170,165);
+  d.line(18,y+15,67,y+15);
+  d.line(142,y+15,190,y+15);
+
+  d.setFont('helvetica','normal');
+  d.setFontSize(6);
+  d.setTextColor(...gray);
+
+  d.text('Précédée de la mention "Lu et approuvé"',42,y+20,{align:'center'});
+  d.text('Nom, signature et cachet',166,y+20,{align:'center'});
+
+  // PIED DE PAGE
   d.setFillColor(...green);
   d.rect(0,289,210,8,'F');
 
   d.setTextColor(255,255,255);
   d.setFontSize(6.5);
-  d.text('AIJEB Connect - Fiche generee automatiquement',105,294,{align:'center'});
+  d.text(
+    'AIJEB Connect - Fiche générée automatiquement',
+    105,
+    294,
+    {align:'center'}
+  );
 
   const nomFichier=((m.nom||'membre')+'_'+(m.prenoms||''))
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
     .replace(/\s+/g,'_')
     .replace(/[^a-zA-Z0-9_-]/g,'');
 
@@ -725,46 +825,4 @@ window.generateAdhesionPDF=id=>{
 
 window.fiche=window.generateAdhesionPDF;
 
-async function forgotAIJEBPassword(){
-  try{
-    const current = document.getElementById('email')?.value?.trim() || '';
-    const email = window.prompt(
-      "Entrez l’adresse email de votre compte AIJEB :",
-      current || "angeherved@gmail.com"
-    );
-    if(!email) return;
-
-    const endpoint = "https://davftivuspiigcbshsuo.supabase.co/auth/v1/recover";
-    const publicKey = "sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg";
-
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": publicKey,
-        "Authorization": "Bearer " + publicKey
-      },
-      body: JSON.stringify({ email: email.trim() })
-    });
-
-    if(!response.ok){
-      let detail = "";
-      try{
-        const j = await response.json();
-        detail = j.msg || j.message || j.error_description || j.error || "";
-      }catch(_){}
-      throw new Error(detail || ("Erreur HTTP " + response.status));
-    }
-
-    window.alert(
-      "Le lien de réinitialisation AIJEB a été envoyé à " + email.trim() +
-      ". Vérifiez aussi le dossier Spam/Indésirables. Cela ne modifie pas le mot de passe Gmail."
-    );
-  }catch(err){
-    window.alert("Erreur : " + (err?.message || String(err)));
-  }
-}
-window.forgotAIJEBPassword = forgotAIJEBPassword;
-
-</script>
-</body></html>
+  
