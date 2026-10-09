@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIJEB Connect V4</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script><script>
+window.__AIJEB_RECOVERY_LINK =
+  window.location.hash.includes('type=recovery') ||
+  window.location.search.includes('type=recovery');
+</script>
 <script>(function(){
   const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
@@ -399,7 +403,7 @@ try {
 
 const SUPABASE_URL_MAIN='https://davftivuspiigcbshsuo.supabase.co';
 const KEY='sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
-const AIJEB_RECOVERY_LINK = window.location.hash.includes('type=recovery') || window.location.search.includes('type=recovery');
+const AIJEB_RECOVERY_LINK = window.__AIJEB_RECOVERY_LINK === true;
   const sb = window.__aijebSb || ((window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL_MAIN,KEY) : null);
 if (sb) window.__aijebSb = sb;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
