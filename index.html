@@ -439,7 +439,7 @@ document.getElementById('togglePassword').addEventListener('click', () => {
 
 async function enter(session){$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#user').textContent=session.user.email;await loadAll()}
 window.__aijebEnter = enter;
-(async()=>{if(!sb)return;const {data:{session}}=await sb.auth.getSession();if(session)await enter(session)})();
+(async()=>{if(!sb)return;const isRecovery=window.location.hash.includes('type=recovery')||window.location.search.includes('type=recovery');const {data:{session}}=await sb.auth.getSession();if(isRecovery){showRecovery();return;}if(session)await enter(session)})();
 
 let recoveryMode = false;
 
