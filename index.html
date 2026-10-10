@@ -110,7 +110,7 @@
   <p>Bienvenue dans votre espace de gestion.</p>
 
   <div>
-    <button class="menu-btn" data-page="membres">Membres</button>
+    <button id="btnMembres" class="menu-btn" data-page="membres">Membres</button>
 <button class="menu-btn" data-page="adhesions">Adhésions</button>
 <button class="menu-btn" data-page="cotisations">Cotisations</button>
 <button class="menu-btn" data-page="finances">Finances</button>
@@ -119,7 +119,15 @@
 <button class="menu-btn" data-page="partenaires">Partenaires</button>
 <button class="menu-btn" data-page="galerie">Galerie photos</button>
   </div>
+<div id="membresPage" class="hidden">
+  <h2>Membres</h2>
+  <p id="membresStatus">Chargement des membres...</p>
+  <div id="membresListe"></div>
 
+  <button id="retourDashboard">
+    Retour au tableau de bord
+  </button>
+</div>
   <button id="logout">
     Se déconnecter
   </button>
@@ -142,7 +150,11 @@
   const message = document.getElementById('message');
   const loginBox = document.getElementById('loginBox');
   const connectedBox = document.getElementById('connectedBox');
-
+const btnMembres = document.getElementById('btnMembres');
+const membresPage = document.getElementById('membresPage');
+const membresStatus = document.getElementById('membresStatus');
+const membresListe = document.getElementById('membresListe');
+const retourDashboard = document.getElementById('retourDashboard');
 
   async function showSession() {
     const {
@@ -184,7 +196,49 @@
       'Lien envoyé. Consultez votre boîte e-mail.';
   };
 
+btnMembres.onclick = async function () {
+  connectedBox.classList.add('hidden');
+  membresPage.classList.remove('hidden');
 
+  membresStatus.textContent = 'Chargement des membres...';
+  membresListe.innerHTML = '';
+
+  const { data, error } = await sb
+    .from('membres')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    membresStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    membresStatus.textContent = 'Aucun membre enregistré.';
+    return;
+  }
+
+  membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
+
+  data.forEach(function (membre) {
+    const bloc = document.createElement('div');
+    bloc.style.padding = '12px';
+    bloc.style.marginTop = '10px';
+    bloc.style.border = '1px solid #ddd';
+    bloc.style.borderRadius = '10px';
+    bloc.style.textAlign = 'left';
+
+    bloc.textContent =
+      (membre.nom || '') + ' ' + (membre.prenom || '');
+
+    membresListe.appendChild(bloc);
+  });
+};
+
+retourDashboard.onclick = function () {
+  membresPage.classList.add('hidden');
+  connectedBox.classList.remove('hidden');
+};
   document.getElementById('logout').onclick = async function () {
     await sb.auth.signOut();
     window.location.reload();
