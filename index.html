@@ -439,14 +439,19 @@ passwordInput.addEventListener('focus', () => {
   }
 });
 
-document.getElementById('togglePassword').addEventListener('click', () => {
-  const hidden = passwordInput.type === 'password';
-  passwordInput.type = hidden ? 'text' : 'password';
-  document.getElementById('togglePassword').textContent =
-    hidden ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
-  passwordInput.focus();
-});
+const togglePasswordBtn = document.getElementById('togglePassword');
 
+if (togglePasswordBtn && passwordInput) {
+  togglePasswordBtn.onclick = function () {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePasswordBtn.textContent = 'Masquer le mot de passe';
+    } else {
+      passwordInput.type = 'password';
+      togglePasswordBtn.textContent = 'Afficher le mot de passe';
+    }
+  };
+}
 
 async function enter(session){$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#user').textContent=session.user.email;await loadAll()}
 window.__aijebEnter = enter;
