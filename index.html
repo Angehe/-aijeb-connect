@@ -1,843 +1,197 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIJEB Connect V4</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script><script>
-window.__AIJEB_RECOVERY_LINK =
-  window.location.hash.includes('type=recovery') ||
-  window.location.search.includes('type=recovery') ||
-window.location.hash.includes('access_token=');document.addEventListener('DOMContentLoaded', function () {
-  if (window.__AIJEB_RECOVERY_LINK) {
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('recovery').classList.remove('hidden');
-  }
-});
-</script>
-<script>(function(){
-  const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIJEB Connect</title>
 
-  function msg(text){
-    const el = document.getElementById('loginMsg');
-    if (el) el.textContent = text;
-  }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  window.loginAIJEB = async function(){
-    const emailEl = document.getElementById('email');
-    const passwordEl = document.getElementById('password');
-    const email = (emailEl && emailEl.value ? emailEl.value : '').trim();
-    const password = passwordEl && passwordEl.value ? passwordEl.value : '';
-
-    if (!email || !password) {
-      msg('Veuillez renseigner votre email et votre mot de passe.');
-      return false;
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    msg('Connexion en cours...');
-
-    try {
-      if (window.supabase && window.supabase.createClient) {
-        window.__aijebSb = window.__aijebSb || window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const result = await window.__aijebSb.auth.signInWithPassword({ email, password });
-        if (result.error) throw result.error;
-        msg('Connexion réussie. Chargement...');
-        if (typeof window.__aijebEnter === 'function') {
-          await window.__aijebEnter(result.data.session);
-        } else {
-          window.location.reload();
-        }
-        return false;
-      }
-
-      const response = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY},
-        body: JSON.stringify({email, password})
-      });
-      const data = await response.json().catch(function(){ return {}; });
-      if (!response.ok) throw new Error(data.error_description || data.msg || data.message || 'Connexion refusée');
-      msg('Connexion réussie. Rechargez la page.');
-      return false;
-    } catch(err) {
-      msg('Connexion impossible : ' + (err && err.message ? err.message : String(err)));
-      return false;
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', function(){
-    const form = document.getElementById('loginForm');
-    if (form) {
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        window.loginAIJEB();
-      });
+    .card {
+      width: 90%;
+      max-width: 420px;
+      background: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+      text-align: center;
     }
 
-    // Remove any credentials accidentally left in the URL by an older version.
-    try {
-      const current = new window.URL(window.location.href);
-      if (current.searchParams.has('email') || current.searchParams.has('password')) {
-        current.searchParams.delete('email');
-        current.searchParams.delete('password');
-        history.replaceState(null, '', current.pathname + (current.search ? current.search : '') + current.hash);
-      }
-    } catch(e) {}
-  });
-})();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<style>.brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:26px;
-}
-:root{--green:#075c37;--green2:#0b7a49;--yellow:#f5c400;--red:#d63131;--bg:#f5f8f6;--line:#dce7df;--muted:#6c7b71;--text:#14251b}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}
-.hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#eef8f1,#fff9dc)}
-.login-card{width:min(430px,92vw);background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 24px 70px #0a4f2b22}
-.login-card h1{text-align:center;margin:0 0 8px}.login-card img{
-  width:180px;
-  height:85px;
-  object-fit:contain;
-  object-position:center;
-  display:block;
-  margin:0 auto 20px;
-  background:transparent;
-}
-label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
-.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}.primary{background:var(--green);color:#fff}.outline{background:#fff;border:1px solid var(--line);color:var(--green)}
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:#073d29;color:#fff;padding:20px;position:sticky;top:0;height:100vh;overflow:auto}
-.brand img{
-    width:170px;
-  height:auto;
-  max-height:90px;
-  object-fit:contain;
-  object-position:center;
-  background:transparent;
-  border-radius:0;
-  padding:0;
-  display:block;
-  flex-shrink:0;
-}
-.brand strong{display:block;font-size:18px}.brand small{color:#cde1d4}.nav button{width:100%;text-align:left;background:transparent;color:#dfece4;border:0;border-radius:10px;padding:10px 12px;margin:2px 0;cursor:pointer}
-.nav button.active,.nav button:hover{background:#0b5c3d;color:white}.side-foot{margin-top:24px;font-size:12px;color:#b7d1c1}.main{padding:24px;min-width:0}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0}.user{font-size:13px;color:var(--muted)}.page{display:none}.page.active{display:block}
-.hero{background:linear-gradient(120deg,#075c37,#0b7a49);color:#fff;border-radius:22px;padding:24px;display:flex;justify-content:space-between;gap:16px;align-items:center}
-.hero h2{margin:4px 0}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
-.metric span{display:block;color:var(--muted);font-size:13px}.metric strong{display:block;font-size:25px;margin-top:8px}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
-.table-wrap{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:auto}table{width:100%;border-collapse:collapse;min-width:780px}th,td{padding:12px;border-bottom:1px solid #edf2ee;text-align:left;font-size:13px}th{background:#f8fbf9;color:#526258}
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#e9f5ee;color:#0a6a3c;font-weight:700;font-size:11px}.badge.yellow{background:#fff5c7;color:#805f00}.badge.red{background:#ffe1e1;color:#9b2626}
-.row-actions button{border:0;background:transparent;color:var(--green);cursor:pointer}.empty{padding:25px;text-align:center;color:var(--muted)}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.photo{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.photo img{width:100%;height:170px;object-fit:cover}.photo div{padding:12px}
-.modal{position:fixed;inset:0;background:#14251b66;display:grid;place-items:center;padding:20px;z-index:10}.modal-card{background:#fff;width:min(650px,96vw);max-height:90vh;overflow:auto;border-radius:20px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-grid label{margin:0}.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
-@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.grid4{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}
-@media(max-width:600px){.grid4{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.main{padding:14px}}
+    .logo {
+      max-width: 120px;
+      margin-bottom: 15px;
+    }
 
-/* ===== AIJEB premium decorative shadow illustrations ===== */
-.side,
-.hero {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
+    h1 {
+      margin-bottom: 8px;
+    }
 
-.side::before,
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%0A%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27900%27%20height%3D%27500%27%20viewBox%3D%270%200%20900%20500%27%3E%0A%20%20%3Cg%20fill%3D%27none%27%20stroke%3D%27white%27%20stroke-width%3D%273%27%20opacity%3D%270.18%27%3E%0A%20%20%20%20%3C%21--%20Globe%20--%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27690%27%20cy%3D%27180%27%20r%3D%2795%27/%3E%0A%20%20%20%20%3Cellipse%20cx%3D%27690%27%20cy%3D%27180%27%20rx%3D%2742%27%20ry%3D%2795%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M595%20180h190M610%20135h160M610%20225h160%27/%3E%0A%20%20%20%20%3C%21--%20Network%20--%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27520%27%20cy%3D%27320%27%20r%3D%278%27/%3E%3Ccircle%20cx%3D%27600%27%20cy%3D%27360%27%20r%3D%278%27/%3E%3Ccircle%20cx%3D%27680%27%20cy%3D%27315%27%20r%3D%278%27/%3E%3Ccircle%20cx%3D%27760%27%20cy%3D%27365%27%20r%3D%278%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M528%20324l64%2032M608%20356l64-36M688%20320l64%2039M600%20360l160%205%27/%3E%0A%20%20%20%20%3C%21--%20Leaves%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%27M70%20420%20C120%20330%20185%20290%20245%20270%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M116%20365%20C78%20330%2055%20300%2060%20270%20C100%20275%20130%20300%20142%20330%20C145%20347%20135%20360%20116%20365Z%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M160%20325%20C150%20275%20160%20235%20195%20210%20C220%20245%20222%20285%20198%20313%20C187%20326%20174%20331%20160%20325Z%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M205%20285%20C235%20240%20270%20220%20312%20225%20C305%20270%20278%20300%20242%20307%20C227%20310%20215%20302%20205%20285Z%27/%3E%0A%20%20%20%20%3C%21--%20abstract%20human%20links%20--%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27380%27%20cy%3D%27110%27%20r%3D%2718%27/%3E%3Ccircle%20cx%3D%27440%27%20cy%3D%27145%27%20r%3D%2718%27/%3E%3Ccircle%20cx%3D%27350%27%20cy%3D%27175%27%20r%3D%2718%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M380%20128v52M440%20163v45M350%20193v40M380%20150l60%2025M380%20155l-30%2040%27/%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E%0A");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: .65;
-  pointer-events: none;
-  z-index: 0;
-}
+    p {
+      color: #555;
+      line-height: 1.5;
+    }
 
-.side > *,
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
 
-.hero {
-  box-shadow: inset 0 0 80px rgba(0,0,0,.08), 0 18px 38px rgba(7,92,55,.14);
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #173f73;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-.side {
-  background:
-    linear-gradient(180deg, rgba(2,55,35,.98), rgba(4,67,42,.99));
-}
+    #message {
+      margin-top: 18px;
+      font-weight: bold;
+    }
 
-.login {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(245,196,0,.18), transparent 32%),
-    linear-gradient(135deg,#edf8f1,#fffaf0);
-}
-
-.login::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%0A%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%271000%27%20height%3D%27700%27%20viewBox%3D%270%200%201000%20700%27%3E%0A%20%20%3Cg%20fill%3D%27none%27%20stroke%3D%27%23075c37%27%20stroke-width%3D%274%27%20opacity%3D%270.10%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27760%27%20cy%3D%27180%27%20r%3D%27120%27/%3E%0A%20%20%20%20%3Cellipse%20cx%3D%27760%27%20cy%3D%27180%27%20rx%3D%2750%27%20ry%3D%27120%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M640%20180h240M660%20125h200M660%20235h200%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M90%20610%20C140%20500%20240%20430%20340%20400%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M155%20535%20C100%20490%2085%20445%20100%20405%20C150%20415%20195%20450%20205%20490%20C210%20510%20195%20528%20155%20535Z%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M220%20470%20C205%20410%20220%20350%20270%20320%20C305%20370%20305%20420%20270%20455%20C252%20474%20238%20480%20220%20470Z%27/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27500%27%20cy%3D%27500%27%20r%3D%2710%27/%3E%3Ccircle%20cx%3D%27590%27%20cy%3D%27540%27%20r%3D%2710%27/%3E%3Ccircle%20cx%3D%27670%27%20cy%3D%27490%27%20r%3D%2710%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M510%20505l70%2030M600%20535l60-40%27/%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E%0A");
-  background-size: cover;
-  background-position: center;
-  opacity: .85;
-  pointer-events: none;
-}
-
-.login-card {
-  position: relative;
-  z-index: 1;
-  backdrop-filter: blur(8px);
-  background: rgba(255,255,255,.94);
-  border: 1px solid rgba(7,92,55,.12);
-  box-shadow: 0 25px 75px rgba(3,61,38,.16);
-}
-
-.card,
-.table-wrap,
-.photo {
-  box-shadow: 0 10px 28px rgba(9,70,44,.06);
-}
-
-.nav button.active {
-  box-shadow: inset 3px 0 0 #f5c400;
-}
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-}
-
-.stat-card{
-  background:#ffffff;
-  border:1px solid rgba(7,92,55,.12);
-  border-radius:16px;
-  padding:18px 20px;
-  box-shadow:0 8px 22px rgba(9,70,44,.06);
-}
-
-.stat-label{
-  font-size:14px;
-  color:#66756d;
-  margin-bottom:8px;
-  font-weight:600;
-}
-
-.stat-value{
-  font-size:24px;
-  font-weight:800;
-  color:#10281d;
-}
-
-@media (max-width:800px){
-  .stats-grid{
-    grid-template-columns:1fr;
-  }
-}‹
-.finance-badge{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
-  text-transform:capitalize;
-}
-
-.finance-badge.income{
-  background:#e8f7ee;
-  color:#08713f;
-}
-
-.finance-badge.expense{
-  background:#fdecec;
-  color:#b42318;
-}</style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-<div id="login" class="login">
- <form id="loginForm" class="login-card" method="post" action="#">
-  <img src="logo-aijeb.png.png?v=2" alt="Logo AIJEB">
-  <h1>AIJEB Connect</h1><p>Connexion sécurisée à la plateforme de gestion</p>
-  <label>Email</label><input id="email" name="email" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" required>
-  <label>Mot de passe</label><input id="password" name="password" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false" required>
-  <button type="button" id="togglePassword" class="btn outline" style="width:100%;margin-top:8px;padding:8px 12px">Afficher le mot de passe</button>
-  <button type="submit" class="btn primary" style="width:100%;margin-top:16px">Se connecter</button>
-  <button type="button" class="btn outline" style="width:100%;margin-top:10px"
-onclick="forgotAIJEBPassword()">Mot de passe oublié ?</button>
-  <p id="loginMsg"></p>
- </form>
-</div>
 
+  <div class="card" id="loginBox">
+    <img src="logo-aijeb.png.png" class="logo" alt="AIJEB">
 
-<div id="recovery" class="login hidden">
-  <form id="recoveryForm" class="login-card">
-        <h1>Nouveau mot de passe</h1>
-    <p>Choisissez un nouveau mot de passe pour votre compte AIJEB.</p>
+    <h1>AIJEB Connect</h1>
 
-    <label>Nouveau mot de passe</label>
-    <input id="newPassword" name="newPassword" type="password" minlength="8" autocomplete="new-password" autocapitalize="none" required>
+    <p>
+      Entrez votre adresse e-mail.
+      Nous vous enverrons un lien de connexion sécurisé.
+    </p>
 
-    <label>Confirmer le mot de passe</label>
-    <input id="confirmPassword" name="confirmPassword" type="password" minlength="8" autocomplete="new-password" autocapitalize="none" required>
+    <input
+      id="email"
+      type="email"
+      placeholder="Votre adresse e-mail"
+      value="angeherved@gmail.com"
+    >
 
-    <button class="btn primary" style="width:100%;margin-top:16px">Enregistrer le nouveau mot de passe</button>
-    <p id="recoveryMsg"></p>
-  </form>
-</div>
+    <button id="sendLink">
+      Recevoir mon lien de connexion
+    </button>
 
-<div id="app" class="app hidden">
- <aside class="side">
-  <div class="brand"><img src="logo-aijeb.png.png?v=3" alt="Logo AIJEB" style="width:220px;height:auto;max-height:none;border-radius:0;background:transparent;">
-   <button data-page="members">Membres</button>
-   <button data-page="adhesions">Adhésions</button>
-   <button data-page="dues">Cotisations</button>
-   <button data-page="finance">Finances</button>
-   <button data-page="activities">Activités</button>
-   <button data-page="projects">Projets</button>
-   <button data-page="partners">Partenaires</button>
-   <button data-page="gallery">Galerie photos</button>
-  </nav>
-  <div class="side-foot"><div id="sync">Supabase</div><button id="logout" class="btn outline" style="margin-top:12px">Déconnexion</button></div>
- </aside>
- <main class="main">
-  <header class="top"><div><small id="kicker">Vue générale</small><h1 id="title">Tableau de bord</h1></div><div class="user" id="user"></div></header>
-
-  <section id="dashboard" class="page active">
-   <div class="hero"><div><small>Réseau international</small><h2>AIJEB en un seul endroit</h2><div>Membres, adhésions, cotisations, activités et finances.</div></div><button class="btn" style="background:#fff;color:#075c37" data-open="member">Ajouter un membre</button></div>
-   <div class="grid4">
-    <div class="card metric"><span>Membres actifs</span><strong id="mMembers">0</strong></div>
-    <div class="card metric"><span>Adhésions encaissées</span><strong id="mAdhesions">0 FCFA</strong></div>
-    <div class="card metric"><span>Cotisations encaissées</span><strong id="mDues">0 FCFA</strong></div>
-    <div class="card metric"><span>Solde financier</span><strong id="mBalance">0 FCFA</strong></div>
-   </div>
-   <div class="two">
-    <div class="card"><h3>Répartition par sexe</h3><div id="sexStats"></div></div>
-    <div class="card"><h3>Répartition par pays</h3><div id="countryStats"></div></div>
-   </div>
-  </section>
-
-  <section id="members" class="page">
-    <div class="section-head"><h2>Membres</h2><button class="btn primary" data-open="member">Nouveau membre</button></div>
-   <div class="table-wrap"><table><thead><tr><th>Membre</th><th>Sexe</th><th>Pays</th><th>Fonction</th><th>Adhésion</th><th>Statut</th><th>Action</th></tr></thead><tbody id="membersBody"></tbody></table><div id="membersEmpty" class="empty">Aucun membre.</div></div>
-  </section>
-
-  <section id="adhesions" class="page">
-   <div class="section-head"><h2>Frais d'adhésion</h2><button class="btn primary" data-open="adhesion">Enregistrer</button></div>
-   <div class="grid4"><div class="card metric"><span>Total</span><strong id="aTotal">0 FCFA</strong></div><div class="card metric"><span>Payées</span><strong id="aPaid">0</strong></div><div class="card metric"><span>En attente</span><strong id="aPending">0</strong></div><div class="card metric"><span>Validées</span><strong id="aValidated">0</strong></div></div>
-   <div class="table-wrap"><table><thead><tr><th>Membre</th><th>Montant</th><th>Date</th><th>Mode</th><th>Statut</th><th>Fiche</th></tr></thead><tbody id="adhBody"></tbody></table><div id="adhEmpty" class="empty">Aucune adhésion.</div></div>
-  </section>
-
-  <section id="dues" class="page">
-   <div class="section-head"><h2>Cotisations</h2><button class="btn primary" data-open="due">Nouveau paiement</button></div>
-   <div class="table-wrap"><table><thead><tr><th>Membre</th><th>Période</th><th>Montant</th><th>Date</th><th>Mode</th><th>Statut</th></tr></thead><tbody id="duesBody"></tbody></table><div id="duesEmpty" class="empty">Aucune cotisation.</div></div>
-  </section>
-
-  <section id="finance" class="page">
-   
-    <div class="section-head">
-  <h2>Finances</h2>
-  <button class="btn primary" data-open="finance">Nouvelle opération</button>
-</div>
-<div class="stats-grid" style="margin-bottom:18px;">
-  <div class="stat-card">
-    <div class="stat-label :">Recettes totales</div>
-    <div class="stat-value" id="financeIncome">0 FCFA</div>
+    <div id="message"></div>
   </div>
 
-  <div class="stat-card">
-    <div class="stat-label">Dépenses totales</div>
-    <div class="stat-value" id="financeExpense">0 FCFA</div>
+
+  <div class="card hidden" id="connectedBox">
+    <img src="logo-aijeb.png.png" class="logo" alt="AIJEB">
+
+    <h1>Connexion réussie</h1>
+
+    <p>Bienvenue dans AIJEB Connect.</p>
+
+    <button id="logout">
+      Se déconnecter
+    </button>
   </div>
 
-  <div class="stat-card">
-    <div class="stat-label">Solde</div>
-    <div class="stat-value" id="financeBalance">0 FCFA</div>
-  </div>
-</div>
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Libellé</th>
-        <th>Catégorie</th>
-        <th>Source</th>
-        <th>Type</th>
-        <th>Montant</th>
-      </tr>
-    </thead>
-    <tbody id="financeBody"></tbody>
-  </table>
-</div>
-
-<div id="financeEmpty" class="empty">Aucune opération financière.</div>
-</section>
-  
-
-  <section id="activities" class="page"><div class="section-head"><h2>Activités</h2><button class="btn primary" data-open="activity">Nouvelle activité</button></div><div id="activitiesList" class="photo-grid"></div></section>
-  <section id="projects" class="page"><div class="section-head"><h2>Projets</h2><button class="btn primary" data-open="project">Nouveau projet</button></div><div id="projectsList" class="photo-grid"></div></section>
-  <section id="partners" class="page"><div class="section-head"><h2>Partenaires</h2><button class="btn primary" data-open="partner">Nouveau partenaire</button></div><div id="partnersList" class="photo-grid"></div></section>
-
-  <section id="gallery" class="page">
-   <div class="section-head"><h2>Galerie photos</h2><button class="btn primary" data-open="photo">Ajouter une photo</button></div>
-   <div id="galleryList" class="photo-grid"></div><div id="galleryEmpty" class="empty">Aucune photo.</div>
-  </section>
- </main>
-</div>
-
-<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h2 id="modalTitle">Ajouter</h2><button id="closeModal" class="btn outline">Fermer</button></div><form id="modalForm"><div id="fields" class="form-grid"></div><div class="form-actions"><button type="button" class="btn outline" id="cancelModal">Annuler</button><button class="btn primary">Enregistrer</button></div></form></div></div>
 
 <script>
-// Nettoyage de sécurité : retire d'anciens paramètres email/password de l'URL.
-try {
-  const u = new window.URL(window.location.href);
-  if (u.searchParams.has('email') || u.searchParams.has('password')) {
-    u.searchParams.delete('email');
-    u.searchParams.delete('password');
-    history.replaceState(null, '', u.pathname + (u.search ? u.search : '') + u.hash);
-  }
-} catch(e) {}
+  const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
 
-const SUPABASE_URL_MAIN='https://davftivuspiigcbshsuo.supabase.co';
-const KEY='sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
-const AIJEB_RECOVERY_LINK = window.__AIJEB_RECOVERY_LINK === true;
-  const sb = window.__aijebSb || ((window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL_MAIN,KEY) : null);
-if (sb) window.__aijebSb = sb;
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  const SUPABASE_KEY =
+    'sb_publishable_nTZ62Z5W5ALjxfEnkiW8KA_ADh_hHCg';
 
-// Connexion gérée par le script robuste chargé dans <head>.
-const money=n=>new Intl.NumberFormat('fr-FR').format(Number(n||0))+' FCFA';
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-let data={members:[],adh:[],dues:[],finance:[],activities:[],projects:[],partners:[],photos:[]}, formType='', editMemberId=null;
-
-const pages={dashboard:'Tableau de bord',members:'Membres',adhesions:'Adhésions',dues:'Cotisations',finance:'Finances',activities:'Activités',projects:'Projets',partners:'Partenaires',gallery:'Galerie photos'};
-const navEl=$('#nav');if(navEl)navEl.onclick=e=>{const b=e.target.closest('[data-page]');if(!b)return;$$('.nav button').forEach(x=>x.classList.toggle('active',x===b));$$('.page').forEach(x=>x.classList.toggle('active',x.id===b.dataset.page));$('#title').textContent=pages[b.dataset.page];};
-$('#logout').onclick=async()=>{if(sb) await sb.auth.signOut();location.reload()};
-
-
-// Stabilisation du champ mot de passe pour Chrome / mobile.
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-let typedPassword = '';
-
-passwordInput.addEventListener('input', () => {
-  typedPassword = passwordInput.value;
-});
-
-passwordInput.addEventListener('focus', () => {
-  if (!passwordInput.value && typedPassword) {
-    passwordInput.value = typedPassword;
-  }
-});
-
-const togglePasswordBtn = document.getElementById('togglePassword');
-
-if (togglePasswordBtn && passwordInput) {
-  togglePasswordBtn.onclick = function () {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      togglePasswordBtn.textContent = 'Masquer le mot de passe';
-    } else {
-      passwordInput.type = 'password';
-      togglePasswordBtn.textContent = 'Afficher le mot de passe';
-    }
-  };
-}
-
-async function enter(session){$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#user').textContent=session.user.email;await loadAll()}
-window.__aijebEnter = enter;
-(async()=>{if(!sb)return;if(AIJEB_RECOVERY_LINK){showRecovery();return;}const {data:{session}}=await sb.auth.getSession();if(session)await enter(session)})();
-
-let recoveryMode = false;
-
-function showRecovery(){
-  recoveryMode = true;
-  document.getElementById('login').classList.add('hidden');
-  document.getElementById('app').classList.add('hidden');
-  document.getElementById('recovery').classList.remove('hidden');
-}
-
-if (sb) sb.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    showRecovery();
-  }
-});
-
-document.getElementById('recoveryForm').onsubmit = async (e) => {
-  e.preventDefault();
-
-  const p1 = document.getElementById('newPassword').value;
-  const p2 = document.getElementById('confirmPassword').value;
-  const msg = document.getElementById('recoveryMsg');
-
-  if (p1.length < 8) {
-    msg.textContent = 'Le mot de passe doit contenir au moins 8 caractères.';
-    return;
-  }
-  if (p1 !== p2) {
-    msg.textContent = 'Les deux mots de passe ne correspondent pas.';
-    return;
-  }
-
-  msg.textContent = 'Mise à jour en cours...';
-
-  const { error } = await sb.auth.updateUser({ password: p1 });
-
-  if (error) {
-    msg.textContent = 'Erreur : ' + error.message;
-    return;
-  }
-
-  msg.textContent = 'Mot de passe AIJEB modifié avec succès.';
-  alert('Votre mot de passe AIJEB a été modifié. Vous pouvez maintenant vous connecter avec le nouveau mot de passe.');
-
-  await sb.auth.signOut();
-  history.replaceState(null, '', window.location.pathname);
-  document.getElementById('recovery').classList.add('hidden');
-  document.getElementById('login').classList.remove('hidden');
-  document.getElementById('password').value = '';
-};
-
-
-async function loadAll(){
- $('#sync').textContent='Synchronisation...';
- const r=await Promise.all([
-  sb.from('membres').select('*').order('created_at',{ascending:false}),
-  sb.from('adhesions').select('*,membres(*)').order('created_at',{ascending:false}),
-  sb.from('cotisations').select('*,membres(nom,prenoms)').order('created_at',{ascending:false}),
-  sb.from('finances').select('*').order('date_operation',{ascending:false}),
-  sb.from('activites').select('*').order('date_debut',{ascending:true}),
-  sb.from('projets').select('*').order('created_at',{ascending:false}),
-  sb.from('partenaires').select('*').order('created_at',{ascending:false}),
-  sb.from('galerie_photos').select('*').order('created_at',{ascending:false})
- ]);
- const er=r.find(x=>x.error)?.error;if(er){alert(er.message);$('#sync').textContent='Erreur';return}
- data.members=r[0].data||[];data.adh=r[1].data||[];data.dues=r[2].data||[];data.finance=r[3].data||[];data.activities=r[4].data||[];data.projects=r[5].data||[];data.partners=r[6].data||[];data.photos=r[7].data||[];
- $('#sync').textContent='Supabase connecté';render();
-}
-function render(){
- const active=data.members.filter(x=>x.statut==='actif').length;
- $('#mMembers').textContent=active;$('#mAdhesions').textContent=money(data.adh.reduce((a,x)=>a+Number(x.montant||0),0));$('#mDues').textContent=money(data.dues.reduce((a,x)=>a+Number(x.montant_paye||0),0));
- const inc=data.finance.filter(x=>x.type_operation==='recette').reduce((a,x)=>a+Number(x.montant||0),0),out=data.finance.filter(x=>x.type_operation==='depense').reduce((a,x)=>a+Number(x.montant||0),0);$('#mBalance').textContent=money(inc-out);$('#financeIncome').textContent=money(inc);
-$('#financeExpense').textContent=money(out);
-$('#financeBalance').textContent=money(inc-out);$('#financeIncome').textContent=money(inc);
-$('#financeExpense').textContent=money(out);
-$('#financeBalance').textContent=money(inc-out);$('#financeExpense').textContent=money(out);$('#financeBalance').textContent=money(inc-out);
-$('#financeBalance').textContent=money(inc-out);
- const sexes={};data.members.forEach(x=>sexes[x.sexe||'Non renseigné']=(sexes[x.sexe||'Non renseigné']||0)+1);$('#sexStats').innerHTML=Object.entries(sexes).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
- const countries={};data.members.forEach(x=>countries[x.pays_residence||'Non renseigné']=(countries[x.pays_residence||'Non renseigné']||0)+1);$('#countryStats').innerHTML=Object.entries(countries).map(([k,v])=>`<p><b>${esc(k)}</b> : ${v}</p>`).join('')||'<p>Aucune donnée</p>';
-
- $('#membersBody').innerHTML=data.members.map(m=>`<tr><td><b>${esc(m.nom+' '+m.prenoms)}</b><br><small>${esc(m.numero_membre||'')}</small></td><td>${esc(m.sexe||'Non renseigné')}</td><td>${esc(m.pays_residence||'')}</td><td>${esc(m.fonction_aijeb||'Membre')}</td><td>${esc(m.date_adhesion||'')}</td><td><span class="badge">${esc(m.statut||'actif')}</span></td><td class="row-actions"><button onclick="editMember('${m.id}')">Modifier</button><button onclick="generateAdhesionPDF('${m.id}')">Fiche d’adhésion PDF</button></td></tr>`).join('');$('#membersEmpty').style.display=data.members.length?'none':'block';
-
- $('#aTotal').textContent=money(data.adh.reduce((a,x)=>a+Number(x.montant||0),0));$('#aPaid').textContent=data.adh.filter(x=>x.statut==='paye').length;$('#aPending').textContent=data.adh.filter(x=>x.statut==='en_attente').length;$('#aValidated').textContent=data.adh.filter(x=>x.statut==='valide').length;
- $('#adhBody').innerHTML=data.adh.map(a=>`<tr><td>${esc((a.membres?.nom||'')+' '+(a.membres?.prenoms||''))}</td><td>${money(a.montant)}</td><td>${esc(a.date_paiement||'')}</td><td>${esc(a.mode_paiement||'')}</td><td><span class="badge">${esc(a.statut)}</span></td><td>${['paye','valide'].includes(a.statut)?`<button class="btn outline" onclick="fiche('${a.id}')">PDF</button>`:'—'}</td></tr>`).join('');$('#adhEmpty').style.display=data.adh.length?'none':'block';
-
- $('#duesBody').innerHTML=data.dues.map(x=>`<tr><td>${esc((x.membres?.nom||'')+' '+(x.membres?.prenoms||''))}</td><td>${esc(x.periode||'')}</td><td>${money(x.montant_paye)}</td><td>${esc(x.date_paiement||'')}</td><td>${esc(x.mode_paiement||'')}</td><td><span class="badge">${esc(x.statut)}</span></td></tr>`).join('');$('#duesEmpty').style.display=data.dues.length?'none':'block';
- $('#financeBody').innerHTML=data.finance.map(x=>`<tr><td>${esc(x.date_operation||'')}</td><td>${esc(x.libelle||'')}</td><td>${esc(x.categorie||'')}</td><td>${esc(x.source_revenu||'')}</td><td><span class="finance-badge ${x.type_operation==='recette'?'income':'expense'}">${esc(x.type_operation||'')}</span></td><td>${money(x.montant)}</td></tr>`).join('');$('#financeEmpty').style.display=data.finance.length?'none':'block';
- $('#activitiesList').innerHTML=data.activities.map(x=>`<div class="card"><h3>${esc(x.titre)}</h3><p>${esc(x.date_debut?.slice(0,10)||'')}</p><p>${esc([x.ville,x.pays].filter(Boolean).join(', '))}</p></div>`).join('');
- $('#projectsList').innerHTML=data.projects.map(x=>`<div class="card"><h3>${esc(x.nom)}</h3><p>${esc(x.pays||'')}</p><p>${esc(x.statut||'')}</p></div>`).join('');
- $('#partnersList').innerHTML=data.partners.map(x=>`<div class="card"><h3>${esc(x.nom)}</h3><p>${esc(x.pays||'')}</p><p>${esc(x.type_partenariat||'')}</p></div>`).join('');
- $('#galleryList').innerHTML=data.photos.map(x=>`<div class="photo"><img src="${esc(x.fichier_url)}"><div><h3>${esc(x.titre)}</h3><p>${esc(x.date_photo||'')} ${esc(x.pays||'')}</p></div></div>`).join('');$('#galleryEmpty').style.display=data.photos.length?'none':'block';
-}
-
-const schema={
-  member:[['Nom','nom','text',1],['Prénoms','prenoms','text',1],['Sexe','sexe','select',['Homme','Femme','Autre','Non renseigné']],['Date de naissance','date_naissance','date'],['Lieu de naissance','lieu_naissance','text'],['Nationalité','nationalite','text'],['Profession','profession','text'],['Situation matrimoniale','situation_matrimoniale','select',['Célibataire','Marié(e)','Divorcé(e)','Veuf/Veuve','Autre']],['Pays de résidence','pays_residence','text',1],['Ville','ville','text'],['Département','departement','text'],['Commune','commune','text'],['Arrondissement','arrondissement','text'],['Quartier / Village','quartier_village','text'],['Téléphone','telephone','text'],['WhatsApp','whatsapp','text'],['Email','email','email'],['Fonction AIJEB','fonction_aijeb','text'],['Section AIJEB','section_aijeb','text'],["Date d'adhésion",'date_adhesion','date'],['Statut','statut','select',['actif','inactif','suspendu','demissionnaire','ancien_membre']]],
- adhesion:[['Membre','membre_id','member',1],["Montant frais d'adhésion",'montant','number',1],['Date paiement','date_paiement','date',1],['Mode','mode_paiement','select',['Mobile Money','Espèces','Virement','Autre']],['Référence','reference_paiement','text'],['Statut','statut','select',['en_attente','paye','valide']]],
- due:[['Membre','membre_id','member',1],['Période','periode','text',1],['Montant','montant_paye','number',1],['Date','date_paiement','date',1],['Mode','mode_paiement','select',['Mobile Money','Espèces','Virement','Autre']],['Statut','statut','select',['a_jour','partiel','en_retard','en_attente','exonere']]],
- finance:[['Date','date_operation','date',1],['Libellé','libelle','text',1],['Catégorie','categorie','text',1],['Type','type_operation','select',['recette','depense']],['Montant','montant','number',1]],
- activity:[['Titre','titre','text',1],['Type','type_activite','text'],['Date','date_debut','date'],['Pays','pays','text'],['Ville','ville','text'],['Responsable','responsable','text']],
- project:[['Nom projet','nom','text',1],['Pays','pays','text'],['Responsable','responsable','text'],['Budget','budget_previsionnel','number'],['Progression','progression','number'],['Statut','statut','select',['a_etude','approuve','en_cours','suspendu','termine','annule']]],
- partner:[['Nom','nom','text',1],['Pays','pays','text'],['Type partenariat','type_partenariat','text'],['Contact','personne_contact','text'],['Statut','statut','select',['actif','en_discussion','suspendu','termine']]],
- photo:[['Titre','titre','text',1],['Description','description','text'],['Pays','pays','text'],['Date photo','date_photo','date'],['Image','file','file',1]]
-};
-$$('[data-open]').forEach(b=>b.onclick=()=>openForm(b.dataset.open));$('#closeModal').onclick=close;$('#cancelModal').onclick=close;
-function openForm(type,obj=null){formType=type;editMemberId=obj?.id||null;$('#modalTitle').textContent=type==='member'?(obj?'Modifier le membre':'Nouveau membre'):'Ajouter';$('#fields').innerHTML=schema[type].map(([lab,name,t,req])=>{let input;if(t==='member')input=`<select name="${name}" required>${data.members.map(m=>`<option value="${m.id}">${esc(m.nom+' '+m.prenoms)}</option>`).join('')}</select>`;else if(t==='select')input=`<select name="${name}">${req.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;else input=`<input name="${name}" type="${t}" ${req===1?'required':''} ${t==='file'?'accept="image/*"':''}>`;return `<label>${lab}${input}</label>`}).join('');if(obj)Object.entries(obj).forEach(([k,v])=>{if($('#modalForm').elements[k])$('#modalForm').elements[k].value=v??''});$('#modal').classList.remove('hidden')}
-function close(){$('#modal').classList.add('hidden');formType='';editMemberId=null}
-window.editMember=id=>{const m=data.members.find(x=>x.id===id);openForm('member',m)};
-
-$('#modalForm').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.target),o=Object.fromEntries(fd.entries());let q;
- if(formType==='member'){if(!editMemberId)o.numero_membre=`AIJEB-${new Date().getFullYear()}-${String(Date.now()).slice(-5)}`;q=editMemberId?sb.from('membres').update(o).eq('id',editMemberId):sb.from('membres').insert(o)}
- if(formType==='adhesion')q=sb.from('adhesions').upsert({...o,montant:Number(o.montant||0)},{onConflict:'membre_id'});
- if(formType==='due')q=sb.from('cotisations').insert({...o,montant_attendu:Number(o.montant_paye||0),montant_paye:Number(o.montant_paye||0)});
- if(formType==='finance')q=sb.from('finances').insert({...o,montant:Number(o.montant||0)});
- if(formType==='activity')q=sb.from('activites').insert(o);
- if(formType==='project')q=sb.from('projets').insert({...o,budget_previsionnel:Number(o.budget_previsionnel||0),progression:Number(o.progression||0)});
- if(formType==='partner')q=sb.from('partenaires').insert(o);
- if(formType==='photo'){const file=fd.get('file');const path=`${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const up=await sb.storage.from('aijeb-gallery').upload(path,file,{contentType:file.type});if(up.error){alert(up.error.message);return}const pub=sb.storage.from('aijeb-gallery').getPublicUrl(path).data.publicUrl;q=sb.from('galerie_photos').insert({titre:o.titre,description:o.description||null,pays:o.pays||null,date_photo:o.date_photo||null,fichier_url:pub,storage_path:path})}
- const {error}=await q;if(error){alert(error.message);return}close();await loadAll()
-};
-window.generateAdhesionPDF=id=>{
-  const m=data.members.find(x=>x.id===id);
-  if(!m){
-    alert("Membre introuvable.");
-    return;
-  }
-
-  const a=data.adh.find(x=>x.membre_id===id || (x.membres && x.membres.id===id)) || {};
-
-  if(!window.jspdf || !window.jspdf.jsPDF){
-    alert("Le module PDF n'est pas encore chargé.");
-    return;
-  }
-
-  const {jsPDF}=window.jspdf;
-  const d=new jsPDF({unit:'mm',format:'a4'});
-
-  const green=[7,92,55];
-  const yellow=[245,196,0];
-  const red=[205,35,45];
-  const dark=[25,45,35];
-  const gray=[105,115,110];
-  const light=[247,250,248];
-
-  const value=v=>(v===null || v===undefined || String(v).trim()==='') ? '-' : String(v).trim();
-
-  const propre=v=>{
-    const s=value(v);
-    if(s==='-') return s;
-    return s.charAt(0).toUpperCase()+s.slice(1);
-  };
-
-  const telephone=v=>{
-    if(!v) return '-';
-
-    let s=String(v).trim();
-    const plus=s.startsWith('+');
-    s=s.replace(/[^\d]/g,'');
-
-    if(!s) return '-';
-
-    const groupes=[];
-    while(s.length>2){
-      groupes.unshift(s.slice(-2));
-      s=s.slice(0,-2);
-    }
-    if(s) groupes.unshift(s);
-
-    return (plus?'+':'')+groupes.join(' ');
-  };
-
-  const numeroMembre=
-    value(m.numero_membre)!=='-'
-      ? m.numero_membre
-      : 'AIJEB-'+new Date().getFullYear()+'-'+String(m.id||'')
-          .replace(/-/g,'')
-          .slice(0,5)
-          .toUpperCase();
-
-  // EN-TÊTE
-  d.setFillColor(...green);
-  d.rect(0,0,210,32,'F');
-
-  d.setFillColor(...yellow);
-  d.rect(0,32,140,2,'F');
-
-  d.setFillColor(...red);
-  d.rect(140,32,70,2,'F');
-
-  // Logo AIJEB sans déformation
-  try{
-    const logo=document.querySelector('.brand img') || document.querySelector('.login-card img');
-
-    if(logo && logo.src){
-      const maxW=34;
-      const maxH=18;
-      let w=maxW;
-      let h=maxH;
-
-      if(logo.naturalWidth && logo.naturalHeight){
-        const ratio=logo.naturalWidth/logo.naturalHeight;
-
-        if(ratio > maxW/maxH){
-          w=maxW;
-          h=maxW/ratio;
-        }else{
-          h=maxH;
-          w=maxH*ratio;
-        }
-      }
-
-      
-      
-
-      d.addImage(
-        logo.src,
-        'PNG',
-        30-w/2,
-        16-h/2,
-        w,
-        h,
-        undefined,
-        'FAST'
-      );
-    }
-  }catch(e){}
-
-  d.setTextColor(255,255,255);
-  d.setFont('helvetica','bold');
-  d.setFontSize(16);
-  d.text("FICHE D'ADHÉSION",54,13);
-
-  d.setFont('helvetica','normal');
-  d.setFontSize(8.5);
-  d.text("Amicale Internationale des Jeunes de l'Europe et du Bénin",54,20);
-
-  d.setFontSize(8);
-  d.text("Document individuel d'adhésion",54,25);
-
-  d.setFillColor(255,255,255);
-  d.roundedRect(158,7,40,14,3,3,'F');
-
-  d.setTextColor(...green);
-  d.setFont('helvetica','bold');
-  d.setFontSize(6.5);
-  d.text('NUMÉRO MEMBRE',178,12,{align:'center'});
-
-  d.setFontSize(8);
-  d.text(numeroMembre,178,18,{align:'center'});
-
-  let y=39;
-
-  function section(title){
-    d.setFillColor(...green);
-    d.roundedRect(12,y,186,7,2,2,'F');
-
-    d.setTextColor(255,255,255);
-    d.setFont('helvetica','bold');
-    d.setFontSize(8.5);
-    d.text(title,17,y+5);
-
-    y+=10;
-  }
-
-  function field(x,w,label,val){
-    d.setFillColor(...light);
-    d.setDrawColor(220,230,224);
-    d.roundedRect(x,y,w,10,2,2,'FD');
-
-    d.setTextColor(...gray);
-    d.setFont('helvetica','normal');
-    d.setFontSize(5.8);
-    d.text(label,x+4,y+3.5);
-
-    d.setTextColor(...dark);
-    d.setFont('helvetica','bold');
-    d.setFontSize(7.5);
-
-    const txt=d.splitTextToSize(value(val),w-8);
-    d.text(txt[0],x+4,y+8);
-  }
-
-  function twoFields(l1,v1,l2,v2){
-    field(12,90,l1,v1);
-    field(108,90,l2,v2);
-    y+=12;
-  }
-
-  function fullField(label,val){
-    field(12,186,label,val);
-    y+=12;
-  }
-
-  section('1. IDENTITÉ DU MEMBRE');
-
-  twoFields('Nom',propre(m.nom),'Prénoms',propre(m.prenoms));
-  twoFields('Sexe',propre(m.sexe),'Date de naissance',m.date_naissance);
-  twoFields('Lieu de naissance',propre(m.lieu_naissance),'Nationalité',propre(m.nationalite));
-  twoFields('Profession',propre(m.profession),'Situation matrimoniale',propre(m.situation_matrimoniale));
-
-  section('2. COORDONNÉES ET RÉSIDENCE');
-
-  twoFields('Pays de résidence',propre(m.pays_residence),'Ville',propre(m.ville));
-  twoFields('Département',propre(m.departement),'Commune',propre(m.commune));
-  twoFields('Arrondissement',propre(m.arrondissement),'Quartier / Village',propre(m.quartier_village));
-  twoFields('Téléphone',telephone(m.telephone),'WhatsApp',telephone(m.whatsapp));
-  fullField('Email',m.email);
-
-  section('3. INFORMATIONS AIJEB');
-
-  twoFields('Fonction AIJEB',propre(m.fonction_aijeb),'Section AIJEB',propre(m.section_aijeb));
-  twoFields("Date d'adhésion",m.date_adhesion,'Statut',propre(m.statut));
-  twoFields("Frais d'adhésion",a.montant ? money(a.montant) : '-','Date de paiement',a.date_paiement);
-  twoFields('Mode de paiement',propre(a.mode_paiement),'Référence paiement',a.reference_paiement);
-
-  // ENGAGEMENT
-  y+=2;
-
-  d.setFillColor(255,249,224);
-  d.setDrawColor(...yellow);
-  d.roundedRect(12,y,186,22,3,3,'FD');
-
-  d.setTextColor(...dark);
-  d.setFont('helvetica','bold');
-  d.setFontSize(7.5);
-  d.text("DÉCLARATION D'ENGAGEMENT",17,y+6);
-
-  d.setFont('helvetica','normal');
-  d.setFontSize(6.5);
-
-  const engagement=
-    "Je déclare adhérer librement à l'AIJEB et m'engage à respecter ses statuts, son règlement intérieur, ses valeurs et ses objectifs. Je m'engage également à contribuer, selon mes possibilités, aux activités et au rayonnement de l'association.";
-
-  d.text(d.splitTextToSize(engagement,176),17,y+11);
-
-  y+=28;
-
-  // SIGNATURES
-  d.setTextColor(...dark);
-  d.setFont('helvetica','bold');
-  d.setFontSize(7.5);
-
-  d.text('Fait à : __________________________',15,y);
-  d.text('Le : ____ / ____ / ______',120,y);
-
-  y+=9;
-
-  d.text("Signature de l'adhérent",42,y,{align:'center'});
-  d.text('Pour AIJEB',166,y,{align:'center'});
-
-  d.setDrawColor(160,170,165);
-  d.line(18,y+15,67,y+15);
-  d.line(142,y+15,190,y+15);
-
-  d.setFont('helvetica','normal');
-  d.setFontSize(6);
-  d.setTextColor(...gray);
-
-  d.text('Précédée de la mention "Lu et approuvé"',42,y+20,{align:'center'});
-  d.text('Nom, signature et cachet',166,y+20,{align:'center'});
-
-  // PIED DE PAGE
-  d.setFillColor(...green);
-  d.rect(0,289,210,8,'F');
-
-  d.setTextColor(255,255,255);
-  d.setFontSize(6.5);
-  d.text(
-    'AIJEB Connect - Fiche générée automatiquement',
-    105,
-    294,
-    {align:'center'}
+  const sb = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
   );
 
-  const nomFichier=((m.nom||'membre')+'_'+(m.prenoms||''))
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g,'')
-    .replace(/\s+/g,'_')
-    .replace(/[^a-zA-Z0-9_-]/g,'');
 
-  d.save('Fiche_Adhesion_AIJEB_'+nomFichier+'.pdf');
-};
+  const emailInput = document.getElementById('email');
+  const message = document.getElementById('message');
+  const loginBox = document.getElementById('loginBox');
+  const connectedBox = document.getElementById('connectedBox');
 
-window.fiche=window.generateAdhesionPDF;
 
-  
+  async function showSession() {
+    const {
+      data: { session }
+    } = await sb.auth.getSession();
+
+    if (session) {
+      loginBox.classList.add('hidden');
+      connectedBox.classList.remove('hidden');
+    }
+  }
+
+
+  document.getElementById('sendLink').onclick = async function () {
+
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      message.textContent = 'Veuillez entrer votre adresse e-mail.';
+      return;
+    }
+
+    message.textContent = 'Envoi du lien en cours...';
+
+    const { error } = await sb.auth.signInWithOtp({
+      email: email,
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: 'https://angehe.github.io/-aijeb-connect/'
+      }
+    });
+
+    if (error) {
+      message.textContent = 'Erreur : ' + error.message;
+      return;
+    }
+
+    message.textContent =
+      'Lien envoyé. Consultez votre boîte e-mail.';
+  };
+
+
+  document.getElementById('logout').onclick = async function () {
+    await sb.auth.signOut();
+    window.location.reload();
+  };
+
+
+  sb.auth.onAuthStateChange(function(event, session) {
+
+    if (session) {
+      loginBox.classList.add('hidden');
+      connectedBox.classList.remove('hidden');
+    }
+
+  });
+
+
+  showSession();
+</script>
+
+</body>
+</html>
