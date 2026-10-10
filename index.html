@@ -420,7 +420,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 let data={members:[],adh:[],dues:[],finance:[],activities:[],projects:[],partners:[],photos:[]}, formType='', editMemberId=null;
 
 const pages={dashboard:'Tableau de bord',members:'Membres',adhesions:'Adhésions',dues:'Cotisations',finance:'Finances',activities:'Activités',projects:'Projets',partners:'Partenaires',gallery:'Galerie photos'};
-$('#nav').onclick=e=>{const b=e.target.closest('[data-page]');if(!b)return;$$('.nav button').forEach(x=>x.classList.toggle('active',x===b));$$('.page').forEach(x=>x.classList.toggle('active',x.id===b.dataset.page));$('#title').textContent=pages[b.dataset.page];};
+const navEl=$('#nav');if(navEl)navEl.onclick=e=>{const b=e.target.closest('[data-page]');if(!b)return;$$('.nav button').forEach(x=>x.classList.toggle('active',x===b));$$('.page').forEach(x=>x.classList.toggle('active',x.id===b.dataset.page));$('#title').textContent=pages[b.dataset.page];};
 $('#logout').onclick=async()=>{if(sb) await sb.auth.signOut();location.reload()};
 
 
