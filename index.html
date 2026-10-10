@@ -228,10 +228,30 @@ btnMembres.onclick = async function () {
     bloc.style.borderRadius = '10px';
     bloc.style.textAlign = 'left';
 
-    bloc.textContent =
-      (membre.nom || '') + ' ' + (membre.prenom || '');
+  const nomComplet = document.createElement('strong');
+nomComplet.textContent =
+  (membre.nom || '') + ' ' + (membre.prenom || '');
 
-    membresListe.appendChild(bloc);
+bloc.appendChild(nomComplet);
+
+const details = document.createElement('div');
+details.style.marginTop = '6px';
+
+const telephone =
+  membre.telephone || membre.tel || membre.phone || '';
+
+const email = membre.email || '';
+
+details.textContent =
+  (telephone ? 'Téléphone : ' + telephone : '') +
+  (telephone && email ? ' | ' : '') +
+  (email ? 'E-mail : ' + email : '');
+
+if (details.textContent) {
+  bloc.appendChild(details);
+}
+
+membresListe.appendChild(bloc);
   });
 };
 
