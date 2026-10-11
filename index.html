@@ -285,7 +285,18 @@ const inputNom = document.createElement('input');
   inputNom.placeholder = 'Nom';
   inputNom.style.width = '100%';
   inputNom.style.marginBottom = '8px';
+const labelPrenoms = document.createElement('label');
+labelPrenoms.textContent = 'Prénom(s)';
+labelPrenoms.style.display = 'block';
+labelPrenoms.style.marginBottom = '4px';
+labelPrenoms.style.fontWeight = 'bold';
 
+const inputPrenoms = document.createElement('input');
+inputPrenoms.type = 'text';
+inputPrenoms.value = membre.prenoms || '';
+inputPrenoms.placeholder = 'Prénom(s)';
+inputPrenoms.style.width = '100%';
+inputPrenoms.style.marginBottom = '8px';
   const labelTelephone = document.createElement('label');
 labelTelephone.textContent = 'Téléphone';
 labelTelephone.style.display = 'block';
@@ -326,7 +337,8 @@ actionsFormulaire.appendChild(boutonEnregistrer);
 actionsFormulaire.appendChild(boutonAnnuler);
 formulaire.appendChild(labelNom);
 formulaire.appendChild(inputNom);
-
+formulaire.appendChild(labelPrenoms);
+formulaire.appendChild(inputPrenoms);
 formulaire.appendChild(labelTelephone);
 formulaire.appendChild(inputTelephone);
 
@@ -347,7 +359,8 @@ boutonOuvert = null;  };
     const { error } = await sb
       .from('membres')
       .update({
-        nom: inputNom.value.trim(),
+       nom: inputNom.value.trim(),
+prenoms: inputPrenoms.value.trim(),
         telephone: inputTelephone.value.trim(),
         email: inputEmail.value.trim()
       })
