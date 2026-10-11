@@ -335,6 +335,18 @@ const inputTelephone = document.createElement('input');
   inputTelephone.placeholder = 'Téléphone';
   inputTelephone.style.width = '100%';
   inputTelephone.style.marginBottom = '8px';
+  const labelWhatsapp = document.createElement('label');
+labelWhatsapp.textContent = 'WhatsApp';
+labelWhatsapp.style.display = 'block';
+labelWhatsapp.style.marginBottom = '4px';
+labelWhatsapp.style.fontWeight = 'bold';
+
+const inputWhatsapp = document.createElement('input');
+inputWhatsapp.type = 'text';
+inputWhatsapp.value = membre.whatsapp || '';
+inputWhatsapp.placeholder = 'WhatsApp';
+inputWhatsapp.style.width = '100%';
+inputWhatsapp.style.marginBottom = '8px';
 
   const labelEmail = document.createElement('label');
 labelEmail.textContent = 'E-mail';
@@ -370,7 +382,8 @@ formulaire.appendChild(labelSexe);
 formulaire.appendChild(inputSexe);
 formulaire.appendChild(labelTelephone);
 formulaire.appendChild(inputTelephone);
-
+formulaire.appendChild(labelWhatsapp);
+formulaire.appendChild(inputWhatsapp);
 formulaire.appendChild(labelEmail);
 formulaire.appendChild(inputEmail);
 
@@ -392,7 +405,8 @@ boutonOuvert = null;  };
 prenoms: inputPrenoms.value.trim(),
  sexe: inputSexe.value,
 telephone: inputTelephone.value.trim(),
-        email: inputEmail.value.trim()
+whatsapp: inputWhatsapp.value.trim(),
+email: inputEmail.value.trim()
       })
       .eq('id', membre.id);
 
