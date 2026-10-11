@@ -297,7 +297,34 @@ inputPrenoms.value = membre.prenoms || '';
 inputPrenoms.placeholder = 'Prénom(s)';
 inputPrenoms.style.width = '100%';
 inputPrenoms.style.marginBottom = '8px';
-  const labelTelephone = document.createElement('label');
+ const labelSexe = document.createElement('label');
+labelSexe.textContent = 'Sexe';
+labelSexe.style.display = 'block';
+labelSexe.style.marginBottom = '4px';
+labelSexe.style.fontWeight = 'bold';
+
+const inputSexe = document.createElement('select');
+inputSexe.style.width = '100%';
+inputSexe.style.marginBottom = '8px';
+
+const optionVide = document.createElement('option');
+optionVide.value = '';
+optionVide.textContent = 'Sélectionner';
+
+const optionHomme = document.createElement('option');
+optionHomme.value = 'Homme';
+optionHomme.textContent = 'Homme';
+
+const optionFemme = document.createElement('option');
+optionFemme.value = 'Femme';
+optionFemme.textContent = 'Femme';
+
+inputSexe.appendChild(optionVide);
+inputSexe.appendChild(optionHomme);
+inputSexe.appendChild(optionFemme);
+inputSexe.value = membre.sexe || '';
+
+const labelTelephone = document.createElement('label');
 labelTelephone.textContent = 'Téléphone';
 labelTelephone.style.display = 'block';
 labelTelephone.style.marginBottom = '4px';
@@ -339,6 +366,8 @@ formulaire.appendChild(labelNom);
 formulaire.appendChild(inputNom);
 formulaire.appendChild(labelPrenoms);
 formulaire.appendChild(inputPrenoms);
+formulaire.appendChild(labelSexe);
+formulaire.appendChild(inputSexe);
 formulaire.appendChild(labelTelephone);
 formulaire.appendChild(inputTelephone);
 
@@ -361,7 +390,8 @@ boutonOuvert = null;  };
       .update({
        nom: inputNom.value.trim(),
 prenoms: inputPrenoms.value.trim(),
-        telephone: inputTelephone.value.trim(),
+ sexe: inputSexe.value,
+telephone: inputTelephone.value.trim(),
         email: inputEmail.value.trim()
       })
       .eq('id', membre.id);
