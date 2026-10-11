@@ -251,28 +251,42 @@ if (details.textContent) {
   bloc.appendChild(details);
 }
 
+const boutonModifier = document.createElement('button');
+boutonModifier.textContent = 'Voir / Modifier';
+boutonModifier.style.marginTop = '10px';
+boutonModifier.style.width = '100%';
+
+boutonModifier.onclick = function () {
+  alert(
+    'Nom : ' + (membre.nom || '') +
+    '\nPrénom : ' + (membre.prenom || '') +
+    '\nTéléphone : ' + (telephone || '') +
+    '\nE-mail : ' + (email || '')
+  );
+};
+
+bloc.appendChild(boutonModifier);
+
 membresListe.appendChild(bloc);
-  });
+});
 };
 
 retourDashboard.onclick = function () {
   membresPage.classList.add('hidden');
   connectedBox.classList.remove('hidden');
 };
-  document.getElementById('logout').onclick = async function () {
-    await sb.auth.signOut();
-    window.location.reload();
-  };
 
+document.getElementById('logout').onclick = async function () {
+  await sb.auth.signOut();
+  window.location.reload();
+};
 
-  sb.auth.onAuthStateChange(function(event, session) {
-
-    if (session) {
-      loginBox.classList.add('hidden');
-      connectedBox.classList.remove('hidden');
-    }
-
-  });
+sb.auth.onAuthStateChange(function(event, session) {
+  if (session) {
+    loginBox.classList.add('hidden');
+    connectedBox.classList.remove('hidden');
+  }
+});
 
 
   showSession();
