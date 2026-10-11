@@ -220,7 +220,9 @@ btnMembres.onclick = async function () {
 
   membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
 
-  data.forEach(function (membre) {
+  let formulaireOuvert = null;
+let boutonOuvert = null;
+data.forEach(function (membre) {
     const bloc = document.createElement('div');
     bloc.style.padding = '12px';
     bloc.style.marginTop = '10px';
@@ -257,9 +259,19 @@ boutonModifier.style.marginTop = '10px';
 boutonModifier.style.width = '100%';
 
 boutonModifier.onclick = function () {
+  if (formulaireOuvert) {
+    formulaireOuvert.remove();
+
+    if (boutonOuvert) {
+      boutonOuvert.style.display = 'block';
+    }
+  }
+
   boutonModifier.style.display = 'none';
 
-  const formulaire = document.createElement('div');
+ const formulaire = document.createElement('div');
+formulaireOuvert = formulaire;
+boutonOuvert = boutonModifier;
   formulaire.style.marginTop = '10px';
 
   const labelNom = document.createElement('label');
@@ -328,7 +340,8 @@ formulaire.appendChild(actionsFormulaire);
   boutonAnnuler.onclick = function () {
     formulaire.remove();
     boutonModifier.style.display = 'block';
-  };
+formulaireOuvert = null;
+boutonOuvert = null;  }; 
 
   boutonEnregistrer.onclick = async function () {
     const { error } = await sb
