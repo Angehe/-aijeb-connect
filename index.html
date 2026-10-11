@@ -256,13 +256,36 @@ boutonModifier.textContent = 'Voir / Modifier';
 boutonModifier.style.marginTop = '10px';
 boutonModifier.style.width = '100%';
 
-boutonModifier.onclick = function () {
-  alert(
-    'Nom : ' + (membre.nom || '') +
-    '\nPrénom : ' + (membre.prenom || '') +
-    '\nTéléphone : ' + (telephone || '') +
-    '\nE-mail : ' + (email || '')
-  );
+boutonModifier.onclick = async function () {
+  const nouveauNom = prompt('Nom :', membre.nom || '');
+  if (nouveauNom === null) return;
+
+  const nouveauPrenom = prompt('Prénom :', membre.prenom || '');
+  if (nouveauPrenom === null) return;
+
+  const nouveauTelephone = prompt('Téléphone :', telephone || '');
+  if (nouveauTelephone === null) return;
+
+  const nouvelEmail = prompt('E-mail :', email || '');
+  if (nouvelEmail === null) return;
+
+  const { error } = await sb
+    .from('membres')
+    .update({
+      nom: nouveauNom,
+      prenom: nouveauPrenom,
+      telephone: nouveauTelephone,
+      email: nouvelEmail
+    })
+    .eq('id', membre.id);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert('Membre modifié avec succès.');
+  btnMembres.click();
 };
 
 bloc.appendChild(boutonModifier);
