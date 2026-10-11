@@ -298,15 +298,20 @@ const inputEmail = document.createElement('input');
   inputEmail.style.width = '100%';
   inputEmail.style.marginBottom = '8px';
 
-  const boutonEnregistrer = document.createElement('button');
-  boutonEnregistrer.textContent = 'Enregistrer';
-  boutonEnregistrer.style.width = '100%';
-  boutonEnregistrer.style.marginBottom = '8px';
+const actionsFormulaire = document.createElement('div');
+actionsFormulaire.style.display = 'flex';
+actionsFormulaire.style.gap = '10px';
 
-  const boutonAnnuler = document.createElement('button');
-  boutonAnnuler.textContent = 'Annuler';
-  boutonAnnuler.style.width = '100%';
+const boutonEnregistrer = document.createElement('button');
+boutonEnregistrer.textContent = 'Enregistrer';
+boutonEnregistrer.style.width = '50%';
 
+const boutonAnnuler = document.createElement('button');
+boutonAnnuler.textContent = 'Annuler';
+boutonAnnuler.style.width = '50%';
+
+actionsFormulaire.appendChild(boutonEnregistrer);
+actionsFormulaire.appendChild(boutonAnnuler);
 formulaire.appendChild(labelNom);
 formulaire.appendChild(inputNom);
 
@@ -316,8 +321,7 @@ formulaire.appendChild(inputTelephone);
 formulaire.appendChild(labelEmail);
 formulaire.appendChild(inputEmail);
 
-formulaire.appendChild(boutonEnregistrer);
-formulaire.appendChild(boutonAnnuler);
+formulaire.appendChild(actionsFormulaire);
 
   bloc.appendChild(formulaire);
 
