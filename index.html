@@ -262,21 +262,36 @@ boutonModifier.onclick = function () {
   const formulaire = document.createElement('div');
   formulaire.style.marginTop = '10px';
 
-  const inputNom = document.createElement('input');
+  const labelNom = document.createElement('label');
+labelNom.textContent = 'Nom';
+labelNom.style.display = 'block';
+labelNom.style.marginBottom = '4px';
+labelNom.style.fontWeight = 'bold';
+const inputNom = document.createElement('input');
   inputNom.type = 'text';
   inputNom.value = membre.nom || '';
   inputNom.placeholder = 'Nom';
   inputNom.style.width = '100%';
   inputNom.style.marginBottom = '8px';
 
-  const inputTelephone = document.createElement('input');
+  const labelTelephone = document.createElement('label');
+labelTelephone.textContent = 'Téléphone';
+labelTelephone.style.display = 'block';
+labelTelephone.style.marginBottom = '4px';
+labelTelephone.style.fontWeight = 'bold';
+const inputTelephone = document.createElement('input');
   inputTelephone.type = 'text';
   inputTelephone.value = telephone || '';
   inputTelephone.placeholder = 'Téléphone';
   inputTelephone.style.width = '100%';
   inputTelephone.style.marginBottom = '8px';
 
-  const inputEmail = document.createElement('input');
+  const labelEmail = document.createElement('label');
+labelEmail.textContent = 'E-mail';
+labelEmail.style.display = 'block';
+labelEmail.style.marginBottom = '4px';
+llabelEmail.style.fontWeight = 'bold';
+const inputEmail = document.createElement('input');
   inputEmail.type = 'email';
   inputEmail.value = email || '';
   inputEmail.placeholder = 'E-mail';
@@ -292,11 +307,17 @@ boutonModifier.onclick = function () {
   boutonAnnuler.textContent = 'Annuler';
   boutonAnnuler.style.width = '100%';
 
-  formulaire.appendChild(inputNom);
-  formulaire.appendChild(inputTelephone);
-  formulaire.appendChild(inputEmail);
-  formulaire.appendChild(boutonEnregistrer);
-  formulaire.appendChild(boutonAnnuler);
+formulaire.appendChild(labelNom);
+formulaire.appendChild(inputNom);
+
+formulaire.appendChild(labelTelephone);
+formulaire.appendChild(inputTelephone);
+
+formulaire.appendChild(labelEmail);
+formulaire.appendChild(inputEmail);
+
+formulaire.appendChild(boutonEnregistrer);
+formulaire.appendChild(boutonAnnuler);
 
   bloc.appendChild(formulaire);
 
