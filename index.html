@@ -548,7 +548,8 @@ btnAdhesions.onclick = async function () {
   }
 
   adhesionsStatus.textContent = data.length + ' adhésion(s) trouvée(s).';
-
+let formulaireAdhesionOuvert = null;
+let boutonAdhesionOuvert = null;
   data.forEach(function (membre) {
     const bloc = document.createElement('div');
     bloc.style.padding = '12px';
@@ -572,11 +573,20 @@ boutonModifierAdhesion.style.marginTop = '10px';
 boutonModifierAdhesion.style.width = '100%';
 
 boutonModifierAdhesion.onclick = function () {
+  if (formulaireAdhesionOuvert) {
+    formulaireAdhesionOuvert.remove();
+
+    if (boutonAdhesionOuvert) {
+      boutonAdhesionOuvert.style.display = 'block';
+    }
+  }
+
   boutonModifierAdhesion.style.display = 'none';
 
   const formulaireAdhesion = document.createElement('div');
+  formulaireAdhesionOuvert = formulaireAdhesion;
+  boutonAdhesionOuvert = boutonModifierAdhesion;
   formulaireAdhesion.style.marginTop = '10px';
-
   const labelDate = document.createElement('label');
   labelDate.textContent = 'Date d’adhésion';
   labelDate.style.display = 'block';
@@ -640,10 +650,12 @@ boutonModifierAdhesion.onclick = function () {
 
   bloc.appendChild(formulaireAdhesion);
 
-  boutonAnnulerAdhesion.onclick = function () {
-    formulaireAdhesion.remove();
-    boutonModifierAdhesion.style.display = 'block';
-  };
+boutonAnnulerAdhesion.onclick = function () {
+  formulaireAdhesion.remove();
+  boutonModifierAdhesion.style.display = 'block';
+  formulaireAdhesionOuvert = null;
+  boutonAdhesionOuvert = null;
+};
 
   boutonEnregistrerAdhesion.onclick = async function () {
     const { error } = await sb
@@ -660,8 +672,11 @@ boutonModifierAdhesion.onclick = function () {
       return;
     }
 
-    alert('Adhésion modifiée avec succès.');
-    btnAdhesions.click();
+   formulaireAdhesionOuvert = null;
+boutonAdhesionOuvert = null;
+
+alert('Adhésion modifiée avec succès.');
+btnAdhesions.click();
   };
 };
 bloc.appendChild(nom);
