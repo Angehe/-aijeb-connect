@@ -375,6 +375,18 @@ inputProfession.value = membre.profession || '';
 inputProfession.placeholder = 'Profession';
 inputProfession.style.width = '100%';
 inputProfession.style.marginBottom = '8px';
+  const labelFonctionAijeb = document.createElement('label');
+labelFonctionAijeb.textContent = 'Fonction AIJEB';
+labelFonctionAijeb.style.display = 'block';
+labelFonctionAijeb.style.marginBottom = '4px';
+labelFonctionAijeb.style.fontWeight = 'bold';
+
+const inputFonctionAijeb = document.createElement('input');
+inputFonctionAijeb.type = 'text';
+inputFonctionAijeb.value = membre.fonction_aijeb || '';
+inputFonctionAijeb.placeholder = 'Fonction AIJEB';
+inputFonctionAijeb.style.width = '100%';
+inputFonctionAijeb.style.marginBottom = '8px';
 
 const actionsFormulaire = document.createElement('div');
 actionsFormulaire.style.display = 'flex';
@@ -404,6 +416,8 @@ formulaire.appendChild(labelEmail);
 formulaire.appendChild(inputEmail);
 formulaire.appendChild(labelProfession);
 formulaire.appendChild(inputProfession);
+  formulaire.appendChild(labelFonctionAijeb);
+formulaire.appendChild(inputFonctionAijeb);
 formulaire.appendChild(actionsFormulaire);
 
   bloc.appendChild(formulaire);
@@ -424,8 +438,10 @@ prenoms: inputPrenoms.value.trim(),
 telephone: inputTelephone.value.trim(),
 whatsapp: inputWhatsapp.value.trim(),
 email: inputEmail.value.trim(),
- profession: inputProfession.value.trim()     })
-      .eq('id', membre.id);
+profession: inputProfession.value.trim(),
+fonction_aijeb: inputFonctionAijeb.value.trim()
+})
+.eq('id', membre.id);
 
     if (error) {
       alert('Erreur : ' + error.message);
