@@ -526,8 +526,8 @@ membresListe.appendChild(bloc);
 });
 };
 btnAdhesions.onclick = async function () {
-  connectedBox.classList.add('hidden');
-  adhesionsPage.classList.remove('hidden');
+ connectedBox.style.display = 'none';
+adhesionsPage.classList.remove('hidden');
 
   adhesionsStatus.textContent = 'Chargement des adhésions...';
   adhesionsListe.innerHTML = '';
@@ -685,7 +685,13 @@ bloc.appendChild(boutonModifierAdhesion);
 adhesionsListe.appendChild(bloc);
   });
 };
-  retourDashboard.onclick = function () {membresPage.classList.add('hidden');
+  retourDashboardAdhesions.onclick = function () {
+  adhesionsPage.classList.add('hidden');
+  connectedBox.style.display = '';
+  connectedBox.classList.remove('hidden');
+};
+
+retourDashboard.onclick = function () {;
   connectedBox.classList.remove('hidden');
 };
 
