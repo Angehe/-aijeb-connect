@@ -348,17 +348,33 @@ inputWhatsapp.placeholder = 'WhatsApp';
 inputWhatsapp.style.width = '100%';
 inputWhatsapp.style.marginBottom = '8px';
 
-  const labelEmail = document.createElement('label');
+  
+ 
+const labelEmail = document.createElement('label');
 labelEmail.textContent = 'E-mail';
 labelEmail.style.display = 'block';
 labelEmail.style.marginBottom = '4px';
 labelEmail.style.fontWeight = 'bold';
+
 const inputEmail = document.createElement('input');
-  inputEmail.type = 'email';
-  inputEmail.value = email || '';
-  inputEmail.placeholder = 'E-mail';
-  inputEmail.style.width = '100%';
-  inputEmail.style.marginBottom = '8px';
+inputEmail.type = 'email';
+inputEmail.value = email || '';
+inputEmail.placeholder = 'E-mail';
+inputEmail.style.width = '100%';
+inputEmail.style.marginBottom = '8px';
+
+const labelProfession = document.createElement('label');
+labelProfession.textContent = 'Profession';
+labelProfession.style.display = 'block';
+labelProfession.style.marginBottom = '4px';
+labelProfession.style.fontWeight = 'bold';
+
+const inputProfession = document.createElement('input');
+inputProfession.type = 'text';
+inputProfession.value = membre.profession || '';
+inputProfession.placeholder = 'Profession';
+inputProfession.style.width = '100%';
+inputProfession.style.marginBottom = '8px';
 
 const actionsFormulaire = document.createElement('div');
 actionsFormulaire.style.display = 'flex';
@@ -386,7 +402,8 @@ formulaire.appendChild(labelWhatsapp);
 formulaire.appendChild(inputWhatsapp);
 formulaire.appendChild(labelEmail);
 formulaire.appendChild(inputEmail);
-
+formulaire.appendChild(labelProfession);
+formulaire.appendChild(inputProfession);
 formulaire.appendChild(actionsFormulaire);
 
   bloc.appendChild(formulaire);
@@ -406,8 +423,8 @@ prenoms: inputPrenoms.value.trim(),
  sexe: inputSexe.value,
 telephone: inputTelephone.value.trim(),
 whatsapp: inputWhatsapp.value.trim(),
-email: inputEmail.value.trim()
-      })
+email: inputEmail.value.trim(),
+ profession: inputProfession.value.trim()     })
       .eq('id', membre.id);
 
     if (error) {
