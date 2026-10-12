@@ -420,6 +420,17 @@ inputSectionAijeb.value = membre.section_aijeb || '';
 inputSectionAijeb.placeholder = 'Section AIJEB';
 inputSectionAijeb.style.width = '100%';
 inputSectionAijeb.style.marginBottom = '8px';
+  const labelDateAdhesion = document.createElement('label');
+labelDateAdhesion.textContent = 'Date d’adhésion';
+labelDateAdhesion.style.display = 'block';
+labelDateAdhesion.style.marginBottom = '4px';
+labelDateAdhesion.style.fontWeight = 'bold';
+
+const inputDateAdhesion = document.createElement('input');
+inputDateAdhesion.type = 'date';
+inputDateAdhesion.value = membre.date_adhesion || '';
+inputDateAdhesion.style.width = '100%';
+inputDateAdhesion.style.marginBottom = '8px';
 
 const actionsFormulaire = document.createElement('div');
 actionsFormulaire.style.display = 'flex';
@@ -455,6 +466,8 @@ formulaire.appendChild(labelStatut);
 formulaire.appendChild(inputStatut);
   formulaire.appendChild(labelSectionAijeb);
 formulaire.appendChild(inputSectionAijeb);
+  formulaire.appendChild(labelDateAdhesion);
+formulaire.appendChild(inputDateAdhesion);
   formulaire.appendChild(actionsFormulaire);
 
   bloc.appendChild(formulaire);
@@ -478,7 +491,8 @@ email: inputEmail.value.trim(),
 profession: inputProfession.value.trim(),
 fonction_aijeb: inputFonctionAijeb.value.trim(),
         statut: inputStatut.value,
-        section_aijeb: inputSectionAijeb.value.trim()
+        section_aijeb: inputSectionAijeb.value.trim(),
+date_adhesion: inputDateAdhesion.value
 })
 .eq('id', membre.id);
 
