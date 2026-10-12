@@ -136,6 +136,7 @@
   <div id="adhesionsPage" class="hidden">
   <h2>Adhésions</h2>
   <p id="adhesionsStatus">Gestion des adhésions AIJEB</p>
+    <div id="adhesionsListe"></div>
 
   <button id="retourDashboardAdhesions">
     Retour au tableau de bord
@@ -166,6 +167,8 @@ const retourDashboard = document.getElementById('retourDashboard');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
+  onst adhesionsStatus = document.getElementById('adhesionsStatus')
+const adhesionsListe = document.getElementById('adhesionsListe');
 
   async function showSession() {
     const {
@@ -522,17 +525,53 @@ bloc.appendChild(boutonModifier);
 membresListe.appendChild(bloc);
 });
 };
-  btnAdhesions.onclick = function () {
+btnAdhesions.onclick = async function () {
   connectedBox.classList.add('hidden');
   adhesionsPage.classList.remove('hidden');
-};
 
-retourDashboardAdhesions.onclick = function () {
-  adhesionsPage.classList.add('hidden');
-  connectedBox.classList.remove('hidden');
-};
+  adhesionsStatus.textContent = 'Chargement des adhésions...';
+  adhesionsListe.innerHTML = '';
 
-retourDashboard.onclick = function () {
+  const { data, error } = await sb
+    .from('membres')
+    .select('id, nom, prenoms, date_adhesion, statut, section_aijeb')
+    .order('date_adhesion', { ascending: false });
+
+  if (error) {
+    adhesionsStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    adhesionsStatus.textContent = 'Aucune adhésion enregistrée.';
+    return;
+  }
+
+  adhesionsStatus.textContent = data.length + ' adhésion(s) trouvée(s).';
+
+  data.forEach(function (membre) {
+    const bloc = document.createElement('div');
+    bloc.style.padding = '12px';
+    bloc.style.marginTop = '10px';
+    bloc.style.border = '1px solid #ddd';
+    bloc.style.borderRadius = '10px';
+    bloc.style.textAlign = 'left';
+
+    const nom = document.createElement('strong');
+    nom.textContent = (membre.nom || '') + ' ' + (membre.prenoms || '');
+
+    const details = document.createElement('div');
+    details.style.marginTop = '6px';
+    details.textContent =
+      'Date d’adhésion : ' + (membre.date_adhesion || 'Non renseignée') +
+      ' | Statut : ' + (membre.statut || 'Non renseigné') +
+      ' | Section : ' + (membre.section_aijeb || 'Non renseignée');
+
+    bloc.appendChild(nom);
+    bloc.appendChild(details);
+    adhesionsListe.appendChild(bloc);
+  });
+};
   membresPage.classList.add('hidden');
   connectedBox.classList.remove('hidden');
 };
