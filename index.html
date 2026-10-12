@@ -387,6 +387,27 @@ inputFonctionAijeb.value = membre.fonction_aijeb || '';
 inputFonctionAijeb.placeholder = 'Fonction AIJEB';
 inputFonctionAijeb.style.width = '100%';
 inputFonctionAijeb.style.marginBottom = '8px';
+  const labelStatut = document.createElement('label');
+labelStatut.textContent = 'Statut';
+labelStatut.style.display = 'block';
+labelStatut.style.marginBottom = '4px';
+labelStatut.style.fontWeight = 'bold';
+
+const inputStatut = document.createElement('select');
+inputStatut.style.width = '100%';
+inputStatut.style.marginBottom = '8px';
+
+const optionActif = document.createElement('option');
+optionActif.value = 'actif';
+optionActif.textContent = 'Actif';
+
+const optionInactif = document.createElement('option');
+optionInactif.value = 'inactif';
+optionInactif.textContent = 'Inactif';
+
+inputStatut.appendChild(optionActif);
+inputStatut.appendChild(optionInactif);
+inputStatut.value = membre.statut || 'actif';
 
 const actionsFormulaire = document.createElement('div');
 actionsFormulaire.style.display = 'flex';
@@ -418,7 +439,9 @@ formulaire.appendChild(labelProfession);
 formulaire.appendChild(inputProfession);
   formulaire.appendChild(labelFonctionAijeb);
 formulaire.appendChild(inputFonctionAijeb);
-formulaire.appendChild(actionsFormulaire);
+formulaire.appendChild(labelStatut);
+formulaire.appendChild(inputStatut);
+  formulaire.appendChild(actionsFormulaire);
 
   bloc.appendChild(formulaire);
 
@@ -439,7 +462,8 @@ telephone: inputTelephone.value.trim(),
 whatsapp: inputWhatsapp.value.trim(),
 email: inputEmail.value.trim(),
 profession: inputProfession.value.trim(),
-fonction_aijeb: inputFonctionAijeb.value.trim()
+fonction_aijeb: inputFonctionAijeb.value.trim(),
+        statut: inputStatut.value
 })
 .eq('id', membre.id);
 
