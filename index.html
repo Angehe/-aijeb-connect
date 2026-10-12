@@ -572,14 +572,98 @@ boutonModifierAdhesion.style.marginTop = '10px';
 boutonModifierAdhesion.style.width = '100%';
 
 boutonModifierAdhesion.onclick = function () {
-  alert(
-    'Membre : ' + (membre.nom || '') + ' ' + (membre.prenoms || '') +
-    '\nDate d’adhésion : ' + (membre.date_adhesion || 'Non renseignée') +
-    '\nStatut : ' + (membre.statut || 'Non renseigné') +
-    '\nSection : ' + (membre.section_aijeb || 'Non renseignée')
-  );
-};
+  boutonModifierAdhesion.style.display = 'none';
 
+  const formulaireAdhesion = document.createElement('div');
+  formulaireAdhesion.style.marginTop = '10px';
+
+  const labelDate = document.createElement('label');
+  labelDate.textContent = 'Date d’adhésion';
+  labelDate.style.display = 'block';
+  labelDate.style.fontWeight = 'bold';
+
+  const inputDate = document.createElement('input');
+  inputDate.type = 'date';
+  inputDate.value = membre.date_adhesion || '';
+  inputDate.style.width = '100%';
+  inputDate.style.marginBottom = '8px';
+
+  const labelStatut = document.createElement('label');
+  labelStatut.textContent = 'Statut';
+  labelStatut.style.display = 'block';
+  labelStatut.style.fontWeight = 'bold';
+
+  const inputStatut = document.createElement('select');
+  inputStatut.style.width = '100%';
+  inputStatut.style.marginBottom = '8px';
+
+  const optionActif = document.createElement('option');
+  optionActif.value = 'actif';
+  optionActif.textContent = 'Actif';
+
+  const optionInactif = document.createElement('option');
+  optionInactif.value = 'inactif';
+  optionInactif.textContent = 'Inactif';
+
+  inputStatut.appendChild(optionActif);
+  inputStatut.appendChild(optionInactif);
+  inputStatut.value = membre.statut || 'actif';
+
+  const labelSection = document.createElement('label');
+  labelSection.textContent = 'Section AIJEB';
+  labelSection.style.display = 'block';
+  labelSection.style.fontWeight = 'bold';
+
+  const inputSection = document.createElement('input');
+  inputSection.type = 'text';
+  inputSection.value = membre.section_aijeb || '';
+  inputSection.style.width = '100%';
+  inputSection.style.marginBottom = '8px';
+
+  const boutonEnregistrerAdhesion = document.createElement('button');
+  boutonEnregistrerAdhesion.textContent = 'Enregistrer';
+  boutonEnregistrerAdhesion.style.width = '49%';
+
+  const boutonAnnulerAdhesion = document.createElement('button');
+  boutonAnnulerAdhesion.textContent = 'Annuler';
+  boutonAnnulerAdhesion.style.width = '49%';
+  boutonAnnulerAdhesion.style.marginLeft = '2%';
+
+  formulaireAdhesion.appendChild(labelDate);
+  formulaireAdhesion.appendChild(inputDate);
+  formulaireAdhesion.appendChild(labelStatut);
+  formulaireAdhesion.appendChild(inputStatut);
+  formulaireAdhesion.appendChild(labelSection);
+  formulaireAdhesion.appendChild(inputSection);
+  formulaireAdhesion.appendChild(boutonEnregistrerAdhesion);
+  formulaireAdhesion.appendChild(boutonAnnulerAdhesion);
+
+  bloc.appendChild(formulaireAdhesion);
+
+  boutonAnnulerAdhesion.onclick = function () {
+    formulaireAdhesion.remove();
+    boutonModifierAdhesion.style.display = 'block';
+  };
+
+  boutonEnregistrerAdhesion.onclick = async function () {
+    const { error } = await sb
+      .from('membres')
+      .update({
+        date_adhesion: inputDate.value || null,
+        statut: inputStatut.value,
+        section_aijeb: inputSection.value.trim()
+      })
+      .eq('id', membre.id);
+
+    if (error) {
+      alert('Erreur : ' + error.message);
+      return;
+    }
+
+    alert('Adhésion modifiée avec succès.');
+    btnAdhesions.click();
+  };
+};
 bloc.appendChild(nom);
 bloc.appendChild(details);
 bloc.appendChild(boutonModifierAdhesion);
