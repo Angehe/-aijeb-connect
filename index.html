@@ -111,7 +111,7 @@
 
   <div>
     <button id="btnMembres" class="menu-btn" data-page="membres">Membres</button>
-<button class="menu-btn" data-page="adhesions">Adhésions</button>
+<button id="btnAdhesions" class="menu-btn" data-page="adhesions">Adhésions</button>
 <button class="menu-btn" data-page="cotisations">Cotisations</button>
 <button class="menu-btn" data-page="finances">Finances</button>
 <button class="menu-btn" data-page="activites">Activités</button>
@@ -130,6 +130,14 @@
   <div id="membresListe"></div>
 
   <button id="retourDashboard">
+    Retour au tableau de bord
+  </button>
+</div>
+  <div id="adhesionsPage" class="hidden">
+  <h2>Adhésions</h2>
+  <p id="adhesionsStatus">Gestion des adhésions AIJEB</p>
+
+  <button id="retourDashboardAdhesions">
     Retour au tableau de bord
   </button>
 </div>
@@ -155,6 +163,9 @@ const membresPage = document.getElementById('membresPage');
 const membresStatus = document.getElementById('membresStatus');
 const membresListe = document.getElementById('membresListe');
 const retourDashboard = document.getElementById('retourDashboard');
+  const btnAdhesions = document.getElementById('btnAdhesions');
+const adhesionsPage = document.getElementById('adhesionsPage');
+const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
 
   async function showSession() {
     const {
@@ -510,6 +521,15 @@ bloc.appendChild(boutonModifier);
 
 membresListe.appendChild(bloc);
 });
+};
+  btnAdhesions.onclick = function () {
+  connectedBox.classList.add('hidden');
+  adhesionsPage.classList.remove('hidden');
+};
+
+retourDashboardAdhesions.onclick = function () {
+  adhesionsPage.classList.add('hidden');
+  connectedBox.classList.remove('hidden');
 };
 
 retourDashboard.onclick = function () {
