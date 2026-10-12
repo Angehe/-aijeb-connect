@@ -566,10 +566,24 @@ btnAdhesions.onclick = async function () {
       'Date d’adhésion : ' + (membre.date_adhesion || 'Non renseignée') +
       ' | Statut : ' + (membre.statut || 'Non renseigné') +
       ' | Section : ' + (membre.section_aijeb || 'Non renseignée');
+const boutonModifierAdhesion = document.createElement('button');
+boutonModifierAdhesion.textContent = 'Voir / Modifier';
+boutonModifierAdhesion.style.marginTop = '10px';
+boutonModifierAdhesion.style.width = '100%';
 
-    bloc.appendChild(nom);
-    bloc.appendChild(details);
-    adhesionsListe.appendChild(bloc);
+boutonModifierAdhesion.onclick = function () {
+  alert(
+    'Membre : ' + (membre.nom || '') + ' ' + (membre.prenoms || '') +
+    '\nDate d’adhésion : ' + (membre.date_adhesion || 'Non renseignée') +
+    '\nStatut : ' + (membre.statut || 'Non renseigné') +
+    '\nSection : ' + (membre.section_aijeb || 'Non renseignée')
+  );
+};
+
+bloc.appendChild(nom);
+bloc.appendChild(details);
+bloc.appendChild(boutonModifierAdhesion);
+adhesionsListe.appendChild(bloc);
   });
 };
   retourDashboard.onclick = function () {membresPage.classList.add('hidden');
