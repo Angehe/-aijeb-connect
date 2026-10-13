@@ -758,7 +758,28 @@ bloc.textContent =
 boutonModifierCotisation.textContent = 'Voir / Modifier';
 boutonModifierCotisation.style.marginTop = '10px';
 boutonModifierCotisation.style.width = '100%';
+boutonModifierCotisation.onclick = function () {
+  boutonModifierCotisation.style.display = 'none';
 
+  const formulaireCotisation = document.createElement('div');
+  formulaireCotisation.style.marginTop = '10px';
+
+  const labelMontantPaye = document.createElement('label');
+  labelMontantPaye.textContent = 'Montant payé';
+  labelMontantPaye.style.display = 'block';
+  labelMontantPaye.style.fontWeight = 'bold';
+
+  const inputMontantPaye = document.createElement('input');
+  inputMontantPaye.type = 'number';
+  inputMontantPaye.value = cotisation.montant_paye || '';
+  inputMontantPaye.style.width = '100%';
+  inputMontantPaye.style.marginBottom = '8px';
+
+  formulaireCotisation.appendChild(labelMontantPaye);
+  formulaireCotisation.appendChild(inputMontantPaye);
+
+  bloc.appendChild(formulaireCotisation);
+};
 bloc.appendChild(boutonModifierCotisation);
 cotisationsListe.appendChild(bloc);
   });
