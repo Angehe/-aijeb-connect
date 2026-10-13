@@ -118,7 +118,180 @@ button#logout:hover {
 #connectedBox > div button {
   margin-top: 0;
 }
+/* ===== NOUVEAU TABLEAU DE BORD AIJEB ===== */
 
+#connectedBox {
+  width: 96%;
+  max-width: 1400px;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+}
+
+#connectedBox > .dashboard-shell {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 0;
+  margin-top: 0;
+  min-height: 720px;
+}
+
+.aijeb-sidebar {
+  background: #08253d;
+  color: white;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.sidebar-brand .logo {
+  width: 65px;
+  margin: 0;
+}
+
+.sidebar-brand strong {
+  display: block;
+  font-size: 22px;
+}
+
+.sidebar-brand span {
+  display: block;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-menu button {
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  text-align: left;
+  padding: 12px 16px;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.sidebar-menu button:hover {
+  background: rgba(255,255,255,0.10);
+}
+
+.sidebar-menu .dashboard-active {
+  background: #0b6b3a;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 30px;
+}
+
+.sidebar-bottom span {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.sidebar-bottom #logout {
+  width: 100%;
+  background: #c62828;
+}
+
+.dashboard-main {
+  background: #f4f7fb;
+  padding: 35px;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: #10243e;
+  font-size: 32px;
+}
+
+.dashboard-header p {
+  margin-top: 8px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  border-top: 4px solid #f4c430;
+}
+
+.stat-card span {
+  display: block;
+  font-size: 14px;
+  color: #6b778c;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 27px;
+  color: #0b6b3a;
+}
+
+.dashboard-section {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.dashboard-section h2 {
+  margin-top: 0;
+  color: #10243e;
+}
+
+@media (max-width: 850px) {
+  #connectedBox > .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .aijeb-sidebar {
+    min-height: auto;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-main {
+    padding: 20px;
+  }
+}
 #membresPage,
 #adhesionsPage,
 #cotisationsPage,
@@ -293,27 +466,75 @@ label {
   </div>
 
 
- <div class="card hidden" id="connectedBox">
-  <img src="logo-aijeb.png.png" class="logo" alt="AIJEB">
+<div class="card hidden" id="connectedBox">
 
-  <h1>Tableau de bord AIJEB</h1>
+  <div class="dashboard-shell">
 
-  <p>Bienvenue dans votre espace de gestion.</p>
+    <aside class="aijeb-sidebar">
+      <div class="sidebar-brand">
+        <img src="logo-aijeb.png.png" class="logo" alt="AIJEB">
+        <div>
+          <strong>AIJEB</strong>
+          <span>Gestion interne</span>
+        </div>
+      </div>
 
-  <div>
-    <button id="btnMembres" class="menu-btn" data-page="membres">Membres</button>
-<button id="btnAdhesions" class="menu-btn" data-page="adhesions">Adhésions</button>
-<button class="menu-btn" data-page="cotisations">Cotisations</button>
-<button class="menu-btn" data-page="finances">Finances</button>
-<button class="menu-btn" data-page="activites">Activités</button>
-<button class="menu-btn" data-page="projets">Projets</button>
-<button class="menu-btn" data-page="partenaires">Partenaires</button>
-<button class="menu-btn" data-page="galerie">Galerie photos</button>
+      <div class="sidebar-menu">
+        <button class="dashboard-active">Tableau de bord</button>
+        <button id="btnMembres" class="menu-btn" data-page="membres">Membres</button>
+        <button id="btnAdhesions" class="menu-btn" data-page="adhesions">Adhésions</button>
+        <button class="menu-btn" data-page="cotisations">Cotisations</button>
+        <button class="menu-btn" data-page="finances">Finances</button>
+        <button class="menu-btn" data-page="activites">Activités</button>
+        <button class="menu-btn" data-page="projets">Projets</button>
+        <button class="menu-btn" data-page="partenaires">Partenaires</button>
+        <button class="menu-btn" data-page="galerie">Galerie photos</button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <span>AIJEB Connect</span>
+        <button id="logout">Déconnexion</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <div>
+          <h1>Tableau de bord</h1>
+          <p>Vue d’ensemble de la gestion AIJEB.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <span>Membres</span>
+          <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Adhésions</span>
+          <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Cotisations</span>
+          <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Solde financier</span>
+          <strong>— FCFA</strong>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Activité récente</h2>
+        <p>Les informations principales de l’AIJEB apparaîtront ici.</p>
+      </div>
+    </main>
+
   </div>
 
-  <button id="logout">
-    Se déconnecter
-  </button>
 </div>
 <div id="membresPage" class="hidden">
   <h2>Membres</h2>
