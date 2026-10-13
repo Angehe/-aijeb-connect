@@ -802,22 +802,59 @@ labelModePaiement.textContent = 'Mode de paiement';
 labelModePaiement.style.display = 'block';
 labelModePaiement.style.fontWeight = 'bold';
 
-const inputModePaiement = document.createElement('input');
-inputModePaiement.type = 'text';
-inputModePaiement.value = cotisation.mode_paiement || '';
+const inputModePaiement = document.createElement('select');
 inputModePaiement.style.width = '100%';
 inputModePaiement.style.marginBottom = '8px';
+
+const optionMobileMoney = document.createElement('option');
+optionMobileMoney.value = 'Mobile Money';
+optionMobileMoney.textContent = 'Mobile Money';
+
+const optionEspeces = document.createElement('option');
+optionEspeces.value = 'Espèces';
+optionEspeces.textContent = 'Espèces';
+
+const optionVirement = document.createElement('option');
+optionVirement.value = 'Virement bancaire';
+optionVirement.textContent = 'Virement bancaire';
+
+const optionCheque = document.createElement('option');
+optionCheque.value = 'Chèque';
+optionCheque.textContent = 'Chèque';
+
+inputModePaiement.appendChild(optionMobileMoney);
+inputModePaiement.appendChild(optionEspeces);
+inputModePaiement.appendChild(optionVirement);
+inputModePaiement.appendChild(optionCheque);
+
+inputModePaiement.value = cotisation.mode_paiement || 'Mobile Money';
 
 const labelStatutCotisation = document.createElement('label');
 labelStatutCotisation.textContent = 'Statut';
 labelStatutCotisation.style.display = 'block';
 labelStatutCotisation.style.fontWeight = 'bold';
 
-const inputStatutCotisation = document.createElement('input');
-inputStatutCotisation.type = 'text';
-inputStatutCotisation.value = cotisation.statut || '';
+const inputStatutCotisation = document.createElement('select');
 inputStatutCotisation.style.width = '100%';
 inputStatutCotisation.style.marginBottom = '8px';
+
+const optionAJour = document.createElement('option');
+optionAJour.value = 'a_jour';
+optionAJour.textContent = 'À jour';
+
+const optionPartiel = document.createElement('option');
+optionPartiel.value = 'partiel';
+optionPartiel.textContent = 'Partiel';
+
+const optionImpayee = document.createElement('option');
+optionImpayee.value = 'impayee';
+optionImpayee.textContent = 'Impayée';
+
+inputStatutCotisation.appendChild(optionAJour);
+inputStatutCotisation.appendChild(optionPartiel);
+inputStatutCotisation.appendChild(optionImpayee);
+
+inputStatutCotisation.value = cotisation.statut || 'a_jour';
 
 const labelReferencePaiement = document.createElement('label');
 labelReferencePaiement.textContent = 'Référence de paiement';
