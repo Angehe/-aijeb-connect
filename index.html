@@ -142,7 +142,15 @@
     Retour au tableau de bord
   </button>
 </div>
+<div id="cotisationsPage" class="hidden">
+  <h2>Cotisations</h2>
+  <p id="cotisationsStatus">Gestion des cotisations AIJEB</p>
+  <div id="cotisationsListe"></div>
 
+  <button id="retourDashboardCotisations">
+    Retour au tableau de bord
+  </button>
+</div>
 <script>
   const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
 
@@ -169,7 +177,11 @@ const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
   const adhesionsStatus = document.getElementById('adhesionsStatus')
 const adhesionsListe = document.getElementById('adhesionsListe');
-
+const btnCotisations = document.querySelector('[data-page="cotisations"]');
+const cotisationsPage = document.getElementById('cotisationsPage');
+const cotisationsStatus = document.getElementById('cotisationsStatus');
+const cotisationsListe = document.getElementById('cotisationsListe');
+const retourDashboardCotisations = document.getElementById('retourDashboardCotisations');
   async function showSession() {
     const {
       data: { session }
@@ -690,8 +702,19 @@ adhesionsListe.appendChild(bloc);
   connectedBox.style.display = '';
   connectedBox.classList.remove('hidden');
 };
+btnCotisations.onclick = function () {
+  connectedBox.style.display = 'none';
+  cotisationsPage.classList.remove('hidden');
+};
 
-retourDashboard.onclick = function () {;
+retourDashboardCotisations.onclick = function () {
+  cotisationsPage.classList.add('hidden');
+  connectedBox.style.display = '';
+  connectedBox.classList.remove('hidden');
+};
+
+retourDashboard.onclick = function () {
+  membresPage.classList.add('hidden');
   connectedBox.classList.remove('hidden');
 };
 
