@@ -732,7 +732,10 @@ const { data, error } = await sb
   cotisationsStatus.textContent =
     data.length + ' cotisation(s) trouvée(s).';
 
-  data.forEach(function (cotisation) {
+  let formulaireCotisationOuvert = null;
+let boutonCotisationOuvert = null;
+
+data.forEach(function (cotisation) {
     const bloc = document.createElement('div');
     bloc.style.padding = '12px';
     bloc.style.marginTop = '10px';
@@ -759,11 +762,21 @@ boutonModifierCotisation.textContent = 'Voir / Modifier';
 boutonModifierCotisation.style.marginTop = '10px';
 boutonModifierCotisation.style.width = '100%';
 boutonModifierCotisation.onclick = function () {
+  if (formulaireCotisationOuvert) {
+    formulaireCotisationOuvert.remove();
+
+    if (boutonCotisationOuvert) {
+      boutonCotisationOuvert.style.display = 'block';
+    }
+  }
+
   boutonModifierCotisation.style.display = 'none';
 
   const formulaireCotisation = document.createElement('div');
-  formulaireCotisation.style.marginTop = '10px';
+  formulaireCotisationOuvert = formulaireCotisation;
+  boutonCotisationOuvert = boutonModifierCotisation;
 
+  formulaireCotisation.style.marginTop = '10px';
   const labelMontantPaye = document.createElement('label');
   labelMontantPaye.textContent = 'Montant payé';
   labelMontantPaye.style.display = 'block';
@@ -859,7 +872,10 @@ formulaireCotisation.appendChild(actionsCotisation);
 boutonAnnulerCotisation.onclick = function () {
   formulaireCotisation.remove();
   boutonModifierCotisation.style.display = 'block';
+formulaireCotisationOuvert = null;
+boutonCotisationOuvert = null;
 };
+
 
 boutonEnregistrerCotisation.onclick = async function () {
   const { error } = await sb
