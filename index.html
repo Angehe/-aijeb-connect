@@ -839,7 +839,51 @@ formulaireCotisation.appendChild(labelReferencePaiement);
 formulaireCotisation.appendChild(inputReferencePaiement);
 formulaireCotisation.appendChild(labelObservations);
 formulaireCotisation.appendChild(inputObservations);
-  bloc.appendChild(formulaireCotisation);
+  const actionsCotisation = document.createElement('div');
+actionsCotisation.style.display = 'flex';
+actionsCotisation.style.gap = '10px';
+
+const boutonEnregistrerCotisation = document.createElement('button');
+boutonEnregistrerCotisation.textContent = 'Enregistrer';
+boutonEnregistrerCotisation.style.width = '50%';
+
+const boutonAnnulerCotisation = document.createElement('button');
+boutonAnnulerCotisation.textContent = 'Annuler';
+boutonAnnulerCotisation.style.width = '50%';
+
+actionsCotisation.appendChild(boutonEnregistrerCotisation);
+actionsCotisation.appendChild(boutonAnnulerCotisation);
+
+formulaireCotisation.appendChild(actionsCotisation);
+
+boutonAnnulerCotisation.onclick = function () {
+  formulaireCotisation.remove();
+  boutonModifierCotisation.style.display = 'block';
+};
+
+boutonEnregistrerCotisation.onclick = async function () {
+  const { error } = await sb
+    .from('cotisations')
+    .update({
+      montant_paye: inputMontantPaye.value || 0,
+      date_paiement: inputDatePaiement.value || null,
+      mode_paiement: inputModePaiement.value.trim(),
+      statut: inputStatutCotisation.value.trim(),
+      reference_paiement: inputReferencePaiement.value.trim() || null,
+      observations: inputObservations.value.trim() || null
+    })
+    .eq('id', cotisation.id);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert('Cotisation modifiée avec succès.');
+  btnCotisations.click();
+};
+
+bloc.appendChild(formulaireCotisation);
 };
 bloc.appendChild(boutonModifierCotisation);
 cotisationsListe.appendChild(bloc);
