@@ -760,20 +760,20 @@ bloc.textContent =
 (
   cotisation.statut === 'a_jour' ? 'À jour' :
   cotisation.statut === 'partiel' ? 'Partiel' :
-  cotisation.statut === 'impayee' ? 'Impayée' :
+  cotisation.statut === 'en_retard' ? 'En retard' :
   (cotisation.statut || 'Non renseigné')
 );
    const statutAffiche =
   cotisation.statut === 'a_jour' ? 'À jour' :
   cotisation.statut === 'partiel' ? 'Partiel' :
-  cotisation.statut === 'impayee' ? 'Impayée' :
+  cotisation.statut === 'en_retard' ? 'En retard' :
   'Non renseigné';
 
 if (cotisation.statut === 'a_jour') {
   bloc.style.borderLeft = '6px solid #2e7d32';
 } else if (cotisation.statut === 'partiel') {
   bloc.style.borderLeft = '6px solid #f9a825';
-} else if (cotisation.statut === 'impayee') {
+} else if (cotisation.statut === 'en_retard') {
   bloc.style.borderLeft = '6px solid #c62828';
 }
 
@@ -870,8 +870,8 @@ optionPartiel.value = 'partiel';
 optionPartiel.textContent = 'Partiel';
 
 const optionImpayee = document.createElement('option');
-optionImpayee.value = 'impayee';
-optionImpayee.textContent = 'Impayée';
+optionImpayee.value = 'en_retard';
+optionImpayee.textContent = 'En retard';
 
 inputStatutCotisation.appendChild(optionAJour);
 inputStatutCotisation.appendChild(optionPartiel);
