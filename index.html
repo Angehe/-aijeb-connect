@@ -709,11 +709,16 @@ btnCotisations.onclick = async function () {
   cotisationsStatus.textContent = 'Chargement des cotisations...';
   cotisationsListe.innerHTML = '';
 
-  const { data, error } = await sb
-    .from('cotisations')
-    .select('*')
-    .order('created_at', { ascending: false });
-
+const { data, error } = await sb
+  .from('cotisations')
+  .select(`
+    *,
+    membres (
+      nom,
+      prenoms
+    )
+  `)
+  .order('created_at', { ascending: false });
   if (error) {
     cotisationsStatus.textContent = 'Erreur : ' + error.message;
     return;
@@ -735,15 +740,20 @@ btnCotisations.onclick = async function () {
     bloc.style.borderRadius = '10px';
     bloc.style.textAlign = 'left';
 
-    bloc.textContent =
-      'Période : ' + (cotisation.periode || 'Non renseignée') +
-      ' | Année : ' + (cotisation.annee || 'Non renseignée') +
-      ' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
-      ' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
-      ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
-      ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
-      ' | Statut : ' + (cotisation.statut || 'Non renseigné');
+  const nomMembre =
+  cotisation.membres
+    ? (cotisation.membres.nom || '') + ' ' + (cotisation.membres.prenoms || '')
+    : 'Membre non renseigné';
 
+bloc.textContent =
+  nomMembre +
+  ' | Période : ' + (cotisation.periode || 'Non renseignée') +
+  ' | Année : ' + (cotisation.annee || 'Non renseignée') +
+  ' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
+  ' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
+  ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
+  ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
+  ' | Statut : ' + (cotisation.statut || 'Non renseigné');
     cotisationsListe.appendChild(bloc);
   });
 };
