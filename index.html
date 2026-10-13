@@ -784,10 +784,61 @@ inputDatePaiement.type = 'date';
 inputDatePaiement.value = cotisation.date_paiement || '';
 inputDatePaiement.style.width = '100%';
 inputDatePaiement.style.marginBottom = '8px';
-  formulaireCotisation.appendChild(labelMontantPaye);
-  formulaireCotisation.appendChild(inputMontantPaye);
+const labelModePaiement = document.createElement('label');
+labelModePaiement.textContent = 'Mode de paiement';
+labelModePaiement.style.display = 'block';
+labelModePaiement.style.fontWeight = 'bold';
+
+const inputModePaiement = document.createElement('input');
+inputModePaiement.type = 'text';
+inputModePaiement.value = cotisation.mode_paiement || '';
+inputModePaiement.style.width = '100%';
+inputModePaiement.style.marginBottom = '8px';
+
+const labelStatutCotisation = document.createElement('label');
+labelStatutCotisation.textContent = 'Statut';
+labelStatutCotisation.style.display = 'block';
+labelStatutCotisation.style.fontWeight = 'bold';
+
+const inputStatutCotisation = document.createElement('input');
+inputStatutCotisation.type = 'text';
+inputStatutCotisation.value = cotisation.statut || '';
+inputStatutCotisation.style.width = '100%';
+inputStatutCotisation.style.marginBottom = '8px';
+
+const labelReferencePaiement = document.createElement('label');
+labelReferencePaiement.textContent = 'Référence de paiement';
+labelReferencePaiement.style.display = 'block';
+labelReferencePaiement.style.fontWeight = 'bold';
+
+const inputReferencePaiement = document.createElement('input');
+inputReferencePaiement.type = 'text';
+inputReferencePaiement.value = cotisation.reference_paiement || '';
+inputReferencePaiement.style.width = '100%';
+inputReferencePaiement.style.marginBottom = '8px';
+
+const labelObservations = document.createElement('label');
+labelObservations.textContent = 'Observations';
+labelObservations.style.display = 'block';
+labelObservations.style.fontWeight = 'bold';
+
+const inputObservations = document.createElement('textarea');
+inputObservations.value = cotisation.observations || '';
+inputObservations.style.width = '100%';
+inputObservations.style.marginBottom = '8px';
+
+formulaireCotisation.appendChild(labelMontantPaye);
+formulaireCotisation.appendChild(inputMontantPaye);
 formulaireCotisation.appendChild(labelDatePaiement);
 formulaireCotisation.appendChild(inputDatePaiement);
+formulaireCotisation.appendChild(labelModePaiement);
+formulaireCotisation.appendChild(inputModePaiement);
+formulaireCotisation.appendChild(labelStatutCotisation);
+formulaireCotisation.appendChild(inputStatutCotisation);
+formulaireCotisation.appendChild(labelReferencePaiement);
+formulaireCotisation.appendChild(inputReferencePaiement);
+formulaireCotisation.appendChild(labelObservations);
+formulaireCotisation.appendChild(inputObservations);
   bloc.appendChild(formulaireCotisation);
 };
 bloc.appendChild(boutonModifierCotisation);
