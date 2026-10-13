@@ -702,9 +702,50 @@ adhesionsListe.appendChild(bloc);
   connectedBox.style.display = '';
   connectedBox.classList.remove('hidden');
 };
-btnCotisations.onclick = function () {
+btnCotisations.onclick = async function () {
   connectedBox.style.display = 'none';
   cotisationsPage.classList.remove('hidden');
+
+  cotisationsStatus.textContent = 'Chargement des cotisations...';
+  cotisationsListe.innerHTML = '';
+
+  const { data, error } = await sb
+    .from('cotisations')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    cotisationsStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    cotisationsStatus.textContent = 'Aucune cotisation enregistrée.';
+    return;
+  }
+
+  cotisationsStatus.textContent =
+    data.length + ' cotisation(s) trouvée(s).';
+
+  data.forEach(function (cotisation) {
+    const bloc = document.createElement('div');
+    bloc.style.padding = '12px';
+    bloc.style.marginTop = '10px';
+    bloc.style.border = '1px solid #ddd';
+    bloc.style.borderRadius = '10px';
+    bloc.style.textAlign = 'left';
+
+    bloc.textContent =
+      'Période : ' + (cotisation.periode || 'Non renseignée') +
+      ' | Année : ' + (cotisation.annee || 'Non renseignée') +
+      ' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
+      ' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
+      ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
+      ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
+      ' | Statut : ' + (cotisation.statut || 'Non renseigné');
+
+    cotisationsListe.appendChild(bloc);
+  });
 };
 
 retourDashboardCotisations.onclick = function () {
