@@ -754,7 +754,13 @@ bloc.textContent =
   ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
   ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
   ' | Statut : ' + (cotisation.statut || 'Non renseigné');
-    cotisationsListe.appendChild(bloc);
+    const boutonModifierCotisation = document.createElement('button');
+boutonModifierCotisation.textContent = 'Voir / Modifier';
+boutonModifierCotisation.style.marginTop = '10px';
+boutonModifierCotisation.style.width = '100%';
+
+bloc.appendChild(boutonModifierCotisation);
+cotisationsListe.appendChild(bloc);
   });
 };
 
