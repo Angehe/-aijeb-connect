@@ -750,13 +750,19 @@ data.forEach(function (cotisation) {
 
 bloc.textContent =
   nomMembre +
-  ' | Période : ' + (cotisation.periode || 'Non renseignée') +
-  ' | Année : ' + (cotisation.annee || 'Non renseignée') +
-  ' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
-  ' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
-  ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
-  ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
-  ' | Statut : ' + (cotisation.statut || 'Non renseigné');
+ ' | Période : ' + (cotisation.periode || 'Non renseignée') +
+' | Année : ' + (cotisation.annee || 'Non renseignée') +
+' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
+' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
+' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
+' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
+' | Statut : ' +
+(
+  cotisation.statut === 'a_jour' ? 'À jour' :
+  cotisation.statut === 'partiel' ? 'Partiel' :
+  cotisation.statut === 'impayee' ? 'Impayée' :
+  (cotisation.statut || 'Non renseigné')
+);
     const boutonModifierCotisation = document.createElement('button');
 boutonModifierCotisation.textContent = 'Voir / Modifier';
 boutonModifierCotisation.style.marginTop = '10px';
