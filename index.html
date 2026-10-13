@@ -71,7 +71,144 @@
 
     .hidden {
       display: none;
-    }
+   /* =========================
+   STYLE GENERAL AIJEB CONNECT
+   ========================= */
+
+#connectedBox {
+  width: 92%;
+  max-width: 1050px;
+  padding: 32px;
+}
+
+#connectedBox > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+#connectedBox > div button {
+  margin-top: 0;
+}
+
+#membresPage,
+#adhesionsPage,
+#cotisationsPage,
+#financesPage {
+  width: 92%;
+  max-width: 1100px;
+  margin: 30px auto;
+  background: #f4f7fb;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #173f73;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+button {
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+input,
+select,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d5dbe5;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+}
+
+select {
+  min-height: 44px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+label {
+  color: #263238;
+}
+
+#financesResume {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+#financesResume > div {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  text-align: center;
+  font-size: 17px;
+}
+
+#totalRecettes,
+#totalDepenses,
+#soldeFinances {
+  display: block;
+  margin-top: 7px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#retourDashboard,
+#retourDashboardAdhesions,
+#retourDashboardCotisations,
+#retourDashboardFinances {
+  margin-top: 25px;
+}
+
+@media (max-width: 700px) {
+
+  .card,
+  #connectedBox {
+    width: 92%;
+    padding: 22px;
+  }
+
+  #connectedBox > div {
+    grid-template-columns: 1fr;
+  }
+
+  #financesResume {
+    grid-template-columns: 1fr;
+  }
+
+  #membresPage,
+  #adhesionsPage,
+  #cotisationsPage,
+  #financesPage {
+    width: 100%;
+    padding: 15px;
+    margin: 15px auto;
+  }
+
+  h1 {
+    font-size: 27px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+} 
   </style>
 </head>
 
