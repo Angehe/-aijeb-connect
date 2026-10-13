@@ -774,10 +774,20 @@ boutonModifierCotisation.onclick = function () {
   inputMontantPaye.value = cotisation.montant_paye || '';
   inputMontantPaye.style.width = '100%';
   inputMontantPaye.style.marginBottom = '8px';
+const labelDatePaiement = document.createElement('label');
+labelDatePaiement.textContent = 'Date de paiement';
+labelDatePaiement.style.display = 'block';
+labelDatePaiement.style.fontWeight = 'bold';
 
+const inputDatePaiement = document.createElement('input');
+inputDatePaiement.type = 'date';
+inputDatePaiement.value = cotisation.date_paiement || '';
+inputDatePaiement.style.width = '100%';
+inputDatePaiement.style.marginBottom = '8px';
   formulaireCotisation.appendChild(labelMontantPaye);
   formulaireCotisation.appendChild(inputMontantPaye);
-
+formulaireCotisation.appendChild(labelDatePaiement);
+formulaireCotisation.appendChild(inputDatePaiement);
   bloc.appendChild(formulaireCotisation);
 };
 bloc.appendChild(boutonModifierCotisation);
