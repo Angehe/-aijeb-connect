@@ -151,7 +151,23 @@
     Retour au tableau de bord
   </button>
 </div>
-<script>
+<div id="financesPage" class="hidden">
+  <h2>Finances</h2>
+
+  <div id="financesResume" style="margin-bottom:20px;">
+    <div><strong>Total recettes :</strong> <span id="totalRecettes">0 FCFA</span></div>
+    <div><strong>Total dépenses :</strong> <span id="totalDepenses">0 FCFA</span></div>
+    <div><strong>Solde :</strong> <span id="soldeFinances">0 FCFA</span></div>
+  </div>
+
+  <p id="financesStatus">Chargement des opérations...</p>
+
+  <div id="financesListe"></div>
+
+  <button id="retourDashboardFinances">
+    Retour au tableau de bord
+  </button>
+</div><script>
   const SUPABASE_URL = 'https://davftivuspiigcbshsuo.supabase.co';
 
   const SUPABASE_KEY =
@@ -991,7 +1007,307 @@ sb.auth.onAuthStateChange(function(event, session) {
 
 
   showSession();
-</script>
+// =========================
+// FINANCES
+// =========================
 
+const btnFinances = document.querySelector('[data-page="finances"]');
+const financesPage = document.getElementById('financesPage');
+const financesStatus = document.getElementById('financesStatus');
+const financesListe = document.getElementById('financesListe');
+const retourDashboardFinances = document.getElementById('retourDashboardFinances');
+
+const totalRecettes = document.getElementById('totalRecettes');
+const totalDepenses = document.getElementById('totalDepenses');
+const soldeFinances = document.getElementById('soldeFinances');
+
+function formatMontant(montant) {
+  return Number(montant || 0).toLocaleString('fr-FR') + ' FCFA';
+}
+
+btnFinances.onclick = async function () {
+
+  connectedBox.classList.add('hidden');
+  financesPage.classList.remove('hidden');
+
+  financesStatus.textContent = 'Chargement des opérations...';
+  financesListe.innerHTML = '';
+
+  const { data, error } = await sb
+    .from('finances')
+    .select('*')
+    .order('date_operation', { ascending: false });
+
+  if (error) {
+    financesStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    financesStatus.textContent = 'Aucune opération financière enregistrée.';
+    totalRecettes.textContent = '0 FCFA';
+    totalDepenses.textContent = '0 FCFA';
+    soldeFinances.textContent = '0 FCFA';
+    return;
+  }
+
+  let recettes = 0;
+  let depenses = 0;
+
+  data.forEach(function (operation) {
+    const montant = Number(operation.montant || 0);
+
+    if (operation.type_operation === 'recette') {
+      recettes += montant;
+    }
+
+    if (operation.type_operation === 'depense') {
+      depenses += montant;
+    }
+  });
+
+  const solde = recettes - depenses;
+
+  totalRecettes.textContent = formatMontant(recettes);
+  totalDepenses.textContent = formatMontant(depenses);
+  soldeFinances.textContent = formatMontant(solde);
+
+  totalRecettes.style.color = '#2e7d32';
+  totalDepenses.style.color = '#c62828';
+  soldeFinances.style.color = solde >= 0 ? '#2e7d32' : '#c62828';
+
+  financesStatus.textContent =
+    data.length + ' opération(s) trouvée(s).';
+
+  let formulaireFinanceOuvert = null;
+  let boutonFinanceOuvert = null;
+
+  data.forEach(function (operation) {
+
+    const bloc = document.createElement('div');
+
+    bloc.style.padding = '14px';
+    bloc.style.marginTop = '12px';
+    bloc.style.border = '1px solid #ddd';
+    bloc.style.borderRadius = '10px';
+    bloc.style.background = '#ffffff';
+    bloc.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+    bloc.style.textAlign = 'left';
+
+    if (operation.type_operation === 'recette') {
+      bloc.style.borderLeft = '6px solid #2e7d32';
+    } else {
+      bloc.style.borderLeft = '6px solid #c62828';
+    }
+
+    const titre = document.createElement('strong');
+
+    titre.textContent =
+      (operation.type_operation === 'recette' ? 'Recette' : 'Dépense') +
+      ' - ' +
+      (operation.categorie || 'Sans catégorie');
+
+    bloc.appendChild(titre);
+
+    const details = document.createElement('div');
+    details.style.marginTop = '6px';
+
+    details.textContent =
+      (operation.libelle || 'Sans libellé') +
+      ' | Montant : ' + formatMontant(operation.montant) +
+      ' | Date : ' + (operation.date_operation || 'Non renseignée');
+
+    bloc.appendChild(details);
+
+    if (operation.source_revenu) {
+      const source = document.createElement('div');
+      source.style.marginTop = '4px';
+      source.textContent = 'Source : ' + operation.source_revenu;
+      bloc.appendChild(source);
+    }
+
+    const boutonModifierFinance = document.createElement('button');
+    boutonModifierFinance.textContent = 'Voir / Modifier';
+    boutonModifierFinance.style.width = '100%';
+    boutonModifierFinance.style.marginTop = '10px';
+
+    bloc.appendChild(boutonModifierFinance);
+
+    boutonModifierFinance.onclick = function () {
+
+      if (formulaireFinanceOuvert) {
+        formulaireFinanceOuvert.remove();
+
+        if (boutonFinanceOuvert) {
+          boutonFinanceOuvert.style.display = 'block';
+        }
+      }
+
+      boutonModifierFinance.style.display = 'none';
+
+      const formulaire = document.createElement('div');
+      formulaire.style.marginTop = '12px';
+
+      formulaireFinanceOuvert = formulaire;
+      boutonFinanceOuvert = boutonModifierFinance;
+
+      function ajouterChamp(labelTexte, valeur, type = 'text') {
+
+        const label = document.createElement('label');
+        label.textContent = labelTexte;
+        label.style.display = 'block';
+        label.style.fontWeight = 'bold';
+        label.style.marginTop = '8px';
+
+        const input = document.createElement('input');
+        input.type = type;
+        input.value = valeur || '';
+        input.style.width = '100%';
+        input.style.marginBottom = '6px';
+
+        formulaire.appendChild(label);
+        formulaire.appendChild(input);
+
+        return input;
+      }
+
+      const labelType = document.createElement('label');
+      labelType.textContent = 'Type d’opération';
+      labelType.style.display = 'block';
+      labelType.style.fontWeight = 'bold';
+
+      const inputType = document.createElement('select');
+      inputType.style.width = '100%';
+      inputType.style.marginBottom = '6px';
+
+      const optionRecette = document.createElement('option');
+      optionRecette.value = 'recette';
+      optionRecette.textContent = 'Recette';
+
+      const optionDepense = document.createElement('option');
+      optionDepense.value = 'depense';
+      optionDepense.textContent = 'Dépense';
+
+      inputType.appendChild(optionRecette);
+      inputType.appendChild(optionDepense);
+      inputType.value = operation.type_operation || 'recette';
+
+      formulaire.appendChild(labelType);
+      formulaire.appendChild(inputType);
+
+      const inputCategorie =
+        ajouterChamp('Catégorie', operation.categorie);
+
+      const inputLibelle =
+        ajouterChamp('Libellé', operation.libelle);
+
+      const inputMontant =
+        ajouterChamp('Montant', operation.montant, 'number');
+
+      const inputDate =
+        ajouterChamp('Date de l’opération', operation.date_operation, 'date');
+
+      const inputMoyenPaiement =
+        ajouterChamp('Moyen de paiement', operation.moyen_paiement);
+
+      const inputReference =
+        ajouterChamp('Référence', operation.reference);
+
+      const inputBeneficiaire =
+        ajouterChamp('Bénéficiaire', operation.beneficiaire);
+
+      const inputSource =
+        ajouterChamp('Source du revenu', operation.source_revenu);
+
+      const inputPays =
+        ajouterChamp('Pays', operation.pays);
+
+      const inputJustificatif =
+        ajouterChamp('Lien du justificatif', operation.justificatif_url);
+
+      const labelObservations = document.createElement('label');
+      labelObservations.textContent = 'Observations';
+      labelObservations.style.display = 'block';
+      labelObservations.style.fontWeight = 'bold';
+      labelObservations.style.marginTop = '8px';
+
+      const inputObservations = document.createElement('textarea');
+      inputObservations.value = operation.observations || '';
+      inputObservations.style.width = '100%';
+      inputObservations.style.marginBottom = '8px';
+
+      formulaire.appendChild(labelObservations);
+      formulaire.appendChild(inputObservations);
+
+      const actions = document.createElement('div');
+      actions.style.display = 'flex';
+      actions.style.gap = '10px';
+
+      const boutonEnregistrerFinance =
+        document.createElement('button');
+
+      boutonEnregistrerFinance.textContent = 'Enregistrer';
+      boutonEnregistrerFinance.style.width = '50%';
+
+      const boutonAnnulerFinance =
+        document.createElement('button');
+
+      boutonAnnulerFinance.textContent = 'Annuler';
+      boutonAnnulerFinance.style.width = '50%';
+
+      actions.appendChild(boutonEnregistrerFinance);
+      actions.appendChild(boutonAnnulerFinance);
+
+      formulaire.appendChild(actions);
+      bloc.appendChild(formulaire);
+
+      boutonAnnulerFinance.onclick = function () {
+        formulaire.remove();
+        boutonModifierFinance.style.display = 'block';
+        formulaireFinanceOuvert = null;
+        boutonFinanceOuvert = null;
+      };
+
+      boutonEnregistrerFinance.onclick = async function () {
+
+        const { error } = await sb
+          .from('finances')
+          .update({
+            type_operation: inputType.value,
+            categorie: inputCategorie.value.trim() || null,
+            libelle: inputLibelle.value.trim() || null,
+            montant: Number(inputMontant.value || 0),
+            date_operation: inputDate.value || null,
+            moyen_paiement: inputMoyenPaiement.value.trim() || null,
+            reference: inputReference.value.trim() || null,
+            beneficiaire: inputBeneficiaire.value.trim() || null,
+            source_revenu: inputSource.value.trim() || null,
+            pays: inputPays.value.trim() || null,
+            justificatif_url: inputJustificatif.value.trim() || null,
+            observations: inputObservations.value.trim() || null
+          })
+          .eq('id', operation.id);
+
+        if (error) {
+          alert('Erreur : ' + error.message);
+          return;
+        }
+
+        alert('Opération financière modifiée avec succès.');
+
+        btnFinances.click();
+      };
+    };
+
+    financesListe.appendChild(bloc);
+  });
+};
+
+retourDashboardFinances.onclick = function () {
+  financesPage.classList.add('hidden');
+  connectedBox.style.display = '';
+  connectedBox.classList.remove('hidden');-
+};
+</script>
 </body>
 </html>
