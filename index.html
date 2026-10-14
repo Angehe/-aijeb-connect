@@ -514,22 +514,22 @@ label {
       <div class="dashboard-stats">
         <div class="stat-card">
           <span>Membres</span>
-          <strong>—</strong>
+         <strong id="statMembres">—</strong>
         </div>
 
         <div class="stat-card">
           <span>Adhésions</span>
-          <strong>—</strong>
+         <strong id="statAdhesions">—</strong>
         </div>
 
         <div class="stat-card">
           <span>Cotisations</span>
-          <strong>—</strong>
+          <strong id="statCotisations">—</strong>
         </div>
 
         <div class="stat-card">
           <span>Solde financier</span>
-          <strong>— FCFA</strong>
+          <strong id="statSolde">— FCFA</strong>
         </div>
       </div>
 
@@ -620,6 +620,10 @@ const membresPage = document.getElementById('membresPage');
 const membresStatus = document.getElementById('membresStatus');
 const membresListe = document.getElementById('membresListe');
 const retourDashboard = document.getElementById('retourDashboard');
+  const statMembres = document.getElementById('statMembres');
+const statAdhesions = document.getElementById('statAdhesions');
+const statCotisations = document.getElementById('statCotisations');
+const statSolde = document.getElementById('statSolde');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -643,9 +647,66 @@ const retourDashboardActivites = document.getElementById('retourDashboardActivit
     if (session) {
       loginBox.classList.add('hidden');
       connectedBox.classList.remove('hidden');
+    chargerStatsDashboard();
     }
   }
+async function chargerStatsDashboard() {
+  const { count: nbMembres, error: erreurMembres } = await sb
+    .from('membres')
+    .select('*', { count: 'exact', head: true });
 
+  if (!erreurMembres && statMembres) {
+    statMembres.textContent = nbMembres || 0;
+  }
+
+  const { count: nbAdhesions, error: erreurAdhesions } = await sb
+    .from('adhesions')
+    .select('*', { count: 'exact', head: true });
+
+  if (!erreurAdhesions && statAdhesions) {
+    statAdhesions.textContent = nbAdhesions || 0;
+  }
+
+  const { data: donneesCotisations, error: erreurCotisations } = await sb
+    .from('cotisations')
+    .select('montant_paye');
+
+  if (!erreurCotisations && statCotisations) {
+    const totalCotisations = (donneesCotisations || []).reduce(
+      (total, cotisation) => total + Number(cotisation.montant_paye || 0),
+      0
+    );
+
+    statCotisations.textContent =
+      totalCotisations.toLocaleString('fr-FR') + ' FCFA';
+  }
+
+  const { data: donneesFinances, error: erreurFinances } = await sb
+    .from('finances')
+    .select('type_operation, montant');
+
+  if (!erreurFinances && statSolde) {
+    let recettes = 0;
+    let depenses = 0;
+
+    (donneesFinances || []).forEach(function (operation) {
+      const montant = Number(operation.montant || 0);
+
+      if (operation.type_operation === 'recette') {
+        recettes += montant;
+      }
+
+      if (operation.type_operation === 'depense') {
+        depenses += montant;
+      }
+    });
+
+    const solde = recettes - depenses;
+
+    statSolde.textContent =
+      solde.toLocaleString('fr-FR') + ' FCFA';
+  }
+}
 
   document.getElementById('sendLink').onclick = async function () {
 
