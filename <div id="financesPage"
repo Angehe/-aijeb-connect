@@ -504,7 +504,8 @@ label {
     </aside>
 
     <main class="dashboard-main">
-      <div class="dashboard-header">
+      <div id="dashboardHome">
+  <div class="dashboard-header">
         <div>
           <h1>Tableau de bord</h1>
           <p>Vue d’ensemble de la gestion AIJEB.</p>
@@ -515,7 +516,7 @@ label {
         <div class="stat-card">
           <span>Membres</span>
          <strong id="statMembres">—</strong>
-        </div>
+        </div
 
         <div class="stat-card">
           <span>Adhésions</span>
@@ -537,7 +538,25 @@ label {
         <h2>Activité récente</h2>
         <p>Les informations principales de l’AIJEB apparaîtront ici.</p>
       </div>
-    </main>
+    </div>
+    <div id="financesPage" class="hidden">
+  <h2>Finances</h2>
+
+  <div id="financesResume" style="margin-bottom:20px;">
+    <div><strong>Total recettes :</strong> <span id="totalRecettes">0 FCFA</span></div>
+    <div><strong>Total dépenses :</strong> <span id="totalDepenses">0 FCFA</span></div>
+    <div><strong>Solde :</strong> <span id="soldeFinances">0 FCFA</span></div>
+  </div>
+
+  <p id="financesStatus">Chargement des opérations...</p>
+
+  <div id="financesListe"></div>
+
+  <button id="retourDashboardFinances">
+    Retour au tableau de bord
+  </button>
+</div>
+</main>
 
   </div>
 
@@ -569,23 +588,7 @@ label {
     Retour au tableau de bord
   </button>
 </div>
-<div id="financesPage" class="hidden">
-  <h2>Finances</h2>
 
-  <div id="financesResume" style="margin-bottom:20px;">
-    <div><strong>Total recettes :</strong> <span id="totalRecettes">0 FCFA</span></div>
-    <div><strong>Total dépenses :</strong> <span id="totalDepenses">0 FCFA</span></div>
-    <div><strong>Solde :</strong> <span id="soldeFinances">0 FCFA</span></div>
-  </div>
-
-  <p id="financesStatus">Chargement des opérations...</p>
-
-  <div id="financesListe"></div>
-
-  <button id="retourDashboardFinances">
-    Retour au tableau de bord
-  </button>
-</div>
 
 <div id="activitesPage" class="hidden">
   <h2>Activités</h2>
@@ -1651,7 +1654,7 @@ function formatMontant(montant) {
 
 btnFinances.onclick = async function () {
 
-  connectedBox.classList.add('hidden');
+ dashboardHome.classList.add('hidden');
   financesPage.classList.remove('hidden');
 
   financesStatus.textContent = 'Chargement des opérations...';
@@ -1929,8 +1932,8 @@ btnFinances.onclick = async function () {
 
 retourDashboardFinances.onclick = function () {
   financesPage.classList.add('hidden');
-  connectedBox.style.display = '';
-  connectedBox.classList.remove('hidden');
+  dashboardHome.classList.remove('hidden');
+  
 };
 </script>
 </body>
