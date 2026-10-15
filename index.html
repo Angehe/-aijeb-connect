@@ -1121,7 +1121,8 @@ btnNouveauMembre.onclick = function () {
 <input id="nouveauWhatsapp" type="text" style="width:100%; margin-bottom:8px;">
     <label>E-mail</label>
     <input id="nouvelEmail" type="email" style="width:100%; margin-bottom:8px;">
-
+<label>Profession</label>
+<input id="nouvelleProfession" type="text" style="width:100%; margin-bottom:8px;">
     <button id="enregistrerNouveauMembre">Enregistrer</button>
     <button id="annulerNouveauMembre">Annuler</button>
   `;
@@ -1139,7 +1140,7 @@ btnNouveauMembre.onclick = function () {
     const telephone = document.getElementById('nouveauTelephone').value.trim();
   const whatsapp = document.getElementById('nouveauWhatsapp').value.trim();
     const email = document.getElementById('nouvelEmail').value.trim();
-
+const profession = document.getElementById('nouvelleProfession').value.trim();
     if (!nom || !prenoms) {
       alert('Veuillez renseigner le nom et le prénom.');
       return;
@@ -1154,6 +1155,7 @@ btnNouveauMembre.onclick = function () {
         telephone: telephone,
         whatsapp: whatsapp,
         email: email,
+       profession: profession,
         statut: 'actif'
       });
 
