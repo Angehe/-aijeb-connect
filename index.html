@@ -1109,7 +1109,13 @@ btnNouveauMembre.onclick = function () {
     <label>Prénom(s)</label>
     <input id="nouveauxPrenoms" type="text" style="width:100%; margin-bottom:8px;">
 
-    <label>Téléphone</label>
+    <label>Sexe</label>
+<select id="nouveauSexe" style="width:100%; margin-bottom:8px;">
+  <option value="">Sélectionner</option>
+  <option value="Homme">Homme</option>
+  <option value="Femme">Femme</option>
+</select>
+<label>Téléphone</label>
     <input id="nouveauTelephone" type="text" style="width:100%; margin-bottom:8px;">
 
     <label>E-mail</label>
@@ -1128,6 +1134,7 @@ btnNouveauMembre.onclick = function () {
   document.getElementById('enregistrerNouveauMembre').onclick = async function () {
     const nom = document.getElementById('nouveauNom').value.trim();
     const prenoms = document.getElementById('nouveauxPrenoms').value.trim();
+    const sexe = document.getElementById('nouveauSexe').value;
     const telephone = document.getElementById('nouveauTelephone').value.trim();
     const email = document.getElementById('nouvelEmail').value.trim();
 
@@ -1141,6 +1148,7 @@ btnNouveauMembre.onclick = function () {
       .insert({
         nom: nom,
         prenoms: prenoms,
+       sexe: sexe,
         telephone: telephone,
         email: email,
         statut: 'actif'
