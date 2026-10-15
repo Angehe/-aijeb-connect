@@ -1094,13 +1094,67 @@ membresListe.appendChild(bloc);
 };
 
 btnNouveauMembre.onclick = function () {
-  const nom = prompt('Nom du membre :');
-  if (!nom) return;
+  const formulaire = document.createElement('div');
+  formulaire.style.marginTop = '15px';
+  formulaire.style.padding = '15px';
+  formulaire.style.border = '1px solid #ddd';
+  formulaire.style.borderRadius = '10px';
 
-  const prenoms = prompt('Prénom(s) du membre :');
-  if (!prenoms) return;
+  formulaire.innerHTML = `
+    <h3>Ajouter un nouveau membre</h3>
 
-  alert('Nom : ' + nom + '\nPrénom(s) : ' + prenoms);
+    <label>Nom</label>
+    <input id="nouveauNom" type="text" style="width:100%; margin-bottom:8px;">
+
+    <label>Prénom(s)</label>
+    <input id="nouveauxPrenoms" type="text" style="width:100%; margin-bottom:8px;">
+
+    <label>Téléphone</label>
+    <input id="nouveauTelephone" type="text" style="width:100%; margin-bottom:8px;">
+
+    <label>E-mail</label>
+    <input id="nouvelEmail" type="email" style="width:100%; margin-bottom:8px;">
+
+    <button id="enregistrerNouveauMembre">Enregistrer</button>
+    <button id="annulerNouveauMembre">Annuler</button>
+  `;
+
+  membresPage.insertBefore(formulaire, membresListe);
+
+  document.getElementById('annulerNouveauMembre').onclick = function () {
+    formulaire.remove();
+  };
+
+  document.getElementById('enregistrerNouveauMembre').onclick = async function () {
+    const nom = document.getElementById('nouveauNom').value.trim();
+    const prenoms = document.getElementById('nouveauxPrenoms').value.trim();
+    const telephone = document.getElementById('nouveauTelephone').value.trim();
+    const email = document.getElementById('nouvelEmail').value.trim();
+
+    if (!nom || !prenoms) {
+      alert('Veuillez renseigner le nom et le prénom.');
+      return;
+    }
+
+    const { error } = await sb
+      .from('membres')
+      .insert({
+        nom: nom,
+        prenoms: prenoms,
+        telephone: telephone,
+        email: email,
+        statut: 'actif'
+      });
+
+    if (error) {
+      alert('Erreur : ' + error.message);
+      return;
+    }
+
+    alert('Membre ajouté avec succès.');
+    formulaire.remove();
+    btnMembres.click();
+  };
 };
 
 btnAdhesions.onclick = async function () {
