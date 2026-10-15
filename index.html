@@ -1094,7 +1094,13 @@ membresListe.appendChild(bloc);
 };
 
 btnNouveauMembre.onclick = function () {
-  alert('Formulaire Nouveau membre à créer');
+  const nom = prompt('Nom du membre :');
+  if (!nom) return;
+
+  const prenoms = prompt('Prénom(s) du membre :');
+  if (!prenoms) return;
+
+  alert('Nom : ' + nom + '\nPrénom(s) : ' + prenoms);
 };
 
 btnAdhesions.onclick = async function () {
