@@ -561,6 +561,7 @@ label {
 </div>
 <div id="membresPage" class="hidden">
   <h2>Membres</h2>
+  <button id="btnNouveauMembre">+ Nouveau membre</button>
   <p id="membresStatus">Chargement des membres...</p>
   <div id="membresListe"></div>
 
@@ -626,7 +627,8 @@ const dashboardHome = document.getElementById('dashboardHome');
 const membresPage = document.getElementById('membresPage');
 const membresStatus = document.getElementById('membresStatus');
 const membresListe = document.getElementById('membresListe');
-const retourDashboard = document.getElementById('retourDashboard');
+const btnNouveauMembre = document.getElementById('btnNouveauMembre');
+  const retourDashboard = document.getElementById('retourDashboard');
   const statMembres = document.getElementById('statMembres');
 const statMembresAJour = document.getElementById('statMembresAJour');
   const statAdhesions = document.getElementById('statAdhesions');
@@ -766,7 +768,7 @@ btnMembres.onclick = async function () {
     return;
   }
 
-  membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
+ 
 membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
 
 const { data: adhesionsData, error: erreurAdhesions } = await sb
@@ -1090,6 +1092,11 @@ bloc.appendChild(boutonModifier);
 membresListe.appendChild(bloc);
 });
 };
+
+btnNouveauMembre.onclick = function () {
+  alert('Formulaire Nouveau membre à créer');
+};
+
 btnAdhesions.onclick = async function () {
  connectedBox.style.display = 'none';
 adhesionsPage.classList.remove('hidden');
