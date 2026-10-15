@@ -767,11 +767,28 @@ btnMembres.onclick = async function () {
   }
 
   membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
+membresStatus.textContent = data.length + ' membre(s) trouvé(s).';
+
+const { data: adhesionsData, error: erreurAdhesions } = await sb
+  .from('adhesions')
+  .select('membre_id, statut, montant, date_paiement');
+
+const { data: cotisationsData, error: erreurCotisations } = await sb
+  .from('cotisations')
+  .select('membre_id, statut, montant_attendu, montant_paye, periode, annee, date_paiement');
+
 
   let formulaireOuvert = null;
 let boutonOuvert = null;
 data.forEach(function (membre) {
-    const bloc = document.createElement('div');
+ const adhesionMembre = (adhesionsData || []).find(function (a) {
+  return a.membre_id === membre.id;
+});
+
+const cotisationMembre = (cotisationsData || []).find(function (c) {
+  return c.membre_id === membre.id;
+});
+  const bloc = document.createElement('div');
     bloc.style.padding = '12px';
     bloc.style.marginTop = '10px';
     bloc.style.border = '1px solid #ddd';
@@ -780,7 +797,7 @@ data.forEach(function (membre) {
 
   const nomComplet = document.createElement('strong');
 nomComplet.textContent =
-  (membre.nom || '') + ' ' + (membre.prenom || '');
+  (membre.nom || '') + ' ' + (membre.prenoms || '');
 
 bloc.appendChild(nomComplet);
 
@@ -796,11 +813,25 @@ details.textContent =
   (telephone ? 'Téléphone : ' + telephone : '') +
   (telephone && email ? ' | ' : '') +
   (email ? 'E-mail : ' + email : '');
+const suivi = document.createElement('div');
+suivi.style.marginTop = '6px';
+suivi.style.fontWeight = 'bold';
 
+const statutAdhesion = adhesionMembre
+  ? (adhesionMembre.statut || 'Non renseignée')
+  : 'Non renseignée';
+
+const statutCotisation = cotisationMembre
+  ? (cotisationMembre.statut || 'Non renseignée')
+  : 'Non renseignée';
+
+suivi.textContent =
+  'Adhésion : ' + statutAdhesion +
+  ' | Cotisation : ' + statutCotisation;–––––
 if (details.textContent) {
   bloc.appendChild(details);
 }
-
+bloc.appendChild(suivi);
 const boutonModifier = document.createElement('button');
 boutonModifier.textContent = 'Voir / Modifier';
 boutonModifier.style.marginTop = '10px';
