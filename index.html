@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Ó7 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -1103,30 +1103,59 @@ btnNouveauMembre.onclick = function () {
   formulaire.innerHTML = `
     <h3>Ajouter un nouveau membre</h3>
 
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px 20px;">
+
+  <div>
     <label>Nom</label>
-    <input id="nouveauNom" type="text" style="width:100%; margin-bottom:8px;">
+    <input id="nouveauNom" type="text" style="width:100%; margin-top:5px;">
+  </div>
 
+  <div>
     <label>Prénom(s)</label>
-    <input id="nouveauxPrenoms" type="text" style="width:100%; margin-bottom:8px;">
+    <input id="nouveauxPrenoms" type="text" style="width:100%; margin-top:5px;">
+  </div>
 
+  <div>
     <label>Sexe</label>
-<select id="nouveauSexe" style="width:100%; margin-bottom:8px;">
-  <option value="">Sélectionner</option>
-  <option value="Homme">Homme</option>
-  <option value="Femme">Femme</option>
-</select>
-<label>Téléphone</label>
-    <input id="nouveauTelephone" type="text" style="width:100%; margin-bottom:8px;">
-<label>WhatsApp</label>
-<input id="nouveauWhatsapp" type="text" style="width:100%; margin-bottom:8px;">
+    <select id="nouveauSexe" style="width:100%; margin-top:5px;">
+      <option value="">Sélectionner</option>
+      <option value="Homme">Homme</option>
+      <option value="Femme">Femme</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Téléphone</label>
+    <input id="nouveauTelephone" type="text" style="width:100%; margin-top:5px;">
+  </div>
+
+  <div>
+    <label>WhatsApp</label>
+    <input id="nouveauWhatsapp" type="text" style="width:100%; margin-top:5px;">
+  </div>
+
+  <div>
     <label>E-mail</label>
-    <input id="nouvelEmail" type="email" style="width:100%; margin-bottom:8px;">
-<label>Profession</label>
-<input id="nouvelleProfession" type="text" style="width:100%; margin-bottom:8px;">
+    <input id="nouvelEmail" type="email" style="width:100%; margin-top:5px;">
+  </div>
+
+  <div>
+    <label>Profession</label>
+    <input id="nouvelleProfession" type="text" style="width:100%; margin-top:5px;">
+  </div>
+
+  <div>
     <label>Date d’adhésion</label>
-<input id="nouvelleDateAdhesion" type="date" style="width:100%; margin-bottom:8px;">
-<button id="enregistrerNouveauMembre">Enregistrer</button>
-    <button id="annulerNouveauMembre">Annuler</button>
+    <input id="nouvelleDateAdhesion" type="date" style="width:100%; margin-top:5px;">
+  </div>
+
+</div>
+
+<div style="display:flex; gap:12px; margin-top:20px;">
+  <button id="enregistrerNouveauMembre" style="flex:1;">Enregistrer</button>
+  <button id="annulerNouveauMembre" style="flex:1;">Annuler</button>
+</div>
+
   `;
 
   membresPage.insertBefore(formulaire, membresListe);
