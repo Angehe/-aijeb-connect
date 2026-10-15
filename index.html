@@ -1123,7 +1123,9 @@ btnNouveauMembre.onclick = function () {
     <input id="nouvelEmail" type="email" style="width:100%; margin-bottom:8px;">
 <label>Profession</label>
 <input id="nouvelleProfession" type="text" style="width:100%; margin-bottom:8px;">
-    <button id="enregistrerNouveauMembre">Enregistrer</button>
+    <label>Date d’adhésion</label>
+<input id="nouvelleDateAdhesion" type="date" style="width:100%; margin-bottom:8px;">
+<button id="enregistrerNouveauMembre">Enregistrer</button>
     <button id="annulerNouveauMembre">Annuler</button>
   `;
 
@@ -1141,6 +1143,7 @@ btnNouveauMembre.onclick = function () {
   const whatsapp = document.getElementById('nouveauWhatsapp').value.trim();
     const email = document.getElementById('nouvelEmail').value.trim();
 const profession = document.getElementById('nouvelleProfession').value.trim();
+   const dateAdhesion = document.getElementById('nouvelleDateAdhesion').value;
     if (!nom || !prenoms) {
       alert('Veuillez renseigner le nom et le prénom.');
       return;
@@ -1156,6 +1159,7 @@ const profession = document.getElementById('nouvelleProfession').value.trim();
         whatsapp: whatsapp,
         email: email,
        profession: profession,
+      date_adhesion: dateAdhesion || null,
         statut: 'actif'
       });
 
