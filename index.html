@@ -1976,7 +1976,8 @@ btnFinances.onclick = async function () {
     boutonModifierFinance.textContent = 'Voir / Modifier';
     boutonModifierFinance.style.width = '100%';
     boutonModifierFinance.style.marginTop = '10px';
-
+boutonModifierFinance.style.display = 'block';
+bloc.appendChild(boutonModifierFinance);
   const boutonSupprimerFinance = document.createElement('button');
 boutonSupprimerFinance.textContent = 'Supprimer';
 boutonSupprimerFinance.style.width = '100%';
