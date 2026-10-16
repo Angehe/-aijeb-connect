@@ -1830,7 +1830,8 @@ const financesPage = document.getElementById('financesPage');
 const financesStatus = document.getElementById('financesStatus');
 const financesListe = document.getElementById('financesListe');
 const retourDashboardFinances = document.getElementById('retourDashboardFinances');
-
+const btnNouvelleDepense = document.getElementById('btnNouvelleDepense');
+const btnNouvelleRecette = document.getElementById('btnNouvelleRecette');
 const totalRecettes = document.getElementById('totalRecettes');
 const totalDepenses = document.getElementById('totalDepenses');
 const soldeFinances = document.getElementById('soldeFinances');
@@ -2116,7 +2117,15 @@ btnFinances.onclick = async function () {
     financesListe.appendChild(bloc);
   });
 };
+btnNouvelleDepense.onclick = function () {
+  financesPage.classList.remove('hidden');
+  dashboardHome.classList.add('hidden');
 
+  if (formulaireFinance) {
+    formulaireFinance.style.display = 'block';
+    inputType.value = 'depense';
+  }
+};
 retourDashboardFinances.onclick = function () {
   financesPage.classList.add('hidden');
   dashboardHome.classList.remove('hidden');
