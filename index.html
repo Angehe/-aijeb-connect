@@ -1092,6 +1092,10 @@ bloc.appendChild(boutonModifier);
 
 membresListe.appendChild(bloc);
 });
+requestAnimationFrame(function () {
+  membresPage.scrollIntoView({ behavior: 'auto', block: 'start' });
+});
+
 };
 
 btnNouveauMembre.onclick = function () {
