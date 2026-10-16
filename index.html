@@ -1857,6 +1857,12 @@ const btnNouvelleRecette = document.getElementById('btnNouvelleRecette');
 const formulaireFinance = document.getElementById('formulaireFinance');
 const titreFormulaireFinance = document.getElementById('titreFormulaireFinance');
 const inputType = document.getElementById('inputType');
+  const inputMontantFinance = document.getElementById('inputMontantFinance');
+const inputCategorieFinance = document.getElementById('inputCategorieFinance');
+const inputDescriptionFinance = document.getElementById('inputDescriptionFinance');
+const inputDateFinance = document.getElementById('inputDateFinance');
+const btnEnregistrerFinance = document.getElementById('btnEnregistrerFinance');
+const btnAnnulerFinance = document.getElementById('btnAnnulerFinance');
   const totalRecettes = document.getElementById('totalRecettes');
 const totalDepenses = document.getElementById('totalDepenses');
 const soldeFinances = document.getElementById('soldeFinances');
@@ -2153,7 +2159,56 @@ btnNouvelleRecette.onclick = function () {
   titreFormulaireFinance.textContent = 'Nouvelle recette';
   inputType.value = 'recette';
 };
-retourDashboardFinances.onclick = function () {
+btnEnregistrerFinance.onclick = async function () {
+  const montant = Number(inputMontantFinance.value);
+  const categorie = inputCategorieFinance.value.trim();
+  const description = inputDescriptionFinance.value.trim();
+  const dateOperation = inputDateFinance.value;
+  const typeOperation = inputType.value;
+
+  if (!montant || !categorie || !dateOperation || !typeOperation) {
+    alert('Veuillez remplir le montant, la catégorie et la date.');
+    return;
+  }
+
+  const { error } = await sb
+    .from('finances')
+    .insert([{
+      type_operation: typeOperation,
+      categorie: categorie,
+      description: description,
+      montant: montant,
+      date_operation: dateOperation
+    }]);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert(typeOperation === 'depense'
+    ? 'Dépense enregistrée avec succès.'
+    : 'Recette enregistrée avec succès.'
+  );
+
+  formulaireFinance.style.display = 'none';
+  inputMontantFinance.value = '';
+  inputCategorieFinance.value = '';
+  inputDescriptionFinance.value = '';
+  inputDateFinance.value = '';
+  inputType.value = '';
+
+  btnFinances.click();
+};
+  btnAnnulerFinance.onclick = function () {
+  formulaireFinance.style.display = 'none';
+  inputMontantFinance.value = '';
+  inputCategorieFinance.value = '';
+  inputDescriptionFinance.value = '';
+  inputDateFinance.value = '';
+  inputType.value = '';
+};
+  retourDashboardFinances.onclick = function () {
   financesPage.classList.add('hidden');
   dashboardHome.classList.remove('hidden');
   
