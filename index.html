@@ -1974,18 +1974,24 @@ btnFinances.onclick = async function () {
 
     const boutonModifierFinance = document.createElement('button');
     boutonModifierFinance.textContent = 'Voir / Modifier';
-    boutonModifierFinance.style.width = '100%';
-    boutonModifierFinance.style.marginTop = '10px';
-boutonModifierFinance.style.display = 'block';
-bloc.appendChild(boutonModifierFinance);
-  const boutonSupprimerFinance = document.createElement('button');
+const actionsFinance = document.createElement('div');
+actionsFinance.style.display = 'flex';
+actionsFinance.style.gap = '10px';
+actionsFinance.style.marginTop = '10px';
+
+boutonModifierFinance.style.width = '50%';
+boutonModifierFinance.style.marginTop = '0';
+
+const boutonSupprimerFinance = document.createElement('button');
 boutonSupprimerFinance.textContent = 'Supprimer';
-boutonSupprimerFinance.style.width = '100%';
-boutonSupprimerFinance.style.marginTop = '8px';
+boutonSupprimerFinance.style.width = '50%';
+boutonSupprimerFinance.style.marginTop = '0';
 boutonSupprimerFinance.style.background = '#d62828';
 boutonSupprimerFinance.style.color = 'white';
 
-bloc.appendChild(boutonSupprimerFinance);
+actionsFinance.appendChild(boutonModifierFinance);
+actionsFinance.appendChild(boutonSupprimerFinance);
+bloc.appendChild(actionsFinance);
 
 boutonSupprimerFinance.onclick = async function () {
   const confirmation = confirm(
