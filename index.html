@@ -747,6 +747,7 @@ async function chargerStatsDashboard() {
   };
 
 btnMembres.onclick = async function () {
+ window.scrollTo({ top: 0, behavior: 'instant' });
   dashboardHome.classList.add('hidden');
   membresPage.classList.remove('hidden');
 
