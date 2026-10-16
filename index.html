@@ -476,7 +476,93 @@ label {
     <div id="message"></div>
   </div>
 
+<div id="welcomePage" style="
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 35%),
+    radial-gradient(circle at 80% 30%, rgba(255,214,0,0.18), transparent 30%),
+    linear-gradient(135deg, #063f2b, #0b6b3a 55%, #9acb3c);
+  color:white;
+  position:relative;
+  overflow:hidden;
+">
 
+  <div style="
+    max-width:850px;
+    width:100%;
+    padding:60px 40px;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:28px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    box-shadow:0 30px 80px rgba(0,0,0,0.25);
+  ">
+
+    <img src="logo-aijeb.png.png"
+         alt="AIJEB"
+         style="width:120px; margin-bottom:25px;">
+
+    <div style="
+      font-size:14px;
+      letter-spacing:5px;
+      text-transform:uppercase;
+      opacity:0.85;
+      margin-bottom:14px;
+    ">
+      Plateforme officielle de gestion
+    </div>
+
+    <h1 style="
+      font-size:64px;
+      line-height:1;
+      margin:0 0 20px 0;
+      font-weight:800;
+    ">
+      AIJEB <span style="color:#ffd21f;">CONNECT</span>
+    </h1>
+
+    <p style="
+      font-size:25px;
+      margin:0 0 15px 0;
+      font-weight:600;
+    ">
+      Ensemble. Connectés. Organisés.
+    </p>
+
+    <p style="
+      max-width:650px;
+      margin:0 auto 38px auto;
+      font-size:18px;
+      line-height:1.6;
+      opacity:0.9;
+    ">
+      Membres, adhésions, cotisations, finances et activités réunis dans une seule plateforme moderne.
+    </p>
+
+    <button id="btnEntrerAIJEB"
+      type="button"
+      style="
+        max-width:360px;
+        padding:18px 28px;
+        font-size:18px;
+        font-weight:700;
+        background:#ffd21f;
+        color:#063f2b;
+        border:none;
+        border-radius:14px;
+        cursor:pointer;
+        box-shadow:0 12px 30px rgba(0,0,0,0.22);
+      ">
+      Accéder à AIJEB Connect
+    </button>
+
+  </div>
+</div>
 <div class="card hidden" id="connectedBox">
 
   <div class="dashboard-shell">
@@ -508,17 +594,18 @@ label {
       </div>
     </aside>
 
-    <main class="dashboard-main">
-      <div id="dashboardHome">
-  <div class="dashboard-header">
-        <div>
-          <h1>Tableau de bord</h1>
-          <p>Vue d’ensemble de la gestion AIJEB.</p>
-        </div>
+ 
+<main class="dashboard-main">
+  <div id="dashboardHome">
+
+    <div class="dashboard-header">
+      <div>
+        <h1>Tableau de bord</h1>
+        <p>Vue d’ensemble de la gestion AIJEB.</p>
       </div>
+    </div>
 
-      <div class="dashboard-stats">
-
+    <div class="dashboard-stats">
   <div class="stat-card">
     <span>Membres</span>
     <strong id="statMembres">—</strong>
@@ -2248,6 +2335,15 @@ btnEnregistrerFinance.onclick = async function () {
   dashboardHome.classList.remove('hidden');
   
 };
+const pageAccueilAIJEB = document.getElementById('welcomePage');
+const boutonEntrerAIJEB = document.getElementById('btnEntrerAIJEB');
+
+if (boutonEntrerAIJEB) {
+  boutonEntrerAIJEB.onclick = function () {
+    pageAccueilAIJEB.style.display = 'none';
+    document.getElementById('connectedBox').classList.remove('hidden');
+  };
+}
 </script>
 </body>
 </html>
