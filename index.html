@@ -1159,7 +1159,7 @@ btnNouveauMembre.onclick = function () {
   `;
 
   membresPage.insertBefore(formulaire, membresListe);
-
+formulaire.scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.getElementById('annulerNouveauMembre').onclick = function () {
     formulaire.remove();
   };
