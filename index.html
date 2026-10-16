@@ -551,7 +551,29 @@ label {
   <button id="btnNouvelleDepense" type="button" style="flex:1;">+ Nouvelle dépense</button>
   <button id="btnNouvelleRecette" type="button" style="flex:1;">+ Nouvelle recette</button>
 </div>
-  <div id="financesResume" style="margin-bottom:20px;">
+ <div id="formulaireFinance" style="display:none; margin-bottom:20px; padding:20px; background:white; border-radius:12px;">
+  <h3 id="titreFormulaireFinance">Nouvelle opération</h3>
+
+  <input id="inputType" type="hidden">
+
+  <label>Montant</label>
+  <input id="inputMontantFinance" type="number" placeholder="Montant en FCFA">
+
+  <label>Catégorie</label>
+  <input id="inputCategorieFinance" type="text" placeholder="Exemple : Transport, Eau, Communication">
+
+  <label>Description</label>
+  <input id="inputDescriptionFinance" type="text" placeholder="Description de l’opération">
+
+  <label>Date</label>
+  <input id="inputDateFinance" type="date">
+
+  <div style="display:flex; gap:12px; margin-top:15px;">
+    <button id="btnEnregistrerFinance" type="button">Enregistrer</button>
+    <button id="btnAnnulerFinance" type="button">Annuler</button>
+  </div>
+</div>
+      <div id="financesResume" style="margin-bottom:20px;">
     <div><strong>Total recettes :</strong> <span id="totalRecettes">0 FCFA</span></div>
     <div><strong>Total dépenses :</strong> <span id="totalDepenses">0 FCFA</span></div>
     <div><strong>Solde :</strong> <span id="soldeFinances">0 FCFA</span></div>
@@ -1832,7 +1854,10 @@ const financesListe = document.getElementById('financesListe');
 const retourDashboardFinances = document.getElementById('retourDashboardFinances');
 const btnNouvelleDepense = document.getElementById('btnNouvelleDepense');
 const btnNouvelleRecette = document.getElementById('btnNouvelleRecette');
-const totalRecettes = document.getElementById('totalRecettes');
+const formulaireFinance = document.getElementById('formulaireFinance');
+const titreFormulaireFinance = document.getElementById('titreFormulaireFinance');
+const inputType = document.getElementById('inputType');
+  const totalRecettes = document.getElementById('totalRecettes');
 const totalDepenses = document.getElementById('totalDepenses');
 const soldeFinances = document.getElementById('soldeFinances');
 
@@ -2118,13 +2143,15 @@ btnFinances.onclick = async function () {
   });
 };
 btnNouvelleDepense.onclick = function () {
-  financesPage.classList.remove('hidden');
-  dashboardHome.classList.add('hidden');
+  formulaireFinance.style.display = 'block';
+  titreFormulaireFinance.textContent = 'Nouvelle dépense';
+  inputType.value = 'depense';
+};
 
-  if (formulaireFinance) {
-    formulaireFinance.style.display = 'block';
-    inputType.value = 'depense';
-  }
+btnNouvelleRecette.onclick = function () {
+  formulaireFinance.style.display = 'block';
+  titreFormulaireFinance.textContent = 'Nouvelle recette';
+  inputType.value = 'recette';
 };
 retourDashboardFinances.onclick = function () {
   financesPage.classList.add('hidden');
