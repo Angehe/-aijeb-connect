@@ -1977,7 +1977,35 @@ btnFinances.onclick = async function () {
     boutonModifierFinance.style.width = '100%';
     boutonModifierFinance.style.marginTop = '10px';
 
-    bloc.appendChild(boutonModifierFinance);
+  const boutonSupprimerFinance = document.createElement('button');
+boutonSupprimerFinance.textContent = 'Supprimer';
+boutonSupprimerFinance.style.width = '100%';
+boutonSupprimerFinance.style.marginTop = '8px';
+boutonSupprimerFinance.style.background = '#d62828';
+boutonSupprimerFinance.style.color = 'white';
+
+bloc.appendChild(boutonSupprimerFinance);
+
+boutonSupprimerFinance.onclick = async function () {
+  const confirmation = confirm(
+    'Voulez-vous vraiment supprimer cette opération financière ?'
+  );
+
+  if (!confirmation) return;
+
+  const { error } = await sb
+    .from('finances')
+    .delete()
+    .eq('id', operation.id);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert('Opération supprimée avec succès.');
+  btnFinances.click();
+};
 
     boutonModifierFinance.onclick = function () {
 
