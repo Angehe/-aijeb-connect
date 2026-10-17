@@ -472,36 +472,34 @@ label {
 }
 
 #welcomePage > div {
-  animation: aiJebFadeUp 1.2s ease-out both,
-             aiJebGlow 3.5s ease-in-out infinite;
+  animation: aiJebGlow 3.5s ease-in-out infinite;
 }
-#welcomePage img,
-#welcomePage h1,
-#welcomePage p,
+
+#welcomePage img {
+  animation: aiJebFadeUp 0.8s ease-out 0.5s both;
+}
+
+#welcomePage > div > div {
+  animation: aiJebFadeUp 0.8s ease-out 1s both;
+}
+
+#welcomePage h1 {
+  animation: aiJebFadeUp 0.8s ease-out 1.5s both;
+}
+
+#welcomePage p:nth-of-type(1) {
+  animation: aiJebFadeUp 0.8s ease-out 2s both;
+}
+
+#welcomePage p:nth-of-type(2) {
+  animation: aiJebFadeUp 0.8s ease-out 2.5s both;
+}
+
 #btnEntrerAIJEB {
-  opacity: 0;
-}
-#welcomePage.welcome-start img {
-  opacity:0;
-  animation: aiJebFadeUp 1s ease-out 0.3s forwards;
-}
-
-#welcomePage.welcome-start h1 {
-  opacity:0;
-  animation: aiJebFadeUp 1s ease-out 0.8s forwards;
-}
-
-#welcomePage.welcome-start p {
-  opacity:0;
-  animation: aiJebFadeUp 1s ease-out 1.3s forwards;
-}
-
-#welcomePage.welcome-start #btnEntrerAIJEB {
-  opacity:0;
+  animation: aiJebFadeUp 0.8s ease-out 3s both;
   transition: transform 0.25s ease,
               box-shadow 0.25s ease,
               background 0.25s ease;
-  animation: aiJebFadeUp 1s ease-out 1.8s forwards;
 }
 #btnEntrerAIJEB:hover {
   transform: translateY(-4px) scale(1.02);
@@ -2410,17 +2408,7 @@ if (boutonEntrerAIJEB) {
     document.getElementById('connectedBox').classList.remove('hidden');
   };
 }
-window.addEventListener('load', () => {
-  const accueil = document.getElementById('welcomePage');
 
-  if (!accueil) return;
-
-  accueil.classList.remove('welcome-start');
-
-  setTimeout(() => {
-    accueil.classList.add('welcome-start');
-  }, 1000);
-});
 </script>
 </body>
 </html>
