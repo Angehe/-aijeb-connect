@@ -446,7 +446,57 @@ label {
 
   #logout {
     grid-column: auto;
+  }@keyframes aiJebFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aiJebGlow {
+  0%, 100% {
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25),
+                0 0 40px rgba(255,210,31,0.08);
+  }
+  50% {
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25),
+                0 0 75px rgba(255,210,31,0.22);
+  }
+}
+
+#welcomePage > div {
+  animation: aiJebFadeUp 0.9s ease-out both,
+             aiJebGlow 3.5s ease-in-out infinite;
+}
+
+#welcomePage img {
+  animation: aiJebFadeUp 0.7s ease-out both;
+}
+
+#welcomePage h1 {
+  animation: aiJebFadeUp 0.9s ease-out 0.15s both;
+}
+
+#welcomePage p {
+  animation: aiJebFadeUp 0.9s ease-out 0.3s both;
+}
+
+#btnEntrerAIJEB {
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              background 0.25s ease;
+  animation: aiJebFadeUp 0.9s ease-out 0.45s both;
+}
+
+#btnEntrerAIJEB:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.32);
+  background: #ffe05a !important;
+}
 } </style>
 </head>
 
