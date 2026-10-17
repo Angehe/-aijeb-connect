@@ -476,22 +476,22 @@ label {
              aiJebGlow 3.5s ease-in-out infinite;
 }
 
-#welcomePage img {
+#welcomePage.welcome-start img {
   opacity:0;
   animation: aiJebFadeUp 1s ease-out 0.3s forwards;
 }
 
-#welcomePage h1 {
+#welcomePage.welcome-start h1 {
   opacity:0;
   animation: aiJebFadeUp 1s ease-out 0.8s forwards;
 }
 
-#welcomePage p {
+#welcomePage.welcome-start p {
   opacity:0;
   animation: aiJebFadeUp 1s ease-out 1.3s forwards;
 }
 
-#btnEntrerAIJEB {
+#welcomePage.welcome-start #btnEntrerAIJEB {
   opacity:0;
   transition: transform 0.25s ease,
               box-shadow 0.25s ease,
@@ -584,7 +584,7 @@ overflow:auto;
       margin:0 0 20px 0;
       font-weight:800;
     ">
-      AIJEB <span style="color:#ffd21f;">CONNECT</span>
+    <span style="color:white;">AIJEB</span> <span style="color:#ffd21f;">CONNECT</span>
     </h1>
 
     <p style="
@@ -2405,6 +2405,13 @@ if (boutonEntrerAIJEB) {
     document.getElementById('connectedBox').classList.remove('hidden');
   };
 }
+setTimeout(() => {
+  const accueil = document.getElementById('welcomePage');
+
+  if (accueil) {
+    accueil.classList.add('welcome-start');
+  }
+}, 300);
 </script>
 </body>
 </html>
