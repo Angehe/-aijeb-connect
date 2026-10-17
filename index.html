@@ -469,29 +469,32 @@ label {
 }
 
 #welcomePage > div {
-  animation: aiJebFadeUp 0.9s ease-out both,
+  animation: aiJebFadeUp 1.2s ease-out both,
              aiJebGlow 3.5s ease-in-out infinite;
 }
 
 #welcomePage img {
-  animation: aiJebFadeUp 0.7s ease-out both;
+  opacity:0;
+  animation: aiJebFadeUp 1s ease-out 0.3s forwards;
 }
 
 #welcomePage h1 {
-  animation: aiJebFadeUp 0.9s ease-out 0.15s both;
+  opacity:0;
+  animation: aiJebFadeUp 1s ease-out 0.8s forwards;
 }
 
 #welcomePage p {
-  animation: aiJebFadeUp 0.9s ease-out 0.3s both;
+  opacity:0;
+  animation: aiJebFadeUp 1s ease-out 1.3s forwards;
 }
 
 #btnEntrerAIJEB {
+  opacity:0;
   transition: transform 0.25s ease,
               box-shadow 0.25s ease,
               background 0.25s ease;
-  animation: aiJebFadeUp 0.9s ease-out 0.45s both;
+  animation: aiJebFadeUp 1s ease-out 1.8s forwards;
 }
-
 #btnEntrerAIJEB:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 18px 40px rgba(0,0,0,0.32);
