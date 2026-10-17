@@ -890,6 +890,37 @@ const activitesPage = document.getElementById('activitesPage');
 const activitesStatus = document.getElementById('activitesStatus');
 const activitesListe = document.getElementById('activitesListe');
 const retourDashboardActivites = document.getElementById('retourDashboardActivites'); 
+  const btnActivitesAVenir = document.getElementById('btnActivitesAVenir');
+const btnActivitesRealisees = document.getElementById('btnActivitesRealisees');
+
+const activitesAVenirSection = document.getElementById('activitesAVenirSection');
+const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
+
+if (btnActivitesAVenir && btnActivitesRealisees) {
+
+  btnActivitesAVenir.onclick = function () {
+    activitesAVenirSection.style.display = 'block';
+    activitesRealiseesSection.style.display = 'none';
+
+    btnActivitesAVenir.style.background = '#0b6b3a';
+    btnActivitesAVenir.style.color = 'white';
+
+    btnActivitesRealisees.style.background = '#eef2f6';
+    btnActivitesRealisees.style.color = '#344054';
+  };
+
+  btnActivitesRealisees.onclick = function () {
+    activitesAVenirSection.style.display = 'none';
+    activitesRealiseesSection.style.display = 'block';
+
+    btnActivitesRealisees.style.background = '#0b6b3a';
+    btnActivitesRealisees.style.color = 'white';
+
+    btnActivitesAVenir.style.background = '#eef2f6';
+    btnActivitesAVenir.style.color = '#344054';
+  };
+
+}
   async function showSession() {
     const {
       data: { session }
