@@ -775,15 +775,77 @@ overflow:auto;
 
 
 <div id="activitesPage" class="hidden">
-  <h2>Activités</h2>
 
-  <p id="activitesStatus">Chargement des activités...</p>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+  ">
+    <div>
+      <h2 style="margin-bottom:5px;">Activités</h2>
+      <p style="margin:0; color:#667085;">
+        Planification, suivi et compte rendu des activités de l’AIJEB.
+      </p>
+    </div>
 
-  <div id="activitesListe"></div>
+    <button id="btnNouvelleActivite" type="button" style="
+      width:auto;
+      padding:14px 22px;
+    ">
+      + Nouvelle activité
+    </button>
+  </div>
 
-  <button id="retourDashboardActivites">
+  <div style="
+    display:flex;
+    gap:12px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+  ">
+    <button id="btnActivitesAVenir" type="button" style="
+      width:auto;
+      padding:12px 22px;
+    ">
+      Activités à venir
+    </button>
+
+    <button id="btnActivitesRealisees" type="button" style="
+      width:auto;
+      padding:12px 22px;
+      background:#eef2f6;
+      color:#344054;
+    ">
+      Activités réalisées
+    </button>
+  </div>
+
+  <div id="activitesAVenirSection">
+    <h3>Activités à venir</h3>
+
+    <p id="activitesStatus">
+      Chargement des activités...
+    </p>
+
+    <div id="activitesListe"></div>
+  </div>
+
+  <div id="activitesRealiseesSection" style="display:none;">
+    <h3>Activités réalisées</h3>
+
+    <p id="activitesRealiseesStatus">
+      Les activités déjà réalisées apparaîtront ici.
+    </p>
+
+    <div id="activitesRealiseesListe"></div>
+  </div>
+
+  <button id="retourDashboardActivites" style="margin-top:25px;">
     Retour au tableau de bord
   </button>
+
 </div>
 
 <script>
