@@ -798,7 +798,79 @@ overflow:auto;
       + Nouvelle activité
     </button>
   </div>
+<div id="formulaireActivite" style="
+  display:none;
+  margin-bottom:24px;
+  padding:24px;
+  background:white;
+  border-radius:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+">
 
+  <h3 style="margin-top:0;">Nouvelle activité</h3>
+
+  <label>Titre de l’activité</label>
+  <input id="inputTitreActivite" type="text" placeholder="Exemple : Rencontre des membres AIJEB">
+
+  <label>Date de l’activité</label>
+  <input id="inputDateActivite" type="date">
+
+  <label>Lieu</label>
+  <input id="inputLieuActivite" type="text" placeholder="Lieu de l’activité">
+
+  <label>Responsable</label>
+  <input id="inputResponsableActivite" type="text" placeholder="Nom du responsable">
+
+  <label>Personnes impliquées</label>
+  <textarea id="inputPersonnesActivite" rows="3" placeholder="Noms des personnes ou équipes impliquées"></textarea>
+
+  <label>Description</label>
+  <textarea id="inputDescriptionActivite" rows="4" placeholder="Description de l’activité"></textarea>
+
+  <label>Objectif</label>
+  <textarea id="inputObjectifActivite" rows="3" placeholder="Objectif principal de l’activité"></textarea>
+
+  <label>Résultats attendus</label>
+  <textarea id="inputResultatsAttendusActivite" rows="4" placeholder="Quels résultats sont attendus ?"></textarea>
+
+  <label>Statut</label>
+  <select id="inputStatutActivite">
+    <option value="a_venir">À venir</option>
+    <option value="realisee">Réalisée</option>
+  </select>
+
+  <label>Résultats obtenus</label>
+  <textarea id="inputResultatsObtenusActivite" rows="4" placeholder="À compléter après réalisation"></textarea>
+
+  <label>Observations / compte rendu</label>
+  <textarea id="inputObservationsActivite" rows="4" placeholder="Observations, difficultés, recommandations..."></textarea>
+
+  <label>Photo principale</label>
+  <input id="inputPhotoPrincipaleActivite" type="file" accept="image/*">
+
+  <label>Galerie photos</label>
+  <input id="inputGalerieActivite" type="file" accept="image/*" multiple>
+
+  <div style="
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+    flex-wrap:wrap;
+  ">
+    <button id="btnEnregistrerActivite" type="button" style="flex:1;">
+      Enregistrer
+    </button>
+
+    <button id="btnAnnulerActivite" type="button" style="
+      flex:1;
+      background:#eef2f6;
+      color:#344054;
+    ">
+      Annuler
+    </button>
+  </div>
+
+</div>
   <div style="
     display:flex;
     gap:12px;
