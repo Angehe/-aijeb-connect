@@ -966,6 +966,25 @@ const retourDashboardActivites = document.getElementById('retourDashboardActivit
 const btnActivitesRealisees = document.getElementById('btnActivitesRealisees');
 
 const activitesAVenirSection = document.getElementById('activitesAVenirSection');
+const btnNouvelleActivite = document.getElementById('btnNouvelleActivite');
+const formulaireActivite = document.getElementById('formulaireActivite');
+const btnAnnulerActivite = document.getElementById('btnAnnulerActivite');
+
+if (btnNouvelleActivite && formulaireActivite) {
+  btnNouvelleActivite.onclick = function () {
+    formulaireActivite.style.display = 'block';
+    formulaireActivite.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+}
+
+if (btnAnnulerActivite && formulaireActivite) {
+  btnAnnulerActivite.onclick = function () {
+    formulaireActivite.style.display = 'none';
+  };
+}
 const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
 
 if (btnActivitesAVenir && btnActivitesRealisees) {
