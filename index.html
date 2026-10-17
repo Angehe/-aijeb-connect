@@ -488,8 +488,13 @@ label {
     radial-gradient(circle at 80% 30%, rgba(255,214,0,0.18), transparent 30%),
     linear-gradient(135deg, #063f2b, #0b6b3a 55%, #9acb3c);
   color:white;
-  position:relative;
-  overflow:hidden;
+  position:fixed;
+inset:0;
+width:100vw;
+height:100vh;
+box-sizing:border-box;
+z-index:9999;
+overflow:auto;
 ">
 
   <div style="
