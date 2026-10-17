@@ -475,7 +475,12 @@ label {
   animation: aiJebFadeUp 1.2s ease-out both,
              aiJebGlow 3.5s ease-in-out infinite;
 }
-
+#welcomePage img,
+#welcomePage h1,
+#welcomePage p,
+#btnEntrerAIJEB {
+  opacity: 0;
+}
 #welcomePage.welcome-start img {
   opacity:0;
   animation: aiJebFadeUp 1s ease-out 0.3s forwards;
@@ -503,7 +508,7 @@ label {
   box-shadow: 0 18px 40px rgba(0,0,0,0.32);
   background: #ffe05a !important;
 }
-} </style>
+</style>
 </head>
 
 <body>
@@ -2405,13 +2410,17 @@ if (boutonEntrerAIJEB) {
     document.getElementById('connectedBox').classList.remove('hidden');
   };
 }
-setTimeout(() => {
+window.addEventListener('load', () => {
   const accueil = document.getElementById('welcomePage');
 
-  if (accueil) {
+  if (!accueil) return;
+
+  accueil.classList.remove('welcome-start');
+
+  setTimeout(() => {
     accueil.classList.add('welcome-start');
-  }
-}, 300);
+  }, 1000);
+});+++
 </script>
 </body>
 </html>
