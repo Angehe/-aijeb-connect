@@ -1117,12 +1117,105 @@ if (btnEnregistrerActivite) {
     inputStatutActivite.value = 'a_venir';
     inputResultatsObtenusActivite.value = '';
     inputObservationsActivite.value = '';
-
+await chargerActivites();
     formulaireActivite.style.display = 'none';
   };
 }}
-const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
+async function chargerActivites() {
+  activitesStatus.textContent = 'Chargement des activités...';
+  activitesListe.innerHTML = '';
+  activitesRealiseesListe.innerHTML = '';
 
+  const { data, error } = await sb
+    .from('activites')
+    .select('*')
+    .order('date_activite', { ascending: false });
+
+  if (error) {
+    activitesStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  const activitesAVenir = (data || []).filter(function (activite) {
+    return activite.statut === 'a_venir';
+  });
+
+  const activitesRealisees = (data || []).filter(function (activite) {
+    return activite.statut === 'realisee';
+  });
+
+  activitesStatus.textContent =
+    activitesAVenir.length === 0
+      ? 'Aucune activité enregistrée.'
+      : activitesAVenir.length + ' activité(s) à venir.';
+
+  activitesRealiseesStatus.textContent =
+    activitesRealisees.length === 0
+      ? 'Aucune activité réalisée enregistrée.'
+      : activitesRealisees.length + ' activité(s) réalisée(s).';
+
+  function afficherActivite(activite, conteneur) {
+    const bloc = document.createElement('div');
+
+    bloc.style.background = '#ffffff';
+    bloc.style.borderRadius = '14px';
+    bloc.style.padding = '18px';
+    bloc.style.marginTop = '14px';
+    bloc.style.boxShadow = '0 3px 12px rgba(0,0,0,0.08)';
+    bloc.style.borderLeft =
+      activite.statut === 'realisee'
+        ? '6px solid #0b6b3a'
+        : '6px solid #f4c430';
+
+    const titre = document.createElement('h3');
+    titre.textContent = activite.titre || 'Activité sans titre';
+    titre.style.margin = '0 0 10px 0';
+
+    const infos = document.createElement('div');
+    infos.innerHTML =
+      '<strong>Date :</strong> ' + (activite.date_activite || 'Non renseignée') +
+      '<br><strong>Lieu :</strong> ' + (activite.lieu || 'Non renseigné') +
+      '<br><strong>Responsable :</strong> ' + (activite.responsable || 'Non renseigné');
+
+    bloc.appendChild(titre);
+    bloc.appendChild(infos);
+
+    if (activite.description) {
+      const description = document.createElement('p');
+      description.textContent = activite.description;
+      bloc.appendChild(description);
+    }
+
+    if (activite.resultats_attendus) {
+      const resultatAttendu = document.createElement('p');
+      resultatAttendu.innerHTML =
+        '<strong>Résultats attendus :</strong><br>' +
+        activite.resultats_attendus;
+      bloc.appendChild(resultatAttendu);
+    }
+
+    if (activite.statut === 'realisee' && activite.resultats_obtenus) {
+      const resultatObtenu = document.createElement('p');
+      resultatObtenu.innerHTML =
+        '<strong>Résultats obtenus :</strong><br>' +
+        activite.resultats_obtenus;
+      bloc.appendChild(resultatObtenu);
+    }
+
+    conteneur.appendChild(bloc);
+  }
+
+  activitesAVenir.forEach(function (activite) {
+    afficherActivite(activite, activitesListe);
+  });
+
+  activitesRealisees.forEach(function (activite) {
+    afficherActivite(activite, activitesRealiseesListe);
+  });
+}
+  const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
+const activitesRealiseesStatus = document.getElementById('activitesRealiseesStatus');
+const activitesRealiseesListe = document.getElementById('activitesRealiseesListe');
 if (btnActivitesAVenir && btnActivitesRealisees) {
 
   btnActivitesAVenir.onclick = function () {
@@ -1157,6 +1250,7 @@ if (btnActivitesAVenir && btnActivitesRealisees) {
       loginBox.classList.add('hidden');
       connectedBox.classList.remove('hidden');
     chargerStatsDashboard();
+   chargerActivites();
     }
   }
 async function chargerStatsDashboard() {
