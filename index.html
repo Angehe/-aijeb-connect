@@ -1993,140 +1993,25 @@ adhesionsListe.appendChild(bloc);
   connectedBox.style.display = '';
   connectedBox.classList.remove('hidden');
 };
-  btnActivites.onclick = async function () {
+btnActivites.onclick = async function () {
   connectedBox.style.display = 'none';
   activitesPage.classList.remove('hidden');
 
-  activitesStatus.textContent = 'Chargement des activités...';
-  activitesListe.innerHTML = '';
-
-  const { data, error } = await sb
-    .from('activites')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    activitesStatus.textContent = 'Erreur : ' + error.message;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    activitesStatus.textContent = 'Aucune activité enregistrée.';
-    return;
-  }
-
-  activitesStatus.textContent = data.length + ' activité(s) trouvée(s).';
-
-  data.forEach(function (activite) {
-    const bloc = document.createElement('div');
-    bloc.style.padding = '12px';
-    bloc.style.marginTop = '10px';
-    bloc.style.border = '1px solid #ddd';
-    bloc.style.borderRadius = '10px';
-    bloc.style.background = '#ffffff';
-    bloc.style.textAlign = 'left';
-bloc.textContent =
-  (activite.titre || 'Activité') +
-  ' | Type : ' + (activite.type_activite || 'Non renseigné') +
-  ' | Début : ' + (activite.date_debut || 'Non renseigné') +
-  ' | Lieu : ' + (activite.lieu || 'Non renseigné') +
-  ' | Statut : ' + (activite.statut || 'Non renseigné');
-   const boutonModifierActivite = document.createElement('button');
-boutonModifierActivite.textContent = 'Voir / Modifier';
-boutonModifierActivite.style.marginTop = '10px';
-boutonModifierActivite.style.width = '100%';
-boutonModifierActivite.onclick = function () {
-  boutonModifierActivite.style.display = 'none';
-
-  const formulaireActivite = document.createElement('div');
-  formulaireActivite.style.marginTop = '10px';
-
-  const inputTitre = document.createElement('input');
-  inputTitre.type = 'text';
-  inputTitre.value = activite.titre || '';
-  inputTitre.placeholder = 'Titre';
-  inputTitre.style.width = '100%';
-  inputTitre.style.marginBottom = '8px';
-
-  const inputTypeActivite = document.createElement('input');
-  inputTypeActivite.type = 'text';
-  inputTypeActivite.value = activite.type_activite || '';
-  inputTypeActivite.placeholder = 'Type d’activité';
-  inputTypeActivite.style.width = '100%';
-  inputTypeActivite.style.marginBottom = '8px';
-
-  const inputLieu = document.createElement('input');
-  inputLieu.type = 'text';
-  inputLieu.value = activite.lieu || '';
-  inputLieu.placeholder = 'Lieu';
-  inputLieu.style.width = '100%';
-  inputLieu.style.marginBottom = '8px';
-
-  const inputStatut = document.createElement('input');
-  inputStatut.type = 'text';
-  inputStatut.value = activite.statut || '';
-  inputStatut.placeholder = 'Statut';
-  inputStatut.style.width = '100%';
-  inputStatut.style.marginBottom = '8px';
-
-  const boutonEnregistrerActivite = document.createElement('button');
-  boutonEnregistrerActivite.textContent = 'Enregistrer';
-
-  const boutonAnnulerActivite = document.createElement('button');
-  boutonAnnulerActivite.textContent = 'Annuler';
-
-  formulaireActivite.appendChild(inputTitre);
-  formulaireActivite.appendChild(inputTypeActivite);
-  formulaireActivite.appendChild(inputLieu);
-  formulaireActivite.appendChild(inputStatut);
-  formulaireActivite.appendChild(boutonEnregistrerActivite);
-  formulaireActivite.appendChild(boutonAnnulerActivite);
-
-  bloc.appendChild(formulaireActivite);
-
-  boutonAnnulerActivite.onclick = function () {
-    formulaireActivite.remove();
-    boutonModifierActivite.style.display = 'block';
-  };
-
-  boutonEnregistrerActivite.onclick = async function () {
-    const { error } = await sb
-      .from('activites')
-      .update({
-        titre: inputTitre.value.trim(),
-        type_activite: inputTypeActivite.value.trim(),
-        lieu: inputLieu.value.trim(),
-        statut: inputStatut.value.trim()
-      })
-      .eq('id', activite.id);
-
-    if (error) {
-      alert('Erreur : ' + error.message);
-      return;
-    }
-
-    alert('Activité modifiée avec succès.');
-    btnActivites.click();
-  };
+  await chargerActivites();
 };
-bloc.appendChild(boutonModifierActivite);
-    activitesListe.appendChild(bloc);
-  });
-};
-
 retourDashboardActivites.onclick = function () {
   activitesPage.classList.add('hidden');
   connectedBox.style.display = '';
   connectedBox.classList.remove('hidden');
 };
-btnCotisations.onclick = async function () {
+  btnCotisations.onclick = async function () {
   connectedBox.style.display = 'none';
   cotisationsPage.classList.remove('hidden');
 
   cotisationsStatus.textContent = 'Chargement des cotisations...';
   cotisationsListe.innerHTML = '';
 
-const { data, error } = await sb
+  const { data, error } = await sb
   .from('cotisations')
   .select(`
     *,
