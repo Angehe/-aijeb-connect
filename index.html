@@ -1100,7 +1100,7 @@ if (btnEnregistrerActivite) {
 
     if (error) {
       console.error(error);
-      alert('Erreur lors de l’enregistrement de l’activité.');
+      alert('Erreur Supabase : ' + error.message);
       return;
     }
 
