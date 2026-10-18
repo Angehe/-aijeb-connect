@@ -121,14 +121,16 @@ button#logout:hover {
 /* ===== NOUVEAU TABLEAU DE BORD AIJEB ===== */
 
 #connectedBox {
-  width: 96%;
-  max-width: 1400px;
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
   padding: 0;
   overflow: hidden;
   text-align: left;
-align-self: flex-start;
-margin-top: 20px;
-margin-bottom: 20px;
+  align-self: stretch;
+  margin: 0;
+  border-radius: 0;
+  box-sizing: border-box;
 }
 
 #connectedBox > .dashboard-shell {
@@ -136,7 +138,7 @@ margin-bottom: 20px;
   grid-template-columns: 270px 1fr;
   gap: 0;
   margin-top: 0;
-  min-height: 720px;
+  min-height: 100vh;
 }
 
 .aijeb-sidebar {
