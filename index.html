@@ -1185,7 +1185,22 @@ async function chargerActivites() {
       description.textContent = activite.description;
       bloc.appendChild(description);
     }
+if (activite.personnes_impliquees) {
+  const personnes = document.createElement('p');
+  personnes.innerHTML =
+    '<strong>Personnes impliquées :</strong><br>' +
+    activite.personnes_impliquees;
+  bloc.appendChild(personnes);
+}
 
+if (activite.objectif) {
+  const objectif = document.createElement('p');
+  objectif.innerHTML =
+    '<strong>Objectif :</strong><br>' +
+    activite.objectif;
+  bloc.appendChild(objectif);
+}
+   
     if (activite.resultats_attendus) {
       const resultatAttendu = document.createElement('p');
       resultatAttendu.innerHTML =
@@ -1201,12 +1216,19 @@ async function chargerActivites() {
         activite.resultats_obtenus;
       bloc.appendChild(resultatObtenu);
     }
-
+if (activite.observations) {
+  const observations = document.createElement('p');
+  observations.innerHTML =
+    '<strong>Observations / compte rendu :</strong><br>' +
+    activite.observations;
+  bloc.appendChild(observations);
+}
     conteneur.appendChild(bloc);
   }
 
   activitesAVenir.forEach(function (activite) {
     afficherActivite(activite, activitesListe);
+
   });
 
   activitesRealisees.forEach(function (activite) {
