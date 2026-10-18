@@ -1036,7 +1036,19 @@ const activitesAVenirSection = document.getElementById('activitesAVenirSection')
 const btnNouvelleActivite = document.getElementById('btnNouvelleActivite');
 const formulaireActivite = document.getElementById('formulaireActivite');
 const btnAnnulerActivite = document.getElementById('btnAnnulerActivite');
+const btnEnregistrerActivite = document.getElementById('btnEnregistrerActivite');
 
+const inputTitreActivite = document.getElementById('inputTitreActivite');
+const inputDateActivite = document.getElementById('inputDateActivite');
+const inputLieuActivite = document.getElementById('inputLieuActivite');
+const inputResponsableActivite = document.getElementById('inputResponsableActivite');
+const inputPersonnesActivite = document.getElementById('inputPersonnesActivite');
+const inputDescriptionActivite = document.getElementById('inputDescriptionActivite');
+const inputObjectifActivite = document.getElementById('inputObjectifActivite');
+const inputResultatsAttendusActivite = document.getElementById('inputResultatsAttendusActivite');
+const inputStatutActivite = document.getElementById('inputStatutActivite');
+const inputResultatsObtenusActivite = document.getElementById('inputResultatsObtenusActivite');
+const inputObservationsActivite = document.getElementById('inputObservationsActivite');
 if (btnNouvelleActivite && formulaireActivite) {
   btnNouvelleActivite.onclick = function () {
     formulaireActivite.style.display = 'block';
@@ -1051,7 +1063,64 @@ if (btnAnnulerActivite && formulaireActivite) {
   btnAnnulerActivite.onclick = function () {
     formulaireActivite.style.display = 'none';
   };
-}
+if (btnEnregistrerActivite) {
+  btnEnregistrerActivite.onclick = async function () {
+
+    const titre = inputTitreActivite.value.trim();
+    const dateActivite = inputDateActivite.value;
+
+    if (!titre || !dateActivite) {
+      alert('Veuillez renseigner au minimum le titre et la date de l’activité.');
+      return;
+    }
+
+    btnEnregistrerActivite.disabled = true;
+    btnEnregistrerActivite.textContent = 'Enregistrement...';
+
+    const { error } = await sb
+      .from('activites')
+      .insert([
+        {
+          titre: titre,
+          date_activite: dateActivite,
+          lieu: inputLieuActivite.value.trim(),
+          responsable: inputResponsableActivite.value.trim(),
+          personnes_impliquees: inputPersonnesActivite.value.trim(),
+          description: inputDescriptionActivite.value.trim(),
+          objectif: inputObjectifActivite.value.trim(),
+          resultats_attendus: inputResultatsAttendusActivite.value.trim(),
+          statut: inputStatutActivite.value,
+          resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
+          observations: inputObservationsActivite.value.trim()
+        }
+      ]);
+
+    btnEnregistrerActivite.disabled = false;
+    btnEnregistrerActivite.textContent = 'Enregistrer';
+
+    if (error) {
+      console.error(error);
+      alert('Erreur lors de l’enregistrement de l’activité.');
+      return;
+    }
+
+    alert('Activité enregistrée avec succès.');
+
+    inputTitreActivite.value = '';
+    inputDateActivite.value = '';
+    inputLieuActivite.value = '';
+    inputResponsableActivite.value = '';
+    inputPersonnesActivite.value = '';
+    inputDescriptionActivite.value = '';
+    inputObjectifActivite.value = '';
+    inputResultatsAttendusActivite.value = '';
+    inputStatutActivite.value = 'a_venir';
+    inputResultatsObtenusActivite.value = '';
+    inputObservationsActivite.value = '';
+
+    formulaireActivite.style.display = 'none';
+  };
+}}
 const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
 
 if (btnActivitesAVenir && btnActivitesRealisees) {
