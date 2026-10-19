@@ -1072,7 +1072,37 @@ if (btnEnregistrerActivite) {
 
     const titre = inputTitreActivite.value.trim();
     const dateActivite = inputDateActivite.value;
+let photoPrincipaleUrl = '';
 
+const photoPrincipale = inputPhotoPrincipaleActivite.files[0];
+
+if (photoPrincipale) {
+  const extension = photoPrincipale.name.split('.').pop();
+
+  const nomFichier =
+    'principale-' +
+    Date.now() +
+    '-' +
+    Math.random().toString(36).substring(2, 8) +
+    '.' +
+    extension;
+
+  const { error: uploadError } = await sb.storage
+    .from('activites-photos')
+    .upload(nomFichier, photoPrincipale);
+
+  if (uploadError) {
+    console.error(uploadError);
+    alert('Erreur lors de l’envoi de la photo principale : ' + uploadError.message);
+    return;
+  }
+
+  const { data: publicUrlData } = sb.storage
+    .from('activites-photos')
+    .getPublicUrl(nomFichier);
+
+  photoPrincipaleUrl = publicUrlData.publicUrl;
+}
     if (!titre || !dateActivite) {
       alert('Veuillez renseigner au minimum le titre et la date de l’activité.');
       return;
