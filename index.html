@@ -1103,6 +1103,37 @@ if (photoPrincipale) {
 
   photoPrincipaleUrl = publicUrlData.publicUrl;
 }
+    let galeriePhotosUrls = [];
+
+const fichiersGalerie = Array.from(inputGalerieActivite.files || []);
+
+for (const fichier of fichiersGalerie) {
+  const extension = fichier.name.split('.').pop();
+
+  const nomFichierGalerie =
+    'galerie-' +
+    Date.now() +
+    '-' +
+    Math.random().toString(36).substring(2, 8) +
+    '.' +
+    extension;
+
+  const { error: uploadGalerieError } = await sb.storage
+    .from('activites-photos')
+    .upload(nomFichierGalerie, fichier);
+
+  if (uploadGalerieError) {
+    console.error(uploadGalerieError);
+    alert('Erreur lors de l’envoi d’une photo de la galerie : ' + uploadGalerieError.message);
+    return;
+  }
+
+  const { data: publicGalerieUrlData } = sb.storage
+    .from('activites-photos')
+    .getPublicUrl(nomFichierGalerie);
+
+  galeriePhotosUrls.push(publicGalerieUrlData.publicUrl);
+}
     if (!titre || !dateActivite) {
       alert('Veuillez renseigner au minimum le titre et la date de l’activité.');
       return;
@@ -1126,7 +1157,8 @@ if (photoPrincipale) {
           statut: inputStatutActivite.value,
           resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
           observations: inputObservationsActivite.value.trim(),
-photo_principale_url: photoPrincipaleUrl
+photo_principale_url: photoPrincipaleUrl,
+galerie_photos_urls: galeriePhotosUrls
         }
       ]);
 
@@ -1271,6 +1303,30 @@ if (activite.observations) {
   imagePrincipale.style.marginTop = '14px';
 
   bloc.appendChild(imagePrincipale);
+}
+    if (Array.isArray(activite.galerie_photos_urls) && activite.galerie_photos_urls.length > 0) {
+  const galerie = document.createElement('div');
+
+  galerie.style.display = 'grid';
+  galerie.style.gridTemplateColumns = 'repeat(auto-fit, minmax(140px, 1fr))';
+  galerie.style.gap = '10px';
+  galerie.style.marginTop = '14px';
+
+  activite.galerie_photos_urls.forEach(function (urlPhoto) {
+    const imageGalerie = document.createElement('img');
+
+    imageGalerie.src = urlPhoto;
+    imageGalerie.alt = 'Photo de la galerie';
+
+    imageGalerie.style.width = '100%';
+    imageGalerie.style.height = '150px';
+    imageGalerie.style.objectFit = 'cover';
+    imageGalerie.style.borderRadius = '10px';
+
+    galerie.appendChild(imageGalerie);
+  });
+
+  bloc.appendChild(galerie);
 }
     conteneur.appendChild(bloc);
   }
