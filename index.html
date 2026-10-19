@@ -1328,6 +1328,41 @@ if (activite.observations) {
 
   bloc.appendChild(galerie);
 }
+    const boutonSupprimerActivite = document.createElement('button');
+
+boutonSupprimerActivite.textContent = 'Supprimer';
+boutonSupprimerActivite.style.marginTop = '14px';
+boutonSupprimerActivite.style.width = '100%';
+boutonSupprimerActivite.style.padding = '12px';
+boutonSupprimerActivite.style.background = '#d62828';
+boutonSupprimerActivite.style.color = 'white';
+boutonSupprimerActivite.style.border = 'none';
+boutonSupprimerActivite.style.borderRadius = '10px';
+boutonSupprimerActivite.style.cursor = 'pointer';
+
+boutonSupprimerActivite.onclick = async function () {
+  const confirmation = confirm(
+    'Voulez-vous vraiment supprimer cette activité ?'
+  );
+
+  if (!confirmation) return;
+
+  const { error } = await sb
+    .from('activites')
+    .delete()
+    .eq('id', activite.id);
+
+  if (error) {
+    console.error(error);
+    alert('Erreur lors de la suppression : ' + error.message);
+    return;
+  }
+
+  bloc.remove();
+  alert('Activité supprimée avec succès.');
+};
+
+bloc.appendChild(boutonSupprimerActivite);-
     conteneur.appendChild(bloc);
   }
 
