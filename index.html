@@ -1051,7 +1051,9 @@ const inputResultatsAttendusActivite = document.getElementById('inputResultatsAt
 const inputStatutActivite = document.getElementById('inputStatutActivite');
 const inputResultatsObtenusActivite = document.getElementById('inputResultatsObtenusActivite');
 const inputObservationsActivite = document.getElementById('inputObservationsActivite');
-if (btnNouvelleActivite && formulaireActivite) {
+const inputPhotoPrincipaleActivite = document.getElementById('inputPhotoPrincipaleActivite');
+const inputGalerieActivite = document.getElementById('inputGalerieActivite');
+  if (btnNouvelleActivite && formulaireActivite) {
   btnNouvelleActivite.onclick = function () {
     formulaireActivite.style.display = 'block';
     formulaireActivite.scrollIntoView({
@@ -1093,7 +1095,8 @@ if (btnEnregistrerActivite) {
           resultats_attendus: inputResultatsAttendusActivite.value.trim(),
           statut: inputStatutActivite.value,
           resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
-          observations: inputObservationsActivite.value.trim()
+          observations: inputObservationsActivite.value.trim(),
+photo_principale_url: photoPrincipaleUrl
         }
       ]);
 
@@ -1224,6 +1227,20 @@ if (activite.observations) {
     '<strong>Observations / compte rendu :</strong><br>' +
     activite.observations;
   bloc.appendChild(observations);
+}
+  if (activite.photo_principale_url) {
+  const imagePrincipale = document.createElement('img');
+
+  imagePrincipale.src = activite.photo_principale_url;
+  imagePrincipale.alt = activite.titre || 'Photo de l’activité';
+
+  imagePrincipale.style.width = '100%';
+  imagePrincipale.style.maxHeight = '320px';
+  imagePrincipale.style.objectFit = 'cover';
+  imagePrincipale.style.borderRadius = '12px';
+  imagePrincipale.style.marginTop = '14px';
+
+  bloc.appendChild(imagePrincipale);
 }
     conteneur.appendChild(bloc);
   }
