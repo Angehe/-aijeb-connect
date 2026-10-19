@@ -1053,8 +1053,11 @@ const inputResultatsObtenusActivite = document.getElementById('inputResultatsObt
 const inputObservationsActivite = document.getElementById('inputObservationsActivite');
 const inputPhotoPrincipaleActivite = document.getElementById('inputPhotoPrincipaleActivite');
 const inputGalerieActivite = document.getElementById('inputGalerieActivite');
+ let activiteEnModification = null;
   if (btnNouvelleActivite && formulaireActivite) {
   btnNouvelleActivite.onclick = function () {
+   activiteEnModification = null;
+btnEnregistrerActivite.textContent = 'Enregistrer';
     formulaireActivite.style.display = 'block';
     formulaireActivite.scrollIntoView({
       behavior: 'smooth',
@@ -1072,7 +1075,7 @@ if (btnEnregistrerActivite) {
 
     const titre = inputTitreActivite.value.trim();
     const dateActivite = inputDateActivite.value;
-let photoPrincipaleUrl = '';
+let photoPrincipaleUrl = activiteEnModification?.photo_principale_url || '';
 
 const photoPrincipale = inputPhotoPrincipaleActivite.files[0];
 
@@ -1103,7 +1106,7 @@ if (photoPrincipale) {
 
   photoPrincipaleUrl = publicUrlData.publicUrl;
 }
-    let galeriePhotosUrls = [];
+    let galeriePhotosUrls = activiteEnModification?.galerie_photos_urls || [];
 
 const fichiersGalerie = Array.from(inputGalerieActivite.files || []);
 
@@ -1142,25 +1145,38 @@ for (const fichier of fichiersGalerie) {
     btnEnregistrerActivite.disabled = true;
     btnEnregistrerActivite.textContent = 'Enregistrement...';
 
-    const { error } = await sb
-      .from('activites')
-      .insert([
-        {
-          titre: titre,
-          date_activite: dateActivite,
-          lieu: inputLieuActivite.value.trim(),
-          responsable: inputResponsableActivite.value.trim(),
-          personnes_impliquees: inputPersonnesActivite.value.trim(),
-          description: inputDescriptionActivite.value.trim(),
-          objectif: inputObjectifActivite.value.trim(),
-          resultats_attendus: inputResultatsAttendusActivite.value.trim(),
-          statut: inputStatutActivite.value,
-          resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
-          observations: inputObservationsActivite.value.trim(),
-photo_principale_url: photoPrincipaleUrl,
-galerie_photos_urls: galeriePhotosUrls
-        }
-      ]);
+    const donneesActivite = {
+  titre: titre,
+  date_activite: dateActivite,
+  lieu: inputLieuActivite.value.trim(),
+  responsable: inputResponsableActivite.value.trim(),
+  personnes_impliquees: inputPersonnesActivite.value.trim(),
+  description: inputDescriptionActivite.value.trim(),
+  objectif: inputObjectifActivite.value.trim(),
+  resultats_attendus: inputResultatsAttendusActivite.value.trim(),
+  statut: inputStatutActivite.value,
+  resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
+  observations: inputObservationsActivite.value.trim(),
+  photo_principale_url: photoPrincipaleUrl,
+  galerie_photos_urls: galeriePhotosUrls
+};
+
+let error;
+
+if (activiteEnModification) {
+  const resultat = await sb
+    .from('activites')
+    .update(donneesActivite)
+    .eq('id', activiteEnModification.id);
+
+  error = resultat.error;
+} else {
+  const resultat = await sb
+    .from('activites')
+    .insert([donneesActivite]);
+
+  error = resultat.error;
+}
 
     btnEnregistrerActivite.disabled = false;
     btnEnregistrerActivite.textContent = 'Enregistrer';
@@ -1172,7 +1188,8 @@ galerie_photos_urls: galeriePhotosUrls
     }
 
     alert('Activité enregistrée avec succès.');
-
+activiteEnModification = null;
+btnEnregistrerActivite.textContent = 'Enregistrer';
     inputTitreActivite.value = '';
     inputDateActivite.value = '';
     inputLieuActivite.value = '';
@@ -1328,6 +1345,44 @@ if (activite.observations) {
 
   bloc.appendChild(galerie);
 }
+  const boutonModifierActivite = document.createElement('button');
+
+boutonModifierActivite.textContent = 'Modifier';
+boutonModifierActivite.style.marginTop = '14px';
+boutonModifierActivite.style.width = '100%';
+boutonModifierActivite.style.padding = '12px';
+boutonModifierActivite.style.background = '#0b6b3a';
+boutonModifierActivite.style.color = 'white';
+boutonModifierActivite.style.border = 'none';
+boutonModifierActivite.style.borderRadius = '10px';
+boutonModifierActivite.style.cursor = 'pointer';
+
+boutonModifierActivite.onclick = function () {
+  activiteEnModification = activite;
+
+  inputTitreActivite.value = activite.titre || '';
+  inputDateActivite.value = activite.date_activite || '';
+  inputLieuActivite.value = activite.lieu || '';
+  inputResponsableActivite.value = activite.responsable || '';
+  inputPersonnesActivite.value = activite.personnes_impliquees || '';
+  inputDescriptionActivite.value = activite.description || '';
+  inputObjectifActivite.value = activite.objectif || '';
+  inputResultatsAttendusActivite.value = activite.resultats_attendus || '';
+  inputStatutActivite.value = activite.statut || 'a_venir';
+  inputResultatsObtenusActivite.value = activite.resultats_obtenus || '';
+  inputObservationsActivite.value = activite.observations || '';
+
+  formulaireActivite.style.display = 'block';
+
+  formulaireActivite.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+
+  btnEnregistrerActivite.textContent = 'Mettre à jour';
+};
+
+bloc.appendChild(boutonModifierActivite);
     const boutonSupprimerActivite = document.createElement('button');
 
 boutonSupprimerActivite.textContent = 'Supprimer';
@@ -1362,7 +1417,7 @@ boutonSupprimerActivite.onclick = async function () {
   alert('Activité supprimée avec succès.');
 };
 
-bloc.appendChild(boutonSupprimerActivite);-
+bloc.appendChild(boutonSupprimerActivite);
     conteneur.appendChild(bloc);
   }
 
