@@ -1319,7 +1319,7 @@ const prochaineActivite = [...activitesAVenir]
 
 if (statProchaineActivite) {
   statProchaineActivite.textContent = prochaineActivite
-    ? prochaineActivite.titre + ' — ' + prochaineActivite.date_activite
+    ? prochaineActivite.titre + ' — ' + formaterDateActivite(prochaineActivite.date_activite)
     : 'Aucune';
 }
 
@@ -1328,7 +1328,7 @@ const derniereActivite = [...activitesRealisees]
 
 if (statDerniereActivite) {
   statDerniereActivite.textContent = derniereActivite
-    ? derniereActivite.titre + ' — ' + derniereActivite.date_activite
+  ? derniereActivite.titre + ' — ' + formaterDateActivite(derniereActivite.date_activite)
     : 'Aucune';
 }
   activitesStatus.textContent =
