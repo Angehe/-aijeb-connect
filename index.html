@@ -866,8 +866,74 @@ overflow:auto;
     ">
       + Nouvelle activité
     </button>
+ </div>
+<div id="activitesStats" style="
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:16px;
+  margin-bottom:24px;
+">
+
+  <div style="
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    border-top:4px solid #0b6b3a;
+  ">
+    <span style="display:block; color:#667085; margin-bottom:8px;">
+      Activités à venir
+    </span>
+    <strong id="statActivitesAVenir" style="font-size:28px; color:#0b6b3a;">
+      —
+    </strong>
   </div>
-<div id="formulaireActivite" style="
+
+  <div style="
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    border-top:4px solid #f4c430;
+  ">
+    <span style="display:block; color:#667085; margin-bottom:8px;">
+      Activités réalisées
+    </span>
+    <strong id="statActivitesRealisees" style="font-size:28px;">
+      —
+    </strong>
+  </div>
+
+  <div style="
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  ">
+    <span style="display:block; color:#667085; margin-bottom:8px;">
+      Prochaine activité
+    </span>
+    <strong id="statProchaineActivite" style="font-size:17px;">
+      —
+    </strong>
+  </div>
+
+  <div style="
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  ">
+    <span style="display:block; color:#667085; margin-bottom:8px;">
+      Dernière activité réalisée
+    </span>
+    <strong id="statDerniereActivite" style="font-size:17px;">
+      —
+    </strong>
+  </div>
+
+</div>
+  <div id="formulaireActivite" style="
   display:none;
   margin-bottom:24px;
   padding:24px;
@@ -1227,7 +1293,36 @@ async function chargerActivites() {
   const activitesRealisees = (data || []).filter(function (activite) {
     return activite.statut === 'realisee';
   });
+const statActivitesAVenir = document.getElementById('statActivitesAVenir');
+const statActivitesRealisees = document.getElementById('statActivitesRealisees');
+const statProchaineActivite = document.getElementById('statProchaineActivite');
+const statDerniereActivite = document.getElementById('statDerniereActivite');
 
+if (statActivitesAVenir) {
+  statActivitesAVenir.textContent = activitesAVenir.length;
+}
+
+if (statActivitesRealisees) {
+  statActivitesRealisees.textContent = activitesRealisees.length;
+}
+
+const prochaineActivite = [...activitesAVenir]
+  .sort((a, b) => new Date(a.date_activite) - new Date(b.date_activite))[0];
+
+if (statProchaineActivite) {
+  statProchaineActivite.textContent = prochaineActivite
+    ? prochaineActivite.titre + ' — ' + prochaineActivite.date_activite
+    : 'Aucune';
+}
+
+const derniereActivite = [...activitesRealisees]
+  .sort((a, b) => new Date(b.date_activite) - new Date(a.date_activite))[0];
+
+if (statDerniereActivite) {
+  statDerniereActivite.textContent = derniereActivite
+    ? derniereActivite.titre + ' — ' + derniereActivite.date_activite
+    : 'Aucune';
+}
   activitesStatus.textContent =
     activitesAVenir.length === 0
       ? 'Aucune activité enregistrée.'
