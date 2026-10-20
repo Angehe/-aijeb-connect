@@ -1297,7 +1297,15 @@ const statActivitesAVenir = document.getElementById('statActivitesAVenir');
 const statActivitesRealisees = document.getElementById('statActivitesRealisees');
 const statProchaineActivite = document.getElementById('statProchaineActivite');
 const statDerniereActivite = document.getElementById('statDerniereActivite');
+function formaterDateActivite(date) {
+  if (!date) return '';
 
+  const parties = date.split('-');
+
+  if (parties.length !== 3) return date;
+
+  return parties[2] + '/' + parties[1] + '/' + parties[0];
+}
 if (statActivitesAVenir) {
   statActivitesAVenir.textContent = activitesAVenir.length;
 }
