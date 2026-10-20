@@ -1568,6 +1568,34 @@ btnActivitesRealisees.onclick = function () {
   btnActivitesAVenir.style.color = '#344054';
 };
   }
+  const boutonRealisees = document.getElementById('btnActivitesRealisees');
+const boutonAVenir = document.getElementById('btnActivitesAVenir');
+
+if (boutonRealisees) {
+  boutonRealisees.addEventListener('click', function () {
+    document.getElementById('activitesAVenirSection').style.display = 'none';
+    document.getElementById('activitesRealiseesSection').style.display = 'block';
+
+    boutonRealisees.style.background = '#0b6b3a';
+    boutonRealisees.style.color = 'white';
+
+    boutonAVenir.style.background = '#eef2f6';
+    boutonAVenir.style.color = '#344054';
+  });
+}
+
+if (boutonAVenir) {
+  boutonAVenir.addEventListener('click', function () {
+    document.getElementById('activitesRealiseesSection').style.display = 'none';
+    document.getElementById('activitesAVenirSection').style.display = 'block';
+
+    boutonAVenir.style.background = '#0b6b3a';
+    boutonAVenir.style.color = 'white';
+
+    boutonRealisees.style.background = '#eef2f6';
+    boutonRealisees.style.color = '#344054';
+  });
+}
   async function showSession() {
     const {
       data: { session }
