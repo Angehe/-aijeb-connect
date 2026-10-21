@@ -1494,8 +1494,9 @@ imagePrincipale.style.borderRadius = '12px';
   const galerie = document.createElement('div');
 
   galerie.style.display = 'grid';
-  galerie.style.gridTemplateColumns = 'repeat(auto-fit, minmax(140px, 1fr))';
+  galerie.style.gridTemplateColumns = 'repeat(auto-fill, minmax(220px, 280px))';
   galerie.style.gap = '10px';
+  galerie.style.justifyContent = 'start';
   galerie.style.marginTop = '14px';
 
   activite.galerie_photos_urls.forEach(function (urlPhoto) {
