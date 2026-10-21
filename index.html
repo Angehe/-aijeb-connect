@@ -1431,49 +1431,49 @@ infos.innerHTML =
     bloc.appendChild(titre);
     bloc.appendChild(infos);
 
-    if (activite.description) {
-      const description = document.createElement('p');
-      description.textContent = activite.description;
-      bloc.appendChild(description);
-    }
-if (activite.personnes_impliquees) {
-  const personnes = document.createElement('p');
-  personnes.innerHTML =
-    '<strong>Personnes impliquées :</strong><br>' +
-    activite.personnes_impliquees;
-  bloc.appendChild(personnes);
+   if (activite.description) {
+  const description = document.createElement('div');
+  description.style.background = '#ffffff';
+  description.style.padding = '12px 14px';
+  description.style.borderRadius = '10px';
+  description.style.marginBottom = '12px';
+  description.style.lineHeight = '1.5';
+
+  description.innerHTML =
+    '<strong>Description</strong><br>' +
+    activite.description;
+
+  bloc.appendChild(description);
 }
 
-if (activite.objectif) {
-  const objectif = document.createElement('p');
-  objectif.innerHTML =
-    '<strong>Objectif :</strong><br>' +
-    activite.objectif;
-  bloc.appendChild(objectif);
-}
-   
-    if (activite.resultats_attendus) {
-      const resultatAttendu = document.createElement('p');
-      resultatAttendu.innerHTML =
-        '<strong>Résultats attendus :</strong><br>' +
-        activite.resultats_attendus;
-      bloc.appendChild(resultatAttendu);
-    }
+const detailsActivite = document.createElement('div');
+detailsActivite.style.display = 'grid';
+detailsActivite.style.gridTemplateColumns = 'repeat(auto-fit, minmax(260px, 1fr))';
+detailsActivite.style.gap = '10px';
+detailsActivite.style.marginBottom = '14px';
 
-    if (activite.statut === 'realisee' && activite.resultats_obtenus) {
-      const resultatObtenu = document.createElement('p');
-      resultatObtenu.innerHTML =
-        '<strong>Résultats obtenus :</strong><br>' +
-        activite.resultats_obtenus;
-      bloc.appendChild(resultatObtenu);
-    }
-if (activite.observations) {
-  const observations = document.createElement('p');
-  observations.innerHTML =
-    '<strong>Observations / compte rendu :</strong><br>' +
-    activite.observations;
-  bloc.appendChild(observations);
+function ajouterDetailActivite(titreDetail, valeur) {
+  if (!valeur) return;
+
+  const detail = document.createElement('div');
+  detail.style.background = '#f8fafc';
+  detail.style.padding = '12px 14px';
+  detail.style.borderRadius = '10px';
+  detail.style.lineHeight = '1.45';
+
+  detail.innerHTML =
+    '<strong>' + titreDetail + '</strong><br>' + valeur;
+
+  detailsActivite.appendChild(detail);
 }
+
+ajouterDetailActivite('Personnes impliquées', activite.personnes_impliquees);
+ajouterDetailActivite('Objectif', activite.objectif);
+ajouterDetailActivite('Résultats attendus', activite.resultats_attendus);
+ajouterDetailActivite('Résultats obtenus', activite.resultats_obtenus);
+ajouterDetailActivite('Observations / compte rendu', activite.observations);
+
+bloc.appendChild(detailsActivite);
   if (activite.photo_principale_url) {
   const imagePrincipale = document.createElement('img');
 
