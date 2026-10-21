@@ -1407,7 +1407,7 @@ if (statDerniereActivite) {
 
     const infos = document.createElement('div');
     infos.innerHTML =
-      '<strong>Date :</strong> ' + (activite.date_activite || 'Non renseignée') +
+      '<strong>Date :</strong> ' + (activite.date_activite ? formaterDateActivite(activite.date_activite) : 'Non renseignée') +
       '<br><strong>Lieu :</strong> ' + (activite.lieu || 'Non renseigné') +
       '<br><strong>Responsable :</strong> ' + (activite.responsable || 'Non renseigné');
 
@@ -1464,7 +1464,7 @@ if (activite.observations) {
   imagePrincipale.alt = activite.titre || 'Photo de l’activité';
 
   imagePrincipale.style.width = '100%';
-  imagePrincipale.style.maxHeight = '320px';
+  imagePrincipale.style.maxHeight = '240px';
   imagePrincipale.style.objectFit = 'cover';
   imagePrincipale.style.borderRadius = '12px';
   imagePrincipale.style.marginTop = '14px';
@@ -1499,7 +1499,7 @@ if (activite.observations) {
 
 boutonModifierActivite.textContent = 'Modifier';
 boutonModifierActivite.style.marginTop = '14px';
-boutonModifierActivite.style.width = '100%';
+boutonModifierActivite.style.flex = '1';
 boutonModifierActivite.style.padding = '12px';
 boutonModifierActivite.style.background = '#0b6b3a';
 boutonModifierActivite.style.color = 'white';
@@ -1532,12 +1532,12 @@ boutonModifierActivite.onclick = function () {
   btnEnregistrerActivite.textContent = 'Mettre à jour';
 };
 
-bloc.appendChild(boutonModifierActivite);
+
     const boutonSupprimerActivite = document.createElement('button');
 
 boutonSupprimerActivite.textContent = 'Supprimer';
 boutonSupprimerActivite.style.marginTop = '14px';
-boutonSupprimerActivite.style.width = '100%';
+boutonSupprimerActivite.style.flex = '1';
 boutonSupprimerActivite.style.padding = '12px';
 boutonSupprimerActivite.style.background = '#d62828';
 boutonSupprimerActivite.style.color = 'white';
@@ -1567,7 +1567,18 @@ boutonSupprimerActivite.onclick = async function () {
   alert('Activité supprimée avec succès.');
 };
 
-bloc.appendChild(boutonSupprimerActivite);
+const actionsActivite = document.createElement('div');
+actionsActivite.style.display = 'flex';
+actionsActivite.style.gap = '12px';
+actionsActivite.style.marginTop = '14px';
+
+boutonModifierActivite.style.marginTop = '0';
+boutonSupprimerActivite.style.marginTop = '0';
+
+actionsActivite.appendChild(boutonModifierActivite);
+actionsActivite.appendChild(boutonSupprimerActivite);
+
+bloc.appendChild(actionsActivite);
     conteneur.appendChild(bloc);
   }
 
