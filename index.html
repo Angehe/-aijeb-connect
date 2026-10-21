@@ -1012,21 +1012,45 @@ overflow:auto;
     margin-bottom:24px;
     flex-wrap:wrap;
   ">
-    <button id="btnActivitesAVenir" type="button" style="
-      width:auto;
-      padding:12px 22px;
-    ">
-      Activités à venir
-    </button>
+   <button
+  id="btnActivitesAVenir"
+  type="button"
+  onclick="
+    document.getElementById('activitesAVenirSection').style.display='block';
+    document.getElementById('activitesRealiseesSection').style.display='none';
+    this.style.background='#0b6b3a';
+    this.style.color='white';
+    document.getElementById('btnActivitesRealisees').style.background='#eef2f6';
+    document.getElementById('btnActivitesRealisees').style.color='#344054';
+  "
+  style="
+    width:auto;
+    padding:12px 22px;
+  "
+>
+  Activités à venir
+</button>
 
-    <button id="btnActivitesRealisees" type="button" style="
-      width:auto;
-      padding:12px 22px;
-      background:#eef2f6;
-      color:#344054;
-    ">
-      Activités réalisées
-    </button>
+<button
+  id="btnActivitesRealisees"
+  type="button"
+  onclick="
+    document.getElementById('activitesAVenirSection').style.display='none';
+    document.getElementById('activitesRealiseesSection').style.display='block';
+    this.style.background='#0b6b3a';
+    this.style.color='white';
+    document.getElementById('btnActivitesAVenir').style.background='#eef2f6';
+    document.getElementById('btnActivitesAVenir').style.color='#344054';
+  "
+  style="
+    width:auto;
+    padding:12px 22px;
+    background:#eef2f6;
+    color:#344054;
+  "
+>
+  Activités réalisées
+</button>
   </div>
 
   <div id="activitesAVenirSection">
@@ -1536,66 +1560,8 @@ bloc.appendChild(boutonSupprimerActivite);
   const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
 const activitesRealiseesStatus = document.getElementById('activitesRealiseesStatus');
 const activitesRealiseesListe = document.getElementById('activitesRealiseesListe');
-if (btnActivitesAVenir && btnActivitesRealisees) {
 
-  btnActivitesAVenir.onclick = function () {
-    activitesAVenirSection.style.display = 'block';
-    activitesRealiseesSection.style.display = 'none';
 
-    btnActivitesAVenir.style.background = '#0b6b3a';
-    btnActivitesAVenir.style.color = 'white';
-
-    btnActivitesRealisees.style.background = '#eef2f6';
-    btnActivitesRealisees.style.color = '#344054';
-  };
-
-btnActivitesRealisees.onclick = function () {
-  const sectionAVenir = document.getElementById('activitesAVenirSection');
-  const sectionRealisees = document.getElementById('activitesRealiseesSection');
-
-  if (sectionAVenir) {
-    sectionAVenir.style.display = 'none';
-  }
-
-  if (sectionRealisees) {
-    sectionRealisees.style.display = 'block';
-  }
-
-  btnActivitesRealisees.style.background = '#0b6b3a';
-  btnActivitesRealisees.style.color = 'white';
-
-  btnActivitesAVenir.style.background = '#eef2f6';
-  btnActivitesAVenir.style.color = '#344054';
-};
-  }
-  const boutonRealisees = document.getElementById('btnActivitesRealisees');
-const boutonAVenir = document.getElementById('btnActivitesAVenir');
-
-if (boutonRealisees) {
-  boutonRealisees.addEventListener('click', function () {
-    document.getElementById('activitesAVenirSection').style.display = 'none';
-    document.getElementById('activitesRealiseesSection').style.display = 'block';
-
-    boutonRealisees.style.background = '#0b6b3a';
-    boutonRealisees.style.color = 'white';
-
-    boutonAVenir.style.background = '#eef2f6';
-    boutonAVenir.style.color = '#344054';
-  });
-}
-
-if (boutonAVenir) {
-  boutonAVenir.addEventListener('click', function () {
-    document.getElementById('activitesRealiseesSection').style.display = 'none';
-    document.getElementById('activitesAVenirSection').style.display = 'block';
-
-    boutonAVenir.style.background = '#0b6b3a';
-    boutonAVenir.style.color = 'white';
-
-    boutonRealisees.style.background = '#eef2f6';
-    boutonRealisees.style.color = '#344054';
-  });
-}
   async function showSession() {
     const {
       data: { session }
