@@ -762,7 +762,9 @@ overflow:auto;
 </div>
       <div class="dashboard-section">
         <h2>Activité récente</h2>
-        <p>Les informations principales de l’AIJEB apparaîtront ici.</p>
+       <div id="activiteRecenteListe">
+  Chargement des dernières informations...
+</div>
       </div>
     </div>
     <div id="financesPage" class="hidden">
@@ -1696,7 +1698,89 @@ if (statMembresAJour) {
     statSolde.textContent =
       solde.toLocaleString('fr-FR') + ' FCFA';
   }
-}
+const activiteRecenteListe = document.getElementById('activiteRecenteListe');
+
+if (activiteRecenteListe) {
+  activiteRecenteListe.innerHTML = '';
+
+  const { data: derniereAdhesion } = await sb
+    .from('adhesions')
+    .select('date_paiement, montant, statut')
+    .order('date_paiement', { ascending: false })
+    .limit(1);
+
+  const { data: derniereCotisation } = await sb
+    .from('cotisations')
+    .select('date_paiement, montant_paye, statut')
+    .order('date_paiement', { ascending: false })
+    .limit(1);
+
+  const { data: derniereFinance } = await sb
+    .from('finances')
+    .select('date_operation, type_operation, montant, libelle')
+    .order('date_operation', { ascending: false })
+    .limit(1);
+
+  const { data: derniereActivite } = await sb
+    .from('activites')
+    .select('titre, date_activite, statut')
+    .order('date_activite', { ascending: false })
+    .limit(1);
+
+  function ajouterInfo(titre, texte) {
+    const ligne = document.createElement('div');
+    ligne.style.padding = '12px 0';
+    ligne.style.borderBottom = '1px solid #e6e9ef';
+
+    ligne.innerHTML =
+      '<strong>' + titre + '</strong><br>' +
+      '<span style="color:#667085;">' + texte + '</span>';
+
+    activiteRecenteListe.appendChild(ligne);
+  }
+
+  if (derniereAdhesion && derniereAdhesion[0]) {
+    ajouterInfo(
+      'Dernière adhésion',
+      Number(derniereAdhesion[0].montant || 0).toLocaleString('fr-FR') +
+      ' FCFA — ' +
+      (derniereAdhesion[0].date_paiement || 'Date non renseignée')
+    );
+  }
+
+  if (derniereCotisation && derniereCotisation[0]) {
+    ajouterInfo(
+      'Dernière cotisation',
+      Number(derniereCotisation[0].montant_paye || 0).toLocaleString('fr-FR') +
+      ' FCFA — ' +
+      (derniereCotisation[0].date_paiement || 'Date non renseignée')
+    );
+  }
+
+  if (derniereFinance && derniereFinance[0]) {
+    ajouterInfo(
+      'Dernière opération financière',
+      (derniereFinance[0].type_operation || 'Opération') +
+      ' — ' +
+      Number(derniereFinance[0].montant || 0).toLocaleString('fr-FR') +
+      ' FCFA — ' +
+      (derniereFinance[0].date_operation || 'Date non renseignée')
+    );
+  }
+
+  if (derniereActivite && derniereActivite[0]) {
+    ajouterInfo(
+      'Dernière activité',
+      (derniereActivite[0].titre || 'Sans titre') +
+      ' — ' +
+      (derniereActivite[0].date_activite || 'Date non renseignée')
+    );
+  }
+
+  if (!activiteRecenteListe.children.length) {
+    activiteRecenteListe.textContent = 'Aucune information récente.';
+  }
+}}
 
   document.getElementById('sendLink').onclick = async function () {
 
