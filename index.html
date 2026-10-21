@@ -1739,12 +1739,21 @@ if (activiteRecenteListe) {
     activiteRecenteListe.appendChild(ligne);
   }
 
+  function formaterDateDashboard(date) {
+  if (!date) return 'Date non renseignée';
+
+  const parties = date.split('-');
+
+  if (parties.length !== 3) return date;
+
+  return parties[2] + '/' + parties[1] + '/' + parties[0];
+}
   if (derniereAdhesion && derniereAdhesion[0]) {
     ajouterInfo(
       'Dernière adhésion',
       Number(derniereAdhesion[0].montant || 0).toLocaleString('fr-FR') +
       ' FCFA — ' +
-      (derniereAdhesion[0].date_paiement || 'Date non renseignée')
+     formaterDateDashboard(derniereAdhesion[0].date_paiement)
     );
   }
 
@@ -1753,18 +1762,22 @@ if (activiteRecenteListe) {
       'Dernière cotisation',
       Number(derniereCotisation[0].montant_paye || 0).toLocaleString('fr-FR') +
       ' FCFA — ' +
-      (derniereCotisation[0].date_paiement || 'Date non renseignée')
+      formaterDateDashboard(derniereCotisation[0].date_paiement)
     );
   }
 
   if (derniereFinance && derniereFinance[0]) {
     ajouterInfo(
       'Dernière opération financière',
-      (derniereFinance[0].type_operation || 'Opération') +
+      (
+  derniereFinance[0].type_operation === 'depense' ? 'Dépense' :
+  derniereFinance[0].type_operation === 'recette' ? 'Recette' :
+  'Opération'
+)
       ' — ' +
       Number(derniereFinance[0].montant || 0).toLocaleString('fr-FR') +
       ' FCFA — ' +
-      (derniereFinance[0].date_operation || 'Date non renseignée')
+     formaterDateDashboard(derniereFinance[0].date_operation)
     );
   }
 
@@ -1773,7 +1786,7 @@ if (activiteRecenteListe) {
       'Dernière activité',
       (derniereActivite[0].titre || 'Sans titre') +
       ' — ' +
-      (derniereActivite[0].date_activite || 'Date non renseignée')
+     formaterDateDashboard(derniereActivite[0].date_activite)
     );
   }
 
