@@ -1480,13 +1480,14 @@ bloc.appendChild(detailsActivite);
   imagePrincipale.src = activite.photo_principale_url;
   imagePrincipale.alt = activite.titre || 'Photo de l’activité';
 
-  imagePrincipale.style.width = '100%';
-  imagePrincipale.style.maxHeight = '320px';
-  imagePrincipale.style.objectFit = 'contain';
+ imagePrincipale.style.width = '100%';
+imagePrincipale.style.maxWidth = '900px';
+imagePrincipale.style.maxHeight = '360px';
+imagePrincipale.style.objectFit = 'contain';
+imagePrincipale.style.display = 'block';
+imagePrincipale.style.margin = '14px auto 0';
 imagePrincipale.style.background = '#f8fafc';
-  imagePrincipale.style.borderRadius = '12px';
-  imagePrincipale.style.marginTop = '14px';
-
+imagePrincipale.style.borderRadius = '12px';
   bloc.appendChild(imagePrincipale);
 }
     if (Array.isArray(activite.galerie_photos_urls) && activite.galerie_photos_urls.length > 0) {
