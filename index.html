@@ -1405,11 +1405,28 @@ if (statDerniereActivite) {
     titre.textContent = activite.titre || 'Activité sans titre';
     titre.style.margin = '0 0 10px 0';
 
-    const infos = document.createElement('div');
-    infos.innerHTML =
-      '<strong>Date :</strong> ' + (activite.date_activite ? formaterDateActivite(activite.date_activite) : 'Non renseignée') +
-      '<br><strong>Lieu :</strong> ' + (activite.lieu || 'Non renseigné') +
-      '<br><strong>Responsable :</strong> ' + (activite.responsable || 'Non renseigné');
+   const infos = document.createElement('div');
+
+infos.style.display = 'grid';
+infos.style.gridTemplateColumns = 'repeat(auto-fit, minmax(180px, 1fr))';
+infos.style.gap = '10px';
+infos.style.marginBottom = '14px';
+
+infos.innerHTML =
+  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+    '<strong>Date</strong><br>' +
+    (activite.date_activite ? formaterDateActivite(activite.date_activite) : 'Non renseignée') +
+  '</div>' +
+
+  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+    '<strong>Lieu</strong><br>' +
+    (activite.lieu || 'Non renseigné') +
+  '</div>' +
+
+  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+    '<strong>Responsable</strong><br>' +
+    (activite.responsable || 'Non renseigné') +
+  '</div>';
 
     bloc.appendChild(titre);
     bloc.appendChild(infos);
