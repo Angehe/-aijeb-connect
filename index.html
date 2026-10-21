@@ -1647,14 +1647,26 @@ async function chargerStatsDashboard() {
 
   const { data: donneesCotisations, error: erreurCotisations } = await sb
     .from('cotisations')
-    .select('montant_paye');
+    .select('membre_id, statut, montant_paye');
 
   if (!erreurCotisations && statCotisations) {
     const totalCotisations = (donneesCotisations || []).reduce(
       (total, cotisation) => total + Number(cotisation.montant_paye || 0),
       0
     );
+const membresAJour = new Set(
+  (donneesCotisations || [])
+    .filter(function (cotisation) {
+      return cotisation.statut === 'a_jour' && cotisation.membre_id;
+    })
+    .map(function (cotisation) {
+      return cotisation.membre_id;
+    })
+);
 
+if (statMembresAJour) {
+  statMembresAJour.textContent = membresAJour.size;
+}
     statCotisations.textContent =
       totalCotisations.toLocaleString('fr-FR') + ' FCFA';
   }
