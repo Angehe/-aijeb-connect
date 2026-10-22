@@ -777,6 +777,15 @@ overflow:auto;
   <span>Dépenses du mois</span>
   <strong id="statDepensesMois">— FCFA</strong>
 </div>
+      <div class="stat-card">
+  <span>Recettes du mois</span>
+  <strong id="statRecettesMois">— FCFA</strong>
+</div>
+
+<div class="stat-card">
+  <span>Nouveaux membres du mois</span>
+  <strong id="statNouveauxMembresMois">—</strong>
+</div>
 </div>
       <div class="dashboard-section">
         <h2>Activité récente</h2>
@@ -1128,6 +1137,8 @@ const statCotisations = document.getElementById('statCotisations');
 const statSolde = document.getElementById('statSolde');
  const statAdhesionsTotal = document.getElementById('statAdhesionsTotal');
 const statDepensesMois = document.getElementById('statDepensesMois');
+ const statRecettesMois = document.getElementById('statRecettesMois');
+const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1658,7 +1669,25 @@ async function chargerStatsDashboard() {
   if (!erreurMembres && statMembres) {
     statMembres.textContent = nbMembres || 0;
   }
+const maintenantMembres = new Date();
+const anneeMembres = maintenantMembres.getFullYear();
+const moisMembres = maintenantMembres.getMonth();
 
+const debutMoisMembres =
+  new Date(Date.UTC(anneeMembres, moisMembres, 1)).toISOString();
+
+const debutMoisSuivantMembres =
+  new Date(Date.UTC(anneeMembres, moisMembres + 1, 1)).toISOString();
+
+const { count: nbNouveauxMembresMois, error: erreurNouveauxMembres } = await sb
+  .from('membres')
+  .select('*', { count: 'exact', head: true })
+  .gte('created_at', debutMoisMembres)
+  .lt('created_at', debutMoisSuivantMembres);
+
+if (!erreurNouveauxMembres && statNouveauxMembresMois) {
+  statNouveauxMembresMois.textContent = nbNouveauxMembresMois || 0;
+}
   const { count: nbAdhesions, error: erreurAdhesions } = await sb
     .from('adhesions')
     .select('*', { count: 'exact', head: true });
@@ -1745,7 +1774,31 @@ if (statMembresAJour) {
   statDepensesMois.textContent =
     depensesMois.toLocaleString('fr-FR') + ' FCFA';
 }
-  
+ if (statRecettesMois) {
+  const maintenant = new Date();
+  const anneeActuelle = maintenant.getFullYear();
+  const moisActuel = maintenant.getMonth();
+
+  const recettesMois = (donneesFinances || [])
+    .filter(function (operation) {
+      if (operation.type_operation !== 'recette' || !operation.date_operation) {
+        return false;
+      }
+
+      const dateOperation = new Date(operation.date_operation + 'T00:00:00');
+
+      return (
+        dateOperation.getFullYear() === anneeActuelle &&
+        dateOperation.getMonth() === moisActuel
+      );
+    })
+    .reduce(function (total, operation) {
+      return total + Number(operation.montant || 0);
+    }, 0);
+
+  statRecettesMois.textContent =
+    recettesMois.toLocaleString('fr-FR') + ' FCFA';
+} 
 const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 
 if (activiteRecenteListe) {
