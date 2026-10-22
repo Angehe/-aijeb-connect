@@ -1703,10 +1703,10 @@ const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 if (activiteRecenteListe) {
   activiteRecenteListe.innerHTML = '';
 const { data: derniereAdhesion } = await sb
-  .from('adhesions')
-  .select('date_paiement, montant, statut')
-  .not('date_paiement', 'is', null)
-  .order('date_paiement', { ascending: false })
+  .from('membres')
+  .select('date_adhesion, nom, prenoms')
+  .not('date_adhesion', 'is', null)
+  .order('date_adhesion', { ascending: false })
   .limit(1);
 
 const { data: derniereCotisation } = await sb
@@ -1748,14 +1748,16 @@ const { data: derniereFinance } = await sb
 
   return parties[2] + '/' + parties[1] + '/' + parties[0];
 }
-  if (derniereAdhesion && derniereAdhesion[0]) {
-    ajouterInfo(
-      'Dernière adhésion',
-      Number(derniereAdhesion[0].montant || 0).toLocaleString('fr-FR') +
-      ' FCFA — ' +
-     formaterDateDashboard(derniereAdhesion[0].date_paiement)
-    );
-  }
+if (derniereAdhesion && derniereAdhesion[0]) {
+  ajouterInfo(
+    'Dernière adhésion',
+    (derniereAdhesion[0].nom || '') +
+    ' ' +
+    (derniereAdhesion[0].prenoms || '') +
+    ' — ' +
+    formaterDateDashboard(derniereAdhesion[0].date_adhesion)
+  );
+}
 
   if (derniereCotisation && derniereCotisation[0]) {
     ajouterInfo(
