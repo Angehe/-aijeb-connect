@@ -790,7 +790,11 @@ overflow:auto;
   <span>Résultat du mois</span>
   <strong id="statResultatMois">— FCFA</strong>
 </div>
+<div class="stat-card">
+  <span>Taux de membres à jour</span>
+  <strong id="statTauxMembresAJour">— %</strong>
 </div>
+    </div>
       <div class="dashboard-section">
         <h2>Activité récente</h2>
        <div id="activiteRecenteListe">
@@ -1144,6 +1148,7 @@ const statDepensesMois = document.getElementById('statDepensesMois');
  const statRecettesMois = document.getElementById('statRecettesMois');
 const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois');
  const statResultatMois = document.getElementById('statResultatMois');
+  const statTauxMembresAJour = document.getElementById('statTauxMembresAJour');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1720,10 +1725,19 @@ const membresAJour = new Set(
     .map(function (cotisation) {
       return cotisation.membre_id;
     })
-);
+
+  );
 
 if (statMembresAJour) {
   statMembresAJour.textContent = membresAJour.size;
+}
+   if (statTauxMembresAJour) {
+  const tauxMembresAJour =
+    nbMembres > 0
+      ? Math.round((membresAJour.size / nbMembres) * 100)
+      : 0;
+
+  statTauxMembresAJour.textContent = tauxMembresAJour + ' %';
 }
     statCotisations.textContent =
       totalCotisations.toLocaleString('fr-FR') + ' FCFA';
