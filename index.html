@@ -786,6 +786,10 @@ overflow:auto;
   <span>Nouveaux membres du mois</span>
   <strong id="statNouveauxMembresMois">—</strong>
 </div>
+      <div class="stat-card">
+  <span>Résultat du mois</span>
+  <strong id="statResultatMois">— FCFA</strong>
+</div>
 </div>
       <div class="dashboard-section">
         <h2>Activité récente</h2>
@@ -1139,6 +1143,7 @@ const statSolde = document.getElementById('statSolde');
 const statDepensesMois = document.getElementById('statDepensesMois');
  const statRecettesMois = document.getElementById('statRecettesMois');
 const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois');
+ const statResultatMois = document.getElementById('statResultatMois');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1799,6 +1804,39 @@ if (statMembresAJour) {
   statRecettesMois.textContent =
     recettesMois.toLocaleString('fr-FR') + ' FCFA';
 } 
+  if (statResultatMois) {
+  const maintenant = new Date();
+  const anneeActuelle = maintenant.getFullYear();
+  const moisActuel = maintenant.getMonth();
+
+  let recettesResultatMois = 0;
+  let depensesResultatMois = 0;
+
+  (donneesFinances || []).forEach(function (operation) {
+    if (!operation.date_operation) return;
+
+    const dateOperation = new Date(operation.date_operation + 'T00:00:00');
+
+    const estCeMois =
+      dateOperation.getFullYear() === anneeActuelle &&
+      dateOperation.getMonth() === moisActuel;
+
+    if (!estCeMois) return;
+
+    if (operation.type_operation === 'recette') {
+      recettesResultatMois += Number(operation.montant || 0);
+    }
+
+    if (operation.type_operation === 'depense') {
+      depensesResultatMois += Number(operation.montant || 0);
+    }
+  });
+
+  const resultatMois = recettesResultatMois - depensesResultatMois;
+
+  statResultatMois.textContent =
+    resultatMois.toLocaleString('fr-FR') + ' FCFA';
+}
 const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 
 if (activiteRecenteListe) {
