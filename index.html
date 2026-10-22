@@ -1702,18 +1702,18 @@ const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 
 if (activiteRecenteListe) {
   activiteRecenteListe.innerHTML = '';
+const { data: derniereAdhesion } = await sb
+  .from('adhesions')
+  .select('date_paiement, montant, statut')
+  .not('date_paiement', 'is', null)
+  .order('date_paiement', { ascending: false })
+  .limit(1);
 
-  const { data: derniereAdhesion } = await sb
-    .from('adhesions')
-    .select('date_paiement, montant, statut')
-    .order('date_paiement', { ascending: false })
-    .limit(1);
-
-  const { data: derniereCotisation } = await sb
-    .from('cotisations')
-    .select('date_paiement, montant_paye, statut')
-    .order('date_paiement', { ascending: false })
-    .limit(1);
+const { data: derniereCotisation } = await sb
+  .from('cotisations')
+  .select('date_paiement, montant_paye, statut')
+  .order('date_paiement', { ascending: false })
+  .limit(1);
 
 const { data: derniereFinance } = await sb
   .from('finances')
