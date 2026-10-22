@@ -1715,11 +1715,10 @@ if (activiteRecenteListe) {
     .order('date_paiement', { ascending: false })
     .limit(1);
 
- const { data: derniereAdhesion } = await sb
-  .from('adhesions')
-  .select('date_paiement, montant, statut')
-  .not('date_paiement', 'is', null)
-  .order('date_paiement', { ascending: false })
+const { data: derniereFinance } = await sb
+  .from('finances')
+  .select('date_operation, type_operation, montant, libelle')
+  .order('date_operation', { ascending: false })
   .limit(1);
 
   const { data: derniereActivite } = await sb
