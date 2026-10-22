@@ -1126,6 +1126,8 @@ const statMembresAJour = document.getElementById('statMembresAJour');
   const statAdhesions = document.getElementById('statAdhesions');
 const statCotisations = document.getElementById('statCotisations');
 const statSolde = document.getElementById('statSolde');
+ const statAdhesionsTotal = document.getElementById('statAdhesionsTotal');
+const statDepensesMois = document.getElementById('statDepensesMois');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1664,7 +1666,9 @@ async function chargerStatsDashboard() {
   if (!erreurAdhesions && statAdhesions) {
     statAdhesions.textContent = nbAdhesions || 0;
   }
-
+if (!erreurAdhesions && statAdhesionsTotal) {
+  statAdhesionsTotal.textContent = nbAdhesions || 0;
+}
   const { data: donneesCotisations, error: erreurCotisations } = await sb
     .from('cotisations')
     .select('membre_id, statut, montant_paye');
@@ -1693,7 +1697,7 @@ if (statMembresAJour) {
 
   const { data: donneesFinances, error: erreurFinances } = await sb
     .from('finances')
-    .select('type_operation, montant');
+   .select('type_operation, montant, date_operation');
 
   if (!erreurFinances && statSolde) {
     let recettes = 0;
@@ -1715,6 +1719,32 @@ if (statMembresAJour) {
 
     statSolde.textContent =
       solde.toLocaleString('fr-FR') + ' FCFA';
+  }
+  if (statDepensesMois) {
+  const maintenant = new Date();
+  const anneeActuelle = maintenant.getFullYear();
+  const moisActuel = maintenant.getMonth();
+
+  const depensesMois = (donneesFinances || [])
+    .filter(function (operation) {
+      if (operation.type_operation !== 'depense' || !operation.date_operation) {
+        return false;
+      }
+
+      const dateOperation = new Date(operation.date_operation + 'T00:00:00');
+
+      return (
+        dateOperation.getFullYear() === anneeActuelle &&
+        dateOperation.getMonth() === moisActuel
+      );
+    })
+    .reduce(function (total, operation) {
+      return total + Number(operation.montant || 0);
+    }, 0);
+
+  statDepensesMois.textContent =
+    depensesMois.toLocaleString('fr-FR') + ' FCFA';
+}
   }
 const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 
