@@ -1179,6 +1179,7 @@ const statDepensesMois = document.getElementById('statDepensesMois');
 const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois');
  const statResultatMois = document.getElementById('statResultatMois');
   const statTauxMembresAJour = document.getElementById('statTauxMembresAJour');
+  const languageSelect = document.getElementById('languageSelect');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1199,7 +1200,187 @@ const btnActivitesRealisees = document.getElementById('btnActivitesRealisees');
 
 const activitesAVenirSection = document.getElementById('activitesAVenirSection');
 const activitesRealiseesSectionGlobal = document.getElementById('activitesRealiseesSection');
+const traductions = {
+  fr: {
+    tableauBord: 'Tableau de bord',
+    membres: 'Membres',
+    adhesions: 'Adhésions',
+    cotisations: 'Cotisations',
+    finances: 'Finances',
+    activites: 'Activités',
+    galerie: 'Galerie photos',
+    deconnexion: 'Déconnexion',
 
+    vueEnsemble: 'Vue d’ensemble de la gestion AIJEB.',
+    membresAJour: 'Membres à jour',
+    cotisationsEncaissees: 'Cotisations encaissées',
+    soldeFinancier: 'Solde financier',
+    adhesionsEnregistrees: 'Adhésions enregistrées',
+    activitesAVenir: 'Activités à venir',
+    activitesRealisees: 'Activités réalisées',
+    depensesMois: 'Dépenses du mois',
+    recettesMois: 'Recettes du mois',
+    nouveauxMembresMois: 'Nouveaux membres du mois',
+    resultatMois: 'Résultat du mois',
+    tauxMembresAJour: 'Taux de membres à jour',
+    activiteRecente: 'Activité récente'
+  },
+
+  en: {
+    tableauBord: 'Dashboard',
+    membres: 'Members',
+    adhesions: 'Memberships',
+    cotisations: 'Contributions',
+    finances: 'Finances',
+    activites: 'Activities',
+    galerie: 'Photo gallery',
+    deconnexion: 'Logout',
+
+    vueEnsemble: 'Overview of AIJEB management.',
+    membresAJour: 'Members up to date',
+    cotisationsEncaissees: 'Contributions received',
+    soldeFinancier: 'Financial balance',
+    adhesionsEnregistrees: 'Registered memberships',
+    activitesAVenir: 'Upcoming activities',
+    activitesRealisees: 'Completed activities',
+    depensesMois: 'Expenses this month',
+    recettesMois: 'Income this month',
+    nouveauxMembresMois: 'New members this month',
+    resultatMois: 'Monthly result',
+    tauxMembresAJour: 'Members up-to-date rate',
+    activiteRecente: 'Recent activity'
+  },
+
+  es: {
+    tableauBord: 'Panel de control',
+    membres: 'Miembros',
+    adhesions: 'Adhesiones',
+    cotisations: 'Cuotas',
+    finances: 'Finanzas',
+    activites: 'Actividades',
+    galerie: 'Galería de fotos',
+    deconnexion: 'Cerrar sesión',
+
+    vueEnsemble: 'Resumen de la gestión de AIJEB.',
+    membresAJour: 'Miembros al día',
+    cotisationsEncaissees: 'Cuotas recibidas',
+    soldeFinancier: 'Saldo financiero',
+    adhesionsEnregistrees: 'Adhesiones registradas',
+    activitesAVenir: 'Próximas actividades',
+    activitesRealisees: 'Actividades realizadas',
+    depensesMois: 'Gastos del mes',
+    recettesMois: 'Ingresos del mes',
+    nouveauxMembresMois: 'Nuevos miembros del mes',
+    resultatMois: 'Resultado del mes',
+    tauxMembresAJour: 'Tasa de miembros al día',
+    activiteRecente: 'Actividad reciente'
+  },
+
+  de: {
+    tableauBord: 'Dashboard',
+    membres: 'Mitglieder',
+    adhesions: 'Mitgliedschaften',
+    cotisations: 'Beiträge',
+    finances: 'Finanzen',
+    activites: 'Aktivitäten',
+    galerie: 'Fotogalerie',
+    deconnexion: 'Abmelden',
+
+    vueEnsemble: 'Übersicht über die AIJEB-Verwaltung.',
+    membresAJour: 'Aktuelle Mitglieder',
+    cotisationsEncaissees: 'Eingegangene Beiträge',
+    soldeFinancier: 'Finanzsaldo',
+    adhesionsEnregistrees: 'Registrierte Mitgliedschaften',
+    activitesAVenir: 'Bevorstehende Aktivitäten',
+    activitesRealisees: 'Abgeschlossene Aktivitäten',
+    depensesMois: 'Ausgaben des Monats',
+    recettesMois: 'Einnahmen des Monats',
+    nouveauxMembresMois: 'Neue Mitglieder des Monats',
+    resultatMois: 'Monatsergebnis',
+    tauxMembresAJour: 'Anteil aktueller Mitglieder',
+    activiteRecente: 'Letzte Aktivität'
+  },
+
+  ja: {
+    tableauBord: 'ダッシュボード',
+    membres: '会員',
+    adhesions: '入会',
+    cotisations: '会費',
+    finances: '財務',
+    activites: '活動',
+    galerie: '写真ギャラリー',
+    deconnexion: 'ログアウト',
+
+    vueEnsemble: 'AIJEB管理の概要。',
+    membresAJour: '会費支払い済み会員',
+    cotisationsEncaissees: '受領済み会費',
+    soldeFinancier: '財務残高',
+    adhesionsEnregistrees: '登録済み入会',
+    activitesAVenir: '今後の活動',
+    activitesRealisees: '実施済み活動',
+    depensesMois: '今月の支出',
+    recettesMois: '今月の収入',
+    nouveauxMembresMois: '今月の新規会員',
+    resultatMois: '今月の収支',
+    tauxMembresAJour: '会費支払い済み会員率',
+    activiteRecente: '最近の活動'
+  }
+};
+  function appliquerLangue(langue) {
+  const t = traductions[langue] || traductions.fr;
+
+  document.documentElement.lang = langue;
+
+  document.querySelector('.dashboard-active').textContent = t.tableauBord;
+  document.querySelector('[data-page="membres"]').textContent = t.membres;
+  document.querySelector('[data-page="adhesions"]').textContent = t.adhesions;
+  document.querySelector('[data-page="cotisations"]').textContent = t.cotisations;
+  document.querySelector('[data-page="finances"]').textContent = t.finances;
+  document.querySelector('[data-page="activites"]').textContent = t.activites;
+  document.querySelector('[data-page="galerie"]').textContent = t.galerie;
+  document.getElementById('logout').textContent = t.deconnexion;
+
+  document.querySelector('#dashboardHome .dashboard-header h1').textContent =
+    t.tableauBord;
+
+  document.querySelector('#dashboardHome .dashboard-header p').textContent =
+    t.vueEnsemble;
+
+  const titresStats = document.querySelectorAll(
+    '#dashboardHome .stat-card span'
+  );
+
+  const clesStats = [
+    'membres',
+    'membresAJour',
+    'cotisationsEncaissees',
+    'soldeFinancier',
+    'adhesionsEnregistrees',
+    'activitesAVenir',
+    'activitesRealisees',
+    'depensesMois',
+    'recettesMois',
+    'nouveauxMembresMois',
+    'resultatMois',
+    'tauxMembresAJour'
+  ];
+
+  titresStats.forEach(function (element, index) {
+    if (clesStats[index] && t[clesStats[index]]) {
+      element.textContent = t[clesStats[index]];
+    }
+  });
+
+  document.querySelector(
+    '#dashboardHome .dashboard-section h2'
+  ).textContent = t.activiteRecente;
+}
+
+languageSelect.addEventListener('change', function () {
+  appliquerLangue(languageSelect.value);
+});
+
+appliquerLangue(languageSelect.value);
 btnActivitesRealisees.addEventListener('click', function () {
   activitesAVenirSection.style.display = 'none';
   activitesRealiseesSectionGlobal.style.display = 'block';
