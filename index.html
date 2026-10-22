@@ -3186,9 +3186,22 @@ const pageAccueilAIJEB = document.getElementById('welcomePage');
 const boutonEntrerAIJEB = document.getElementById('btnEntrerAIJEB');
 
 if (boutonEntrerAIJEB) {
-  boutonEntrerAIJEB.onclick = function () {
+  boutonEntrerAIJEB.onclick = async function () {
     pageAccueilAIJEB.style.display = 'none';
-    document.getElementById('connectedBox').classList.remove('hidden');
+
+    const {
+      data: { session }
+    } = await sb.auth.getSession();
+
+    if (session) {
+      loginBox.classList.add('hidden');
+      connectedBox.classList.remove('hidden');
+      chargerStatsDashboard();
+      chargerActivites();
+    } else {
+      loginBox.classList.remove('hidden');
+      connectedBox.classList.add('hidden');
+    }
   };
 }
 
