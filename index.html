@@ -1034,7 +1034,11 @@ overflow:auto;
 
   <label>Résultats attendus</label>
   <textarea id="inputResultatsAttendusActivite" rows="4" placeholder="Quels résultats sont attendus ?"></textarea>
+<label>Budget prévisionnel (FCFA)</label>
+<input id="inputBudgetPrevisionnelActivite" type="number" min="0" placeholder="Exemple : 150000">
 
+<label>Nombre de participants attendus</label>
+<input id="inputParticipantsAttendusActivite" type="number" min="0" placeholder="Exemple : 50">
   <label>Statut</label>
   <select id="inputStatutActivite">
     <option value="a_venir">À venir</option>
@@ -1462,7 +1466,9 @@ const inputPersonnesActivite = document.getElementById('inputPersonnesActivite')
 const inputDescriptionActivite = document.getElementById('inputDescriptionActivite');
 const inputObjectifActivite = document.getElementById('inputObjectifActivite');
 const inputResultatsAttendusActivite = document.getElementById('inputResultatsAttendusActivite');
-const inputStatutActivite = document.getElementById('inputStatutActivite');
+const inputBudgetPrevisionnelActivite = document.getElementById('inputBudgetPrevisionnelActivite');
+const inputParticipantsAttendusActivite = document.getElementById('inputParticipantsAttendusActivite');
+  const inputStatutActivite = document.getElementById('inputStatutActivite');
 const inputResultatsObtenusActivite = document.getElementById('inputResultatsObtenusActivite');
 const inputObservationsActivite = document.getElementById('inputObservationsActivite');
 const inputPhotoPrincipaleActivite = document.getElementById('inputPhotoPrincipaleActivite');
@@ -1568,7 +1574,9 @@ for (const fichier of fichiersGalerie) {
   description: inputDescriptionActivite.value.trim(),
   objectif: inputObjectifActivite.value.trim(),
   resultats_attendus: inputResultatsAttendusActivite.value.trim(),
-  statut: inputStatutActivite.value,
+  budget_previsionnel: Number(inputBudgetPrevisionnelActivite.value || 0),
+participants_attendus: Number(inputParticipantsAttendusActivite.value || 0),
+      statut: inputStatutActivite.value,
   resultats_obtenus: inputResultatsObtenusActivite.value.trim(),
   observations: inputObservationsActivite.value.trim(),
   photo_principale_url: photoPrincipaleUrl,
