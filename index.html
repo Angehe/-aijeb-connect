@@ -1229,6 +1229,9 @@ const traductions = {
 derniereCotisation: 'Dernière cotisation',
 derniereOperationFinanciere: 'Dernière opération financière',
 derniereActivite: 'Dernière activité',
+    depense: 'Dépense',
+recette: 'Recette',
+operation: 'Opération',
   },
 
 
@@ -1260,6 +1263,9 @@ derniereActivite: 'Dernière activité',
 derniereCotisation: 'Latest contribution',
 derniereOperationFinanciere: 'Latest financial transaction',
 derniereActivite: 'Latest activity',
+      depense: 'Expense',
+recette: 'Income',
+operation: 'Transaction',
   },
 
   es: {
@@ -1290,6 +1296,9 @@ derniereActivite: 'Latest activity',
 derniereCotisation: 'Última cuota',
 derniereOperationFinanciere: 'Última operación financiera',
 derniereActivite: 'Última actividad',
+    depense: 'Gasto',
+recette: 'Ingreso',
+operation: 'Operación',
   },
 
   de: {
@@ -1320,6 +1329,9 @@ derniereActivite: 'Última actividad',
 derniereCotisation: 'Letzter Beitrag',
 derniereOperationFinanciere: 'Letzte Finanztransaktion',
 derniereActivite: 'Letzte Aktivität',
+    depense: 'Ausgabe',
+recette: 'Einnahme',
+operation: 'Transaktion',
   },
 
   ja: {
@@ -1350,6 +1362,9 @@ derniereActivite: 'Letzte Aktivität',
 derniereCotisation: '最新の会費',
 derniereOperationFinanciere: '最新の財務取引',
 derniereActivite: '最新の活動',
+    depense: '支出',
+recette: '収入',
+operation: '取引',
   }
 };
   function appliquerLangue(langue) {
@@ -2163,9 +2178,11 @@ if (derniereAdhesion && derniereAdhesion[0]) {
     ajouterInfo(
       traductions[languageSelect.value].derniereOperationFinanciere,
       (
-  derniereFinance[0].type_operation === 'depense' ? 'Dépense' :
-  derniereFinance[0].type_operation === 'recette' ? 'Recette' :
-  'Opération'
+  derniereFinance[0].type_operation === 'depense'
+  ? traductions[languageSelect.value].depense
+  : derniereFinance[0].type_operation === 'recette'
+  ? traductions[languageSelect.value].recette
+  : traductions[languageSelect.value].operation
 )+
       ' — ' +
       Number(derniereFinance[0].montant || 0).toLocaleString('fr-FR') +
