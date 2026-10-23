@@ -1224,7 +1224,11 @@ const traductions = {
     nouveauxMembresMois: 'Nouveaux membres du mois',
     resultatMois: 'Résultat du mois',
     tauxMembresAJour: 'Taux de membres à jour',
-    activiteRecente: 'Activité récente'
+    activiteRecente: 'Activité récente',
+ derniereAdhesion: 'Dernière adhésion',
+derniereCotisation: 'Dernière cotisation',
+derniereOperationFinanciere: 'Dernière opération financière',
+derniereActivite: 'Dernière activité',
   },
 
 
@@ -1251,7 +1255,11 @@ const traductions = {
     nouveauxMembresMois: 'New members this month',
     resultatMois: 'Monthly result',
     tauxMembresAJour: 'Members up-to-date rate',
-    activiteRecente: 'Recent activity'
+    activiteRecente: 'Recent activity',
+      derniereAdhesion: 'Latest membership',
+derniereCotisation: 'Latest contribution',
+derniereOperationFinanciere: 'Latest financial transaction',
+derniereActivite: 'Latest activity',
   },
 
   es: {
@@ -1277,7 +1285,11 @@ const traductions = {
     nouveauxMembresMois: 'Nuevos miembros del mes',
     resultatMois: 'Resultado del mes',
     tauxMembresAJour: 'Tasa de miembros al día',
-    activiteRecente: 'Actividad reciente'
+    activiteRecente: 'Actividad reciente',
+    derniereAdhesion: 'Última adhesión',
+derniereCotisation: 'Última cuota',
+derniereOperationFinanciere: 'Última operación financiera',
+derniereActivite: 'Última actividad',
   },
 
   de: {
@@ -1303,7 +1315,11 @@ const traductions = {
     nouveauxMembresMois: 'Neue Mitglieder des Monats',
     resultatMois: 'Monatsergebnis',
     tauxMembresAJour: 'Anteil aktueller Mitglieder',
-    activiteRecente: 'Letzte Aktivität'
+    activiteRecente: 'Letzte Aktivität',
+    derniereAdhesion: 'Letzte Mitgliedschaft',
+derniereCotisation: 'Letzter Beitrag',
+derniereOperationFinanciere: 'Letzte Finanztransaktion',
+derniereActivite: 'Letzte Aktivität',
   },
 
   ja: {
@@ -1329,7 +1345,11 @@ const traductions = {
     nouveauxMembresMois: '今月の新規会員',
     resultatMois: '今月の収支',
     tauxMembresAJour: '会費支払い済み会員率',
-    activiteRecente: '最近の活動'
+    activiteRecente: '最近の活動',
+    derniereAdhesion: '最新の入会',
+derniereCotisation: '最新の会費',
+derniereOperationFinanciere: '最新の財務取引',
+derniereActivite: '最新の活動',
   }
 };
   function appliquerLangue(langue) {
@@ -2120,7 +2140,7 @@ const { data: derniereFinance } = await sb
 }
 if (derniereAdhesion && derniereAdhesion[0]) {
   ajouterInfo(
-    'Dernière adhésion',
+    traductions[languageSelect.value].derniereAdhesion,
     (derniereAdhesion[0].nom || '') +
     ' ' +
     (derniereAdhesion[0].prenoms || '') +
@@ -2131,7 +2151,7 @@ if (derniereAdhesion && derniereAdhesion[0]) {
 
   if (derniereCotisation && derniereCotisation[0]) {
     ajouterInfo(
-      'Dernière cotisation',
+      traductions[languageSelect.value].derniereCotisation,
       Number(derniereCotisation[0].montant_paye || 0).toLocaleString('fr-FR') +
       ' FCFA — ' +
       formaterDateDashboard(derniereCotisation[0].date_paiement)
@@ -2140,7 +2160,7 @@ if (derniereAdhesion && derniereAdhesion[0]) {
 
   if (derniereFinance && derniereFinance[0]) {
     ajouterInfo(
-      'Dernière opération financière',
+      traductions[languageSelect.value].derniereOperationFinanciere,
       (
   derniereFinance[0].type_operation === 'depense' ? 'Dépense' :
   derniereFinance[0].type_operation === 'recette' ? 'Recette' :
@@ -2155,7 +2175,7 @@ if (derniereAdhesion && derniereAdhesion[0]) {
 
   if (derniereActivite && derniereActivite[0]) {
     ajouterInfo(
-      'Dernière activité',
+     traductions[languageSelect.value].derniereActivite,
       (derniereActivite[0].titre || 'Sans titre') +
       ' — ' +
      formaterDateDashboard(derniereActivite[0].date_activite)
