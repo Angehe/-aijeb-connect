@@ -1232,6 +1232,7 @@ derniereActivite: 'Dernière activité',
     depense: 'Dépense',
 recette: 'Recette',
 operation: 'Opération',
+    rencontre: 'Rencontre',
   },
 
 
@@ -1266,6 +1267,7 @@ derniereActivite: 'Latest activity',
       depense: 'Expense',
 recette: 'Income',
 operation: 'Transaction',
+      rencontre: 'Meeting',
   },
 
   es: {
@@ -1299,6 +1301,7 @@ derniereActivite: 'Última actividad',
     depense: 'Gasto',
 recette: 'Ingreso',
 operation: 'Operación',
+    rencontre: 'Encuentro',
   },
 
   de: {
@@ -1332,6 +1335,7 @@ derniereActivite: 'Letzte Aktivität',
     depense: 'Ausgabe',
 recette: 'Einnahme',
 operation: 'Transaktion',
+    rencontre: 'Treffen',
   },
 
   ja: {
@@ -1365,6 +1369,7 @@ derniereActivite: '最新の活動',
     depense: '支出',
 recette: '収入',
 operation: '取引',
+    rencontre: '交流会',
   }
 };
   function appliquerLangue(langue) {
@@ -2194,7 +2199,11 @@ if (derniereAdhesion && derniereAdhesion[0]) {
   if (derniereActivite && derniereActivite[0]) {
     ajouterInfo(
      traductions[languageSelect.value].derniereActivite,
-      (derniereActivite[0].titre || 'Sans titre') +
+      (
+  derniereActivite[0].titre === 'Rencontre'
+    ? traductions[languageSelect.value].rencontre
+    : (derniereActivite[0].titre || 'Sans titre')
+) +
       ' — ' +
      formaterDateDashboard(derniereActivite[0].date_activite)
     );
