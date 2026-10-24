@@ -751,6 +751,13 @@ overflow:auto;
     <option value="ja">日本語</option>
   </select>
 </div>
+ <div class="language-selector">
+  <label for="currencySelect">Devise</label>
+  <select id="currencySelect">
+    <option value="XOF">FCFA</option>
+    <option value="EUR">Euro (€)</option>
+  </select>
+</div>    
       <div class="sidebar-bottom">
         <span>AIJEB Connect</span>
         <button id="logout">Déconnexion</button>
@@ -1184,6 +1191,7 @@ const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois
  const statResultatMois = document.getElementById('statResultatMois');
   const statTauxMembresAJour = document.getElementById('statTauxMembresAJour');
   const languageSelect = document.getElementById('languageSelect');
+  const currencySelect = document.getElementById('currencySelect');
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1430,7 +1438,17 @@ languageSelect.addEventListener('change', function () {
   appliquerLangue(languageSelect.value);
 chargerStatsDashboard();
 });
+currencySelect.addEventListener('change', function () {
+  chargerStatsDashboard();
 
+  if (!cotisationsPage.classList.contains('hidden')) {
+    btnCotisations.onclick();
+  }
+
+  if (!financesPage.classList.contains('hidden')) {
+    btnFinances.onclick();
+  }
+});
 appliquerLangue(languageSelect.value);
 btnActivitesRealisees.addEventListener('click', function () {
   activitesAVenirSection.style.display = 'none';
@@ -1937,6 +1955,20 @@ const activitesRealiseesListe = document.getElementById('activitesRealiseesListe
    chargerActivites();
     }
   }
+  function formaterMontant(montant) {
+  const valeur = Number(montant || 0);
+
+  if (currencySelect.value === 'EUR') {
+    const montantEuro = valeur / 655.957;
+
+    return montantEuro.toLocaleString('fr-FR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) + ' €';
+  }
+
+  return valeur.toLocaleString('fr-FR') + ' FCFA';
+}
 async function chargerStatsDashboard() {
   const { count: nbMembres, error: erreurMembres } = await sb
     .from('membres')
@@ -2005,8 +2037,7 @@ if (statMembresAJour) {
 
   statTauxMembresAJour.textContent = tauxMembresAJour + ' %';
 }
-    statCotisations.textContent =
-      totalCotisations.toLocaleString('fr-FR') + ' FCFA';
+   statCotisations.textContent = formaterMontant(totalCotisations);
   }
 
   const { data: donneesFinances, error: erreurFinances } = await sb
@@ -2031,8 +2062,7 @@ if (statMembresAJour) {
 
     const solde = recettes - depenses;
 
-    statSolde.textContent =
-      solde.toLocaleString('fr-FR') + ' FCFA';
+    statSolde.textContent = formaterMontant(solde);
   }
   if (statDepensesMois) {
   const maintenant = new Date();
@@ -2056,8 +2086,7 @@ if (statMembresAJour) {
       return total + Number(operation.montant || 0);
     }, 0);
 
-  statDepensesMois.textContent =
-    depensesMois.toLocaleString('fr-FR') + ' FCFA';
+ statDepensesMois.textContent = formaterMontant(depensesMois);
 }
  if (statRecettesMois) {
   const maintenant = new Date();
@@ -2081,8 +2110,7 @@ if (statMembresAJour) {
       return total + Number(operation.montant || 0);
     }, 0);
 
-  statRecettesMois.textContent =
-    recettesMois.toLocaleString('fr-FR') + ' FCFA';
+statRecettesMois.textContent = formaterMontant(recettesMois);
 } 
   if (statResultatMois) {
   const maintenant = new Date();
@@ -2114,8 +2142,7 @@ if (statMembresAJour) {
 
   const resultatMois = recettesResultatMois - depensesResultatMois;
 
-  statResultatMois.textContent =
-    resultatMois.toLocaleString('fr-FR') + ' FCFA';
+ statResultatMois.textContent = formaterMontant(resultatMois);
 }
 const activiteRecenteListe = document.getElementById('activiteRecenteListe');
 
@@ -2181,8 +2208,8 @@ if (derniereAdhesion && derniereAdhesion[0]) {
   if (derniereCotisation && derniereCotisation[0]) {
     ajouterInfo(
       traductions[languageSelect.value].derniereCotisation,
-      Number(derniereCotisation[0].montant_paye || 0).toLocaleString('fr-FR') +
-      ' FCFA — ' +
+    formaterMontant(derniereCotisation[0].montant_paye) +
+' — ' +
       formaterDateDashboard(derniereCotisation[0].date_paiement)
     );
   }
@@ -2198,8 +2225,8 @@ if (derniereAdhesion && derniereAdhesion[0]) {
   : traductions[languageSelect.value].operation
 )+
       ' — ' +
-      Number(derniereFinance[0].montant || 0).toLocaleString('fr-FR') +
-      ' FCFA — ' +
+  formaterMontant(derniereFinance[0].montant) +
+' — ' +
      formaterDateDashboard(derniereFinance[0].date_operation)
     );
   }
@@ -2965,8 +2992,8 @@ bloc.textContent =
   nomMembre +
  ' | Période : ' + (cotisation.periode || 'Non renseignée') +
 ' | Année : ' + (cotisation.annee || 'Non renseignée') +
-' | Attendu : ' + (cotisation.montant_attendu || 0) + ' FCFA' +
-' | Payé : ' + (cotisation.montant_paye || 0) + ' FCFA' +
+' | Attendu : ' + formaterMontant(cotisation.montant_attendu) +
+' | Payé : ' + formaterMontant(cotisation.montant_paye) +
 ' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
 ' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
 ' | Statut : ' +
@@ -3229,7 +3256,7 @@ const totalDepenses = document.getElementById('totalDepenses');
 const soldeFinances = document.getElementById('soldeFinances');
 
 function formatMontant(montant) {
-  return Number(montant || 0).toLocaleString('fr-FR') + ' FCFA';
+  return formaterMontant(montant);
 }
 
 btnFinances.onclick = async function () {
@@ -3252,9 +3279,9 @@ btnFinances.onclick = async function () {
 
   if (!data || data.length === 0) {
     financesStatus.textContent = 'Aucune opération financière enregistrée.';
-    totalRecettes.textContent = '0 FCFA';
-    totalDepenses.textContent = '0 FCFA';
-    soldeFinances.textContent = '0 FCFA';
+   totalRecettes.textContent = formaterMontant(0);
+totalDepenses.textContent = formaterMontant(0);
+soldeFinances.textContent = formaterMontant(0);
     return;
   }
 
