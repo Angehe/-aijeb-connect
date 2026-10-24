@@ -1192,6 +1192,11 @@ const statNouveauxMembresMois = document.getElementById('statNouveauxMembresMois
   const statTauxMembresAJour = document.getElementById('statTauxMembresAJour');
   const languageSelect = document.getElementById('languageSelect');
   const currencySelect = document.getElementById('currencySelect');
+ const deviseMemorisee = localStorage.getItem('aijebDevise');
+
+if (deviseMemorisee === 'XOF' || deviseMemorisee === 'EUR') {
+  currencySelect.value = deviseMemorisee;
+}
   const btnAdhesions = document.getElementById('btnAdhesions');
 const adhesionsPage = document.getElementById('adhesionsPage');
 const retourDashboardAdhesions = document.getElementById('retourDashboardAdhesions');
@@ -1439,6 +1444,7 @@ languageSelect.addEventListener('change', function () {
 chargerStatsDashboard();
 });
 currencySelect.addEventListener('change', function () {
+ localStorage.setItem('aijebDevise', currencySelect.value);
   chargerStatsDashboard();
 
   if (!cotisationsPage.classList.contains('hidden')) {
