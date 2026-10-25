@@ -851,7 +851,7 @@ overflow:auto;
   <input id="inputType" type="hidden">
 
   <label>Montant</label>
-  <input id="inputMontantFinance" type="number" placeholder="Montant en FCFA">
+  <input id="inputMontantFinance" type="number" placeholder="Montant en FCFA" data-placeholder-xof="Montant en FCFA" data-placeholder-eur="Montant en EUR">
 
   <label>Catégorie</label>
   <input id="inputCategorieFinance" type="text" placeholder="Exemple : Transport, Eau, Communication">
@@ -1041,7 +1041,7 @@ overflow:auto;
 
   <label>Résultats attendus</label>
   <textarea id="inputResultatsAttendusActivite" rows="4" placeholder="Quels résultats sont attendus ?"></textarea>
-<label>Budget prévisionnel (FCFA)</label>
+<label id="labelBudgetPrevisionnel">Budget prévisionnel (FCFA)</label>
 <input id="inputBudgetPrevisionnelActivite" type="number" min="0" placeholder="Exemple : 150000">
 
 <label>Nombre de participants attendus</label>
@@ -1445,6 +1445,7 @@ chargerStatsDashboard();
 });
 currencySelect.addEventListener('change', function () {
  localStorage.setItem('aijebDevise', currencySelect.value);
+  mettreAJourLibellesDevise();
   chargerStatsDashboard();
 
   if (!cotisationsPage.classList.contains('hidden')) {
@@ -1456,7 +1457,8 @@ currencySelect.addEventListener('change', function () {
   }
 });
 appliquerLangue(languageSelect.value);
-btnActivitesRealisees.addEventListener('click', function () {
+mettreAJourLibellesDevise();
+  btnActivitesRealisees.addEventListener('click', function () {
   activitesAVenirSection.style.display = 'none';
   activitesRealiseesSectionGlobal.style.display = 'block';
 
@@ -1491,13 +1493,23 @@ const inputDescriptionActivite = document.getElementById('inputDescriptionActivi
 const inputObjectifActivite = document.getElementById('inputObjectifActivite');
 const inputResultatsAttendusActivite = document.getElementById('inputResultatsAttendusActivite');
 const inputBudgetPrevisionnelActivite = document.getElementById('inputBudgetPrevisionnelActivite');
-const inputParticipantsAttendusActivite = document.getElementById('inputParticipantsAttendusActivite');
+const labelBudgetPrevisionnel = document.getElementById('labelBudgetPrevisionnel');
+  const inputParticipantsAttendusActivite = document.getElementById('inputParticipantsAttendusActivite');
   const inputStatutActivite = document.getElementById('inputStatutActivite');
 const inputResultatsObtenusActivite = document.getElementById('inputResultatsObtenusActivite');
 const inputObservationsActivite = document.getElementById('inputObservationsActivite');
 const inputPhotoPrincipaleActivite = document.getElementById('inputPhotoPrincipaleActivite');
 const inputGalerieActivite = document.getElementById('inputGalerieActivite');
- let activiteEnModification = null;
+ function mettreAJourLibellesDevise() {
+  if (currencySelect.value === 'EUR') {
+    inputMontantFinance.placeholder = 'Montant en EUR';
+    labelBudgetPrevisionnel.textContent = 'Budget prévisionnel (EUR)';
+  } else {
+    inputMontantFinance.placeholder = 'Montant en FCFA';
+    labelBudgetPrevisionnel.textContent = 'Budget prévisionnel (FCFA)';
+  }
+}
+  let activiteEnModification = null;
   if (btnNouvelleActivite && formulaireActivite) {
   btnNouvelleActivite.onclick = function () {
    activiteEnModification = null;
