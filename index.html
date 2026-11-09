@@ -2952,15 +2952,21 @@ adhesionsListe.appendChild(bloc);
   connectedBox.classList.remove('hidden');
 };
 btnActivites.onclick = async function () {
-  connectedBox.style.display = 'none';
+  const dashboardMain = document.querySelector('.dashboard-main');
+
+  if (activitesPage.parentElement !== dashboardMain) {
+    dashboardMain.appendChild(activitesPage);
+  }
+
+  dashboardHome.classList.add('hidden');
   activitesPage.classList.remove('hidden');
 
   await chargerActivites();
 };
+
 retourDashboardActivites.onclick = function () {
   activitesPage.classList.add('hidden');
-  connectedBox.style.display = '';
-  connectedBox.classList.remove('hidden');
+  dashboardHome.classList.remove('hidden');
 };
   btnCotisations.onclick = async function () {
   connectedBox.style.display = 'none';
