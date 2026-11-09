@@ -1664,7 +1664,358 @@ await chargerActivites();
   };
 }}
 async function chargerActivites() {
-  activitesStatus.textContent = 'Chargement des activités...';
+
+  const textesActivites = {
+    fr: {
+      titrePage: 'Activités',
+      sousTitre: 'Planification, suivi et compte rendu des activités de l’AIJEB.',
+      nouvelle: '+ Nouvelle activité',
+      avenir: 'Activités à venir',
+      realisees: 'Activités réalisées',
+      prochaine: 'Prochaine activité',
+      derniere: 'Dernière activité réalisée',
+      chargement: 'Chargement des activités...',
+      aucune: 'Aucune',
+      aucuneActivite: 'Aucune activité enregistrée.',
+      aucuneRealisee: 'Aucune activité réalisée enregistrée.',
+      activitesAVenir: 'activité(s) à venir.',
+      activitesRealisees: 'activité(s) réalisée(s).',
+      date: 'Date',
+      lieu: 'Lieu',
+      responsable: 'Responsable',
+      description: 'Description',
+      personnes: 'Personnes impliquées',
+      objectif: 'Objectif',
+      resultatsAttendus: 'Résultats attendus',
+      budget: 'Budget prévisionnel',
+      participants: 'Participants attendus',
+      resultatsObtenus: 'Résultats obtenus',
+      observations: 'Observations / compte rendu',
+      modifier: 'Modifier',
+      supprimer: 'Supprimer',
+      enregistrer: 'Enregistrer',
+      mettreAJour: 'Mettre à jour',
+      annuler: 'Annuler',
+      retour: 'Retour au tableau de bord',
+      nonRenseigne: 'Non renseigné',
+      nonRenseignee: 'Non renseignée',
+      sansTitre: 'Activité sans titre',
+      confirmerSuppression: 'Voulez-vous vraiment supprimer cette activité ?',
+      suppressionReussie: 'Activité supprimée avec succès.',
+      erreurSuppression: 'Erreur lors de la suppression : ',
+      statut: 'Statut',
+      aVenir: 'À venir',
+      realisee: 'Réalisée',
+      titreActivite: 'Titre de l’activité',
+      dateActivite: 'Date de l’activité',
+      personnesAttendues: 'Nombre de participants attendus',
+      photoPrincipale: 'Photo principale',
+      galerie: 'Galerie photos'
+    },
+
+    en: {
+      titrePage: 'Activities',
+      sousTitre: 'Planning, monitoring and reporting of AIJEB activities.',
+      nouvelle: '+ New activity',
+      avenir: 'Upcoming activities',
+      realisees: 'Completed activities',
+      prochaine: 'Next activity',
+      derniere: 'Latest completed activity',
+      chargement: 'Loading activities...',
+      aucune: 'None',
+      aucuneActivite: 'No upcoming activity registered.',
+      aucuneRealisee: 'No completed activity registered.',
+      activitesAVenir: 'upcoming activity(ies).',
+      activitesRealisees: 'completed activity(ies).',
+      date: 'Date',
+      lieu: 'Location',
+      responsable: 'Person in charge',
+      description: 'Description',
+      personnes: 'People involved',
+      objectif: 'Objective',
+      resultatsAttendus: 'Expected results',
+      budget: 'Planned budget',
+      participants: 'Expected participants',
+      resultatsObtenus: 'Results achieved',
+      observations: 'Observations / report',
+      modifier: 'Edit',
+      supprimer: 'Delete',
+      enregistrer: 'Save',
+      mettreAJour: 'Update',
+      annuler: 'Cancel',
+      retour: 'Back to dashboard',
+      nonRenseigne: 'Not provided',
+      nonRenseignee: 'Not provided',
+      sansTitre: 'Untitled activity',
+      confirmerSuppression: 'Do you really want to delete this activity?',
+      suppressionReussie: 'Activity deleted successfully.',
+      erreurSuppression: 'Error while deleting: ',
+      statut: 'Status',
+      aVenir: 'Upcoming',
+      realisee: 'Completed',
+      titreActivite: 'Activity title',
+      dateActivite: 'Activity date',
+      personnesAttendues: 'Expected number of participants',
+      photoPrincipale: 'Main photo',
+      galerie: 'Photo gallery'
+    },
+
+    es: {
+      titrePage: 'Actividades',
+      sousTitre: 'Planificación, seguimiento e informe de las actividades de AIJEB.',
+      nouvelle: '+ Nueva actividad',
+      avenir: 'Próximas actividades',
+      realisees: 'Actividades realizadas',
+      prochaine: 'Próxima actividad',
+      derniere: 'Última actividad realizada',
+      chargement: 'Cargando actividades...',
+      aucune: 'Ninguna',
+      aucuneActivite: 'No hay actividades próximas registradas.',
+      aucuneRealisee: 'No hay actividades realizadas registradas.',
+      activitesAVenir: 'actividad(es) próxima(s).',
+      activitesRealisees: 'actividad(es) realizada(s).',
+      date: 'Fecha',
+      lieu: 'Lugar',
+      responsable: 'Responsable',
+      description: 'Descripción',
+      personnes: 'Personas involucradas',
+      objectif: 'Objetivo',
+      resultatsAttendus: 'Resultados esperados',
+      budget: 'Presupuesto previsto',
+      participants: 'Participantes previstos',
+      resultatsObtenus: 'Resultados obtenidos',
+      observations: 'Observaciones / informe',
+      modifier: 'Modificar',
+      supprimer: 'Eliminar',
+      enregistrer: 'Guardar',
+      mettreAJour: 'Actualizar',
+      annuler: 'Cancelar',
+      retour: 'Volver al panel de control',
+      nonRenseigne: 'No indicado',
+      nonRenseignee: 'No indicada',
+      sansTitre: 'Actividad sin título',
+      confirmerSuppression: '¿Desea realmente eliminar esta actividad?',
+      suppressionReussie: 'Actividad eliminada correctamente.',
+      erreurSuppression: 'Error al eliminar: ',
+      statut: 'Estado',
+      aVenir: 'Próxima',
+      realisee: 'Realizada',
+      titreActivite: 'Título de la actividad',
+      dateActivite: 'Fecha de la actividad',
+      personnesAttendues: 'Número de participantes previstos',
+      photoPrincipale: 'Foto principal',
+      galerie: 'Galería de fotos'
+    },
+
+    de: {
+      titrePage: 'Aktivitäten',
+      sousTitre: 'Planung, Begleitung und Berichterstattung der AIJEB-Aktivitäten.',
+      nouvelle: '+ Neue Aktivität',
+      avenir: 'Bevorstehende Aktivitäten',
+      realisees: 'Abgeschlossene Aktivitäten',
+      prochaine: 'Nächste Aktivität',
+      derniere: 'Letzte abgeschlossene Aktivität',
+      chargement: 'Aktivitäten werden geladen...',
+      aucune: 'Keine',
+      aucuneActivite: 'Keine bevorstehende Aktivität registriert.',
+      aucuneRealisee: 'Keine abgeschlossene Aktivität registriert.',
+      activitesAVenir: 'bevorstehende Aktivität(en).',
+      activitesRealisees: 'abgeschlossene Aktivität(en).',
+      date: 'Datum',
+      lieu: 'Ort',
+      responsable: 'Verantwortlich',
+      description: 'Beschreibung',
+      personnes: 'Beteiligte Personen',
+      objectif: 'Ziel',
+      resultatsAttendus: 'Erwartete Ergebnisse',
+      budget: 'Geplantes Budget',
+      participants: 'Erwartete Teilnehmende',
+      resultatsObtenus: 'Erzielte Ergebnisse',
+      observations: 'Beobachtungen / Bericht',
+      modifier: 'Bearbeiten',
+      supprimer: 'Löschen',
+      enregistrer: 'Speichern',
+      mettreAJour: 'Aktualisieren',
+      annuler: 'Abbrechen',
+      retour: 'Zurück zum Dashboard',
+      nonRenseigne: 'Nicht angegeben',
+      nonRenseignee: 'Nicht angegeben',
+      sansTitre: 'Aktivität ohne Titel',
+      confirmerSuppression: 'Möchten Sie diese Aktivität wirklich löschen?',
+      suppressionReussie: 'Aktivität erfolgreich gelöscht.',
+      erreurSuppression: 'Fehler beim Löschen: ',
+      statut: 'Status',
+      aVenir: 'Bevorstehend',
+      realisee: 'Abgeschlossen',
+      titreActivite: 'Titel der Aktivität',
+      dateActivite: 'Datum der Aktivität',
+      personnesAttendues: 'Erwartete Teilnehmerzahl',
+      photoPrincipale: 'Hauptfoto',
+      galerie: 'Fotogalerie'
+    },
+
+    ja: {
+      titrePage: '活動',
+      sousTitre: 'AIJEBの活動の計画、進捗管理、報告。',
+      nouvelle: '+ 新しい活動',
+      avenir: '今後の活動',
+      realisees: '実施済み活動',
+      prochaine: '次の活動',
+      derniere: '最新の実施済み活動',
+      chargement: '活動を読み込んでいます...',
+      aucune: 'なし',
+      aucuneActivite: '今後の活動は登録されていません。',
+      aucuneRealisee: '実施済みの活動は登録されていません。',
+      activitesAVenir: '件の今後の活動。',
+      activitesRealisees: '件の実施済み活動。',
+      date: '日付',
+      lieu: '場所',
+      responsable: '担当者',
+      description: '説明',
+      personnes: '関係者',
+      objectif: '目的',
+      resultatsAttendus: '期待される結果',
+      budget: '予定予算',
+      participants: '参加予定人数',
+      resultatsObtenus: '得られた結果',
+      observations: '所見・報告',
+      modifier: '編集',
+      supprimer: '削除',
+      enregistrer: '保存',
+      mettreAJour: '更新',
+      annuler: 'キャンセル',
+      retour: 'ダッシュボードへ戻る',
+      nonRenseigne: '未入力',
+      nonRenseignee: '未入力',
+      sansTitre: 'タイトルなしの活動',
+      confirmerSuppression: 'この活動を削除しますか？',
+      suppressionReussie: '活動を削除しました。',
+      erreurSuppression: '削除エラー：',
+      statut: 'ステータス',
+      aVenir: '今後',
+      realisee: '実施済み',
+      titreActivite: '活動タイトル',
+      dateActivite: '活動日',
+      personnesAttendues: '参加予定人数',
+      photoPrincipale: 'メイン写真',
+      galerie: '写真ギャラリー'
+    }
+  };
+
+  const t =
+    textesActivites[languageSelect.value] ||
+    textesActivites.fr;
+
+  if (!languageSelect.dataset.activitesListener) {
+    languageSelect.dataset.activitesListener = '1';
+
+    languageSelect.addEventListener('change', function () {
+      if (!activitesPage.classList.contains('hidden')) {
+        chargerActivites();
+      }
+    });
+  }
+
+  const titrePageActivites = activitesPage.querySelector('h2');
+
+  if (titrePageActivites) {
+    titrePageActivites.textContent = t.titrePage;
+
+    const sousTitre = titrePageActivites.parentElement.querySelector('p');
+
+    if (sousTitre) {
+      sousTitre.textContent = t.sousTitre;
+    }
+  }
+
+  if (btnNouvelleActivite) {
+    btnNouvelleActivite.textContent = t.nouvelle;
+  }
+
+  btnActivitesAVenir.textContent = t.avenir;
+  btnActivitesRealisees.textContent = t.realisees;
+
+  const titreAvenir = activitesAVenirSection.querySelector('h3');
+
+  if (titreAvenir) {
+    titreAvenir.textContent = t.avenir;
+  }
+
+  const titreRealisees =
+    activitesRealiseesSectionGlobal.querySelector('h3');
+
+  if (titreRealisees) {
+    titreRealisees.textContent = t.realisees;
+  }
+
+  if (retourDashboardActivites) {
+    retourDashboardActivites.textContent = t.retour;
+  }
+
+  const titresStatsActivites =
+    document.querySelectorAll('#activitesStats span');
+
+  if (titresStatsActivites[0]) {
+    titresStatsActivites[0].textContent = t.avenir;
+  }
+
+  if (titresStatsActivites[1]) {
+    titresStatsActivites[1].textContent = t.realisees;
+  }
+
+  if (titresStatsActivites[2]) {
+    titresStatsActivites[2].textContent = t.prochaine;
+  }
+
+  if (titresStatsActivites[3]) {
+    titresStatsActivites[3].textContent = t.derniere;
+  }
+
+  const labelsFormulaire =
+    formulaireActivite.querySelectorAll('label');
+
+  const textesLabels = [
+    t.titreActivite,
+    t.dateActivite,
+    t.lieu,
+    t.responsable,
+    t.personnes,
+    t.description,
+    t.objectif,
+    t.resultatsAttendus,
+    t.budget +
+      (currencySelect.value === 'EUR'
+        ? ' (EUR)'
+        : ' (FCFA)'),
+    t.personnesAttendues,
+    t.statut,
+    t.resultatsObtenus,
+    t.observations,
+    t.photoPrincipale,
+    t.galerie
+  ];
+
+  labelsFormulaire.forEach(function (label, index) {
+    if (textesLabels[index]) {
+      label.textContent = textesLabels[index];
+    }
+  });
+
+  if (inputStatutActivite.options[0]) {
+    inputStatutActivite.options[0].textContent = t.aVenir;
+  }
+
+  if (inputStatutActivite.options[1]) {
+    inputStatutActivite.options[1].textContent = t.realisee;
+  }
+
+  btnAnnulerActivite.textContent = t.annuler;
+
+  if (!activiteEnModification) {
+    btnEnregistrerActivite.textContent = t.enregistrer;
+  }
+
+  activitesStatus.textContent = t.chargement;
   activitesListe.innerHTML = '';
   activitesRealiseesListe.innerHTML = '';
 
@@ -1674,7 +2025,8 @@ async function chargerActivites() {
     .order('date_activite', { ascending: false });
 
   if (error) {
-    activitesStatus.textContent = 'Erreur : ' + error.message;
+    activitesStatus.textContent =
+      'Erreur : ' + error.message;
     return;
   }
 
@@ -1685,53 +2037,86 @@ async function chargerActivites() {
   const activitesRealisees = (data || []).filter(function (activite) {
     return activite.statut === 'realisee';
   });
-const statActivitesAVenir = document.getElementById('statActivitesAVenir');
-const statActivitesRealisees = document.getElementById('statActivitesRealisees');
-const statProchaineActivite = document.getElementById('statProchaineActivite');
-const statDerniereActivite = document.getElementById('statDerniereActivite');
-function formaterDateActivite(date) {
-  if (!date) return '';
 
-  const parties = date.split('-');
+  const statActivitesAVenir =
+    document.getElementById('statActivitesAVenir');
 
-  if (parties.length !== 3) return date;
+  const statActivitesRealisees =
+    document.getElementById('statActivitesRealisees');
 
-  return parties[2] + '/' + parties[1] + '/' + parties[0];
-}
-if (statActivitesAVenir) {
-  statActivitesAVenir.textContent = activitesAVenir.length;
-}
+  const statProchaineActivite =
+    document.getElementById('statProchaineActivite');
 
-if (statActivitesRealisees) {
-  statActivitesRealisees.textContent = activitesRealisees.length;
-}
+  const statDerniereActivite =
+    document.getElementById('statDerniereActivite');
 
-const prochaineActivite = [...activitesAVenir]
-  .sort((a, b) => new Date(a.date_activite) - new Date(b.date_activite))[0];
+  function formaterDateActivite(date) {
+    if (!date) return '';
 
-if (statProchaineActivite) {
-  statProchaineActivite.textContent = prochaineActivite
-    ? prochaineActivite.titre + ' — ' + formaterDateActivite(prochaineActivite.date_activite)
-    : 'Aucune';
-}
+    const parties = date.split('-');
 
-const derniereActivite = [...activitesRealisees]
-  .sort((a, b) => new Date(b.date_activite) - new Date(a.date_activite))[0];
+    if (parties.length !== 3) return date;
 
-if (statDerniereActivite) {
-  statDerniereActivite.textContent = derniereActivite
-  ? derniereActivite.titre + ' — ' + formaterDateActivite(derniereActivite.date_activite)
-    : 'Aucune';
-}
+    return parties[2] + '/' + parties[1] + '/' + parties[0];
+  }
+
+  if (statActivitesAVenir) {
+    statActivitesAVenir.textContent =
+      activitesAVenir.length;
+  }
+
+  if (statActivitesRealisees) {
+    statActivitesRealisees.textContent =
+      activitesRealisees.length;
+  }
+
+  const prochaineActivite = [...activitesAVenir]
+    .sort(function (a, b) {
+      return new Date(a.date_activite) -
+             new Date(b.date_activite);
+    })[0];
+
+  if (statProchaineActivite) {
+    statProchaineActivite.textContent =
+      prochaineActivite
+        ? prochaineActivite.titre +
+          ' — ' +
+          formaterDateActivite(
+            prochaineActivite.date_activite
+          )
+        : t.aucune;
+  }
+
+  const derniereActivite = [...activitesRealisees]
+    .sort(function (a, b) {
+      return new Date(b.date_activite) -
+             new Date(a.date_activite);
+    })[0];
+
+  if (statDerniereActivite) {
+    statDerniereActivite.textContent =
+      derniereActivite
+        ? derniereActivite.titre +
+          ' — ' +
+          formaterDateActivite(
+            derniereActivite.date_activite
+          )
+        : t.aucune;
+  }
+
   activitesStatus.textContent =
     activitesAVenir.length === 0
-      ? 'Aucune activité enregistrée.'
-      : activitesAVenir.length + ' activité(s) à venir.';
+      ? t.aucuneActivite
+      : activitesAVenir.length +
+        ' ' +
+        t.activitesAVenir;
 
   activitesRealiseesStatus.textContent =
     activitesRealisees.length === 0
-      ? 'Aucune activité réalisée enregistrée.'
-      : activitesRealisees.length + ' activité(s) réalisée(s).';
+      ? t.aucuneRealisee
+      : activitesRealisees.length +
+        ' ' +
+        t.activitesRealisees;
 
   function afficherActivite(activite, conteneur) {
     const bloc = document.createElement('div');
@@ -1740,223 +2125,386 @@ if (statDerniereActivite) {
     bloc.style.borderRadius = '14px';
     bloc.style.padding = '18px';
     bloc.style.marginTop = '14px';
-    bloc.style.boxShadow = '0 3px 12px rgba(0,0,0,0.08)';
+    bloc.style.boxShadow =
+      '0 3px 12px rgba(0,0,0,0.08)';
+
     bloc.style.borderLeft =
       activite.statut === 'realisee'
         ? '6px solid #0b6b3a'
         : '6px solid #f4c430';
 
     const titre = document.createElement('h3');
-    titre.textContent = activite.titre || 'Activité sans titre';
+
+    titre.textContent =
+      activite.titre || t.sansTitre;
+
     titre.style.margin = '0 0 10px 0';
 
-   const infos = document.createElement('div');
+    const infos = document.createElement('div');
 
-infos.style.display = 'grid';
-infos.style.gridTemplateColumns = 'repeat(auto-fit, minmax(180px, 1fr))';
-infos.style.gap = '10px';
-infos.style.marginBottom = '14px';
+    infos.style.display = 'grid';
+    infos.style.gridTemplateColumns =
+      'repeat(auto-fit, minmax(180px, 1fr))';
+    infos.style.gap = '10px';
+    infos.style.marginBottom = '14px';
 
-infos.innerHTML =
-  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
-    '<strong>Date</strong><br>' +
-    (activite.date_activite ? formaterDateActivite(activite.date_activite) : 'Non renseignée') +
-  '</div>' +
+    infos.innerHTML =
+      '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+        '<strong>' + t.date + '</strong><br>' +
+        (
+          activite.date_activite
+            ? formaterDateActivite(
+                activite.date_activite
+              )
+            : t.nonRenseignee
+        ) +
+      '</div>' +
 
-  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
-    '<strong>Lieu</strong><br>' +
-    (activite.lieu || 'Non renseigné') +
-  '</div>' +
+      '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+        '<strong>' + t.lieu + '</strong><br>' +
+        (activite.lieu || t.nonRenseigne) +
+      '</div>' +
 
-  '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
-    '<strong>Responsable</strong><br>' +
-    (activite.responsable || 'Non renseigné') +
-  '</div>';
+      '<div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">' +
+        '<strong>' +
+        t.responsable +
+        '</strong><br>' +
+        (
+          activite.responsable ||
+          t.nonRenseigne
+        ) +
+      '</div>';
 
     bloc.appendChild(titre);
     bloc.appendChild(infos);
 
-   if (activite.description) {
-  const description = document.createElement('div');
-  description.style.background = '#ffffff';
-  description.style.padding = '12px 14px';
-  description.style.borderRadius = '10px';
-  description.style.marginBottom = '12px';
-  description.style.lineHeight = '1.5';
+    if (activite.description) {
+      const description =
+        document.createElement('div');
 
-  description.innerHTML =
-    '<strong>Description</strong><br>' +
-    activite.description;
+      description.style.background = '#ffffff';
+      description.style.padding = '12px 14px';
+      description.style.borderRadius = '10px';
+      description.style.marginBottom = '12px';
+      description.style.lineHeight = '1.5';
 
-  bloc.appendChild(description);
-}
+      description.innerHTML =
+        '<strong>' +
+        t.description +
+        '</strong><br>' +
+        activite.description;
 
-const detailsActivite = document.createElement('div');
-detailsActivite.style.display = 'grid';
-detailsActivite.style.gridTemplateColumns = 'repeat(auto-fit, minmax(260px, 1fr))';
-detailsActivite.style.gap = '10px';
-detailsActivite.style.marginBottom = '14px';
+      bloc.appendChild(description);
+    }
 
-function ajouterDetailActivite(titreDetail, valeur) {
-  if (!valeur) return;
+    const detailsActivite =
+      document.createElement('div');
 
-  const detail = document.createElement('div');
-  detail.style.background = '#f8fafc';
-  detail.style.padding = '12px 14px';
-  detail.style.borderRadius = '10px';
-  detail.style.lineHeight = '1.45';
+    detailsActivite.style.display = 'grid';
 
-  detail.innerHTML =
-    '<strong>' + titreDetail + '</strong><br>' + valeur;
+    detailsActivite.style.gridTemplateColumns =
+      'repeat(auto-fit, minmax(260px, 1fr))';
 
-  detailsActivite.appendChild(detail);
-}
+    detailsActivite.style.gap = '10px';
+    detailsActivite.style.marginBottom = '14px';
 
-ajouterDetailActivite('Personnes impliquées', activite.personnes_impliquees);
-ajouterDetailActivite('Objectif', activite.objectif);
-ajouterDetailActivite('Résultats attendus', activite.resultats_attendus);
-    ajouterDetailActivite('Budget prévisionnel', formaterMontant(activite.budget_previsionnel));
-ajouterDetailActivite('Participants attendus', activite.participants_attendus);
-ajouterDetailActivite('Résultats obtenus', activite.resultats_obtenus);
-ajouterDetailActivite('Observations / compte rendu', activite.observations);
+    function ajouterDetailActivite(
+      titreDetail,
+      valeur
+    ) {
+      if (
+        valeur === null ||
+        valeur === undefined ||
+        valeur === ''
+      ) return;
 
-bloc.appendChild(detailsActivite);
-  if (activite.photo_principale_url) {
-  const imagePrincipale = document.createElement('img');
+      const detail =
+        document.createElement('div');
 
-  imagePrincipale.src = activite.photo_principale_url;
-  imagePrincipale.alt = activite.titre || 'Photo de l’activité';
+      detail.style.background = '#f8fafc';
+      detail.style.padding = '12px 14px';
+      detail.style.borderRadius = '10px';
+      detail.style.lineHeight = '1.45';
 
- imagePrincipale.style.width = '100%';
-imagePrincipale.style.maxWidth = '900px';
-imagePrincipale.style.maxHeight = '360px';
-imagePrincipale.style.objectFit = 'contain';
-imagePrincipale.style.display = 'block';
-imagePrincipale.style.margin = '14px auto 0';
-imagePrincipale.style.background = '#f8fafc';
-imagePrincipale.style.borderRadius = '12px';
-  bloc.appendChild(imagePrincipale);
-}
-    if (Array.isArray(activite.galerie_photos_urls) && activite.galerie_photos_urls.length > 0) {
-  const galerie = document.createElement('div');
+      detail.innerHTML =
+        '<strong>' +
+        titreDetail +
+        '</strong><br>' +
+        valeur;
 
-  galerie.style.display = 'grid';
-  galerie.style.gridTemplateColumns = 'repeat(auto-fill, minmax(220px, 280px))';
-  galerie.style.gap = '10px';
-  galerie.style.justifyContent = 'start';
-  galerie.style.marginTop = '14px';
+      detailsActivite.appendChild(detail);
+    }
 
-  activite.galerie_photos_urls.forEach(function (urlPhoto) {
-    const imageGalerie = document.createElement('img');
+    ajouterDetailActivite(
+      t.personnes,
+      activite.personnes_impliquees
+    );
 
-    imageGalerie.src = urlPhoto;
-    imageGalerie.alt = 'Photo de la galerie';
+    ajouterDetailActivite(
+      t.objectif,
+      activite.objectif
+    );
 
-    imageGalerie.style.width = '100%';
-imageGalerie.style.height = '180px';
-imageGalerie.style.objectFit = 'cover';
-imageGalerie.style.borderRadius = '10px';
-imageGalerie.style.display = 'block';
-    galerie.appendChild(imageGalerie);
-  });
+    ajouterDetailActivite(
+      t.resultatsAttendus,
+      activite.resultats_attendus
+    );
 
-  bloc.appendChild(galerie);
-}
-  const boutonModifierActivite = document.createElement('button');
+    ajouterDetailActivite(
+      t.budget,
+      formaterMontant(
+        activite.budget_previsionnel
+      )
+    );
 
-boutonModifierActivite.textContent = 'Modifier';
-boutonModifierActivite.style.marginTop = '14px';
-boutonModifierActivite.style.flex = '1';
-boutonModifierActivite.style.padding = '12px';
-boutonModifierActivite.style.background = '#0b6b3a';
-boutonModifierActivite.style.color = 'white';
-boutonModifierActivite.style.border = 'none';
-boutonModifierActivite.style.borderRadius = '10px';
-boutonModifierActivite.style.cursor = 'pointer';
+    ajouterDetailActivite(
+      t.participants,
+      activite.participants_attendus
+    );
 
-boutonModifierActivite.onclick = function () {
-  activiteEnModification = activite;
+    ajouterDetailActivite(
+      t.resultatsObtenus,
+      activite.resultats_obtenus
+    );
 
-  inputTitreActivite.value = activite.titre || '';
-  inputDateActivite.value = activite.date_activite || '';
-  inputLieuActivite.value = activite.lieu || '';
-  inputResponsableActivite.value = activite.responsable || '';
-  inputPersonnesActivite.value = activite.personnes_impliquees || '';
-  inputDescriptionActivite.value = activite.description || '';
-  inputObjectifActivite.value = activite.objectif || '';
-  inputResultatsAttendusActivite.value = activite.resultats_attendus || '';
-  inputStatutActivite.value = activite.statut || 'a_venir';
-  inputResultatsObtenusActivite.value = activite.resultats_obtenus || '';
-  inputObservationsActivite.value = activite.observations || '';
+    ajouterDetailActivite(
+      t.observations,
+      activite.observations
+    );
 
-  formulaireActivite.style.display = 'block';
+    bloc.appendChild(detailsActivite);
 
-  formulaireActivite.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+    if (activite.photo_principale_url) {
+      const imagePrincipale =
+        document.createElement('img');
 
-  btnEnregistrerActivite.textContent = 'Mettre à jour';
-};
+      imagePrincipale.src =
+        activite.photo_principale_url;
 
+      imagePrincipale.alt =
+        activite.titre || t.sansTitre;
 
-    const boutonSupprimerActivite = document.createElement('button');
+      imagePrincipale.style.width = '100%';
+      imagePrincipale.style.maxWidth = '900px';
+      imagePrincipale.style.maxHeight = '360px';
+      imagePrincipale.style.objectFit = 'contain';
+      imagePrincipale.style.display = 'block';
+      imagePrincipale.style.margin =
+        '14px auto 0';
+      imagePrincipale.style.background =
+        '#f8fafc';
+      imagePrincipale.style.borderRadius =
+        '12px';
 
-boutonSupprimerActivite.textContent = 'Supprimer';
-boutonSupprimerActivite.style.marginTop = '14px';
-boutonSupprimerActivite.style.flex = '1';
-boutonSupprimerActivite.style.padding = '12px';
-boutonSupprimerActivite.style.background = '#d62828';
-boutonSupprimerActivite.style.color = 'white';
-boutonSupprimerActivite.style.border = 'none';
-boutonSupprimerActivite.style.borderRadius = '10px';
-boutonSupprimerActivite.style.cursor = 'pointer';
+      bloc.appendChild(imagePrincipale);
+    }
 
-boutonSupprimerActivite.onclick = async function () {
-  const confirmation = confirm(
-    'Voulez-vous vraiment supprimer cette activité ?'
-  );
+    if (
+      Array.isArray(
+        activite.galerie_photos_urls
+      ) &&
+      activite.galerie_photos_urls.length > 0
+    ) {
+      const galerie =
+        document.createElement('div');
 
-  if (!confirmation) return;
+      galerie.style.display = 'grid';
+      galerie.style.gridTemplateColumns =
+        'repeat(auto-fill, minmax(220px, 280px))';
 
-  const { error } = await sb
-    .from('activites')
-    .delete()
-    .eq('id', activite.id);
+      galerie.style.gap = '10px';
+      galerie.style.justifyContent = 'start';
+      galerie.style.marginTop = '14px';
 
-  if (error) {
-    console.error(error);
-    alert('Erreur lors de la suppression : ' + error.message);
-    return;
-  }
+      activite.galerie_photos_urls.forEach(
+        function (urlPhoto) {
+          const imageGalerie =
+            document.createElement('img');
 
-  bloc.remove();
-  alert('Activité supprimée avec succès.');
-};
+          imageGalerie.src = urlPhoto;
+          imageGalerie.alt = t.galerie;
+          imageGalerie.style.width = '100%';
+          imageGalerie.style.height = '180px';
+          imageGalerie.style.objectFit = 'cover';
+          imageGalerie.style.borderRadius =
+            '10px';
+          imageGalerie.style.display = 'block';
 
-const actionsActivite = document.createElement('div');
-actionsActivite.style.display = 'flex';
-actionsActivite.style.gap = '12px';
-actionsActivite.style.marginTop = '14px';
+          galerie.appendChild(imageGalerie);
+        }
+      );
 
-boutonModifierActivite.style.marginTop = '0';
-boutonSupprimerActivite.style.marginTop = '0';
+      bloc.appendChild(galerie);
+    }
 
-actionsActivite.appendChild(boutonModifierActivite);
-actionsActivite.appendChild(boutonSupprimerActivite);
+    const boutonModifierActivite =
+      document.createElement('button');
 
-bloc.appendChild(actionsActivite);
+    boutonModifierActivite.textContent =
+      t.modifier;
+
+    boutonModifierActivite.style.flex = '1';
+    boutonModifierActivite.style.padding =
+      '12px';
+
+    boutonModifierActivite.style.background =
+      '#0b6b3a';
+
+    boutonModifierActivite.style.color =
+      'white';
+
+    boutonModifierActivite.style.border =
+      'none';
+
+    boutonModifierActivite.style.borderRadius =
+      '10px';
+
+    boutonModifierActivite.style.cursor =
+      'pointer';
+
+    boutonModifierActivite.onclick =
+      function () {
+
+        activiteEnModification = activite;
+
+        inputTitreActivite.value =
+          activite.titre || '';
+
+        inputDateActivite.value =
+          activite.date_activite || '';
+
+        inputLieuActivite.value =
+          activite.lieu || '';
+
+        inputResponsableActivite.value =
+          activite.responsable || '';
+
+        inputPersonnesActivite.value =
+          activite.personnes_impliquees || '';
+
+        inputDescriptionActivite.value =
+          activite.description || '';
+
+        inputObjectifActivite.value =
+          activite.objectif || '';
+
+        inputResultatsAttendusActivite.value =
+          activite.resultats_attendus || '';
+
+        inputStatutActivite.value =
+          activite.statut || 'a_venir';
+
+        inputResultatsObtenusActivite.value =
+          activite.resultats_obtenus || '';
+
+        inputObservationsActivite.value =
+          activite.observations || '';
+
+        formulaireActivite.style.display =
+          'block';
+
+        formulaireActivite.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        btnEnregistrerActivite.textContent =
+          t.mettreAJour;
+      };
+
+    const boutonSupprimerActivite =
+      document.createElement('button');
+
+    boutonSupprimerActivite.textContent =
+      t.supprimer;
+
+    boutonSupprimerActivite.style.flex = '1';
+    boutonSupprimerActivite.style.padding =
+      '12px';
+
+    boutonSupprimerActivite.style.background =
+      '#d62828';
+
+    boutonSupprimerActivite.style.color =
+      'white';
+
+    boutonSupprimerActivite.style.border =
+      'none';
+
+    boutonSupprimerActivite.style.borderRadius =
+      '10px';
+
+    boutonSupprimerActivite.style.cursor =
+      'pointer';
+
+    boutonSupprimerActivite.onclick =
+      async function () {
+
+        const confirmation =
+          confirm(t.confirmerSuppression);
+
+        if (!confirmation) return;
+
+        const { error } = await sb
+          .from('activites')
+          .delete()
+          .eq('id', activite.id);
+
+        if (error) {
+          console.error(error);
+
+          alert(
+            t.erreurSuppression +
+            error.message
+          );
+
+          return;
+        }
+
+        bloc.remove();
+
+        alert(t.suppressionReussie);
+
+        await chargerActivites();
+      };
+
+    const actionsActivite =
+      document.createElement('div');
+
+    actionsActivite.style.display = 'flex';
+    actionsActivite.style.gap = '12px';
+    actionsActivite.style.marginTop = '14px';
+
+    actionsActivite.appendChild(
+      boutonModifierActivite
+    );
+
+    actionsActivite.appendChild(
+      boutonSupprimerActivite
+    );
+
+    bloc.appendChild(actionsActivite);
+
     conteneur.appendChild(bloc);
   }
 
-  activitesAVenir.forEach(function (activite) {
-    afficherActivite(activite, activitesListe);
+  activitesAVenir.forEach(
+    function (activite) {
+      afficherActivite(
+        activite,
+        activitesListe
+      );
+    }
+  );
 
-  });
-
-  activitesRealisees.forEach(function (activite) {
-    afficherActivite(activite, activitesRealiseesListe);
-  });
+  activitesRealisees.forEach(
+    function (activite) {
+      afficherActivite(
+        activite,
+        activitesRealiseesListe
+      );
+    }
+  );
 }
   const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
 const activitesRealiseesStatus = document.getElementById('activitesRealiseesStatus');
