@@ -4989,10 +4989,55 @@ soldeFinances.textContent = formaterMontant(0);
     const details = document.createElement('div');
     details.style.marginTop = '6px';
 
-    details.textContent =
-      (operation.libelle || 'Sans libellé') +
-      ' | Montant : ' + formatMontant(operation.montant) +
-      ' | Date : ' + (operation.date_operation || 'Non renseignée');
+   details.textContent = '';
+
+const libelleFinance = document.createElement('div');
+libelleFinance.textContent =
+  operation.libelle || 'Sans libellé';
+
+libelleFinance.style.color = '#475467';
+libelleFinance.style.lineHeight = '1.45';
+
+const infosFinance = document.createElement('div');
+infosFinance.style.display = 'flex';
+infosFinance.style.alignItems = 'center';
+infosFinance.style.flexWrap = 'wrap';
+infosFinance.style.gap = '8px';
+infosFinance.style.marginTop = '10px';
+
+const montantFinance = document.createElement('span');
+montantFinance.textContent =
+  formatMontant(operation.montant);
+
+montantFinance.style.display = 'inline-flex';
+montantFinance.style.padding = '6px 10px';
+montantFinance.style.borderRadius = '999px';
+montantFinance.style.fontWeight = '800';
+montantFinance.style.fontSize = '13px';
+
+if (operation.type_operation === 'recette') {
+  montantFinance.style.background = '#e9f8ef';
+  montantFinance.style.color = '#067647';
+  montantFinance.style.border = '1px solid #a9dfbf';
+} else {
+  montantFinance.style.background = '#fdecec';
+  montantFinance.style.color = '#b42318';
+  montantFinance.style.border = '1px solid #f5b5b0';
+}
+
+const dateFinance = document.createElement('span');
+dateFinance.textContent =
+  'Date : ' +
+  (operation.date_operation || 'Non renseignée');
+
+dateFinance.style.color = '#667085';
+dateFinance.style.fontSize = '13px';
+
+infosFinance.appendChild(montantFinance);
+infosFinance.appendChild(dateFinance);
+
+details.appendChild(libelleFinance);
+details.appendChild(infosFinance);
 
     bloc.appendChild(details);
 
