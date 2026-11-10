@@ -3760,7 +3760,12 @@ function creerBadgeStatut(label, statut) {
     couleur = '#b54708';
     bordure = '#fed7aa';
   }
-
+if (valeur === 'en_retard' || valeur === 'en retard') {
+  texte = 'En retard';
+  fond = '#fdecec';
+  couleur = '#b42318';
+  bordure = '#f5b5b0';
+}
   if (valeur === 'partiel' || valeur === 'partielle') {
     texte = 'Partiel';
     fond = '#fff8d8';
