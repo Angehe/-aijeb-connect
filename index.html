@@ -3744,9 +3744,79 @@ const statutCotisation = cotisationMembre
   ? (cotisationMembre.statut || 'Non renseignée')
   : 'Non renseignée';
 
-suivi.textContent =
-  'Adhésion : ' + statutAdhesion +
-  ' | Cotisation : ' + statutCotisation;
+function creerBadgeStatut(label, statut) {
+  const badge = document.createElement('span');
+
+  const valeur = String(statut || '').toLowerCase();
+
+  let texte = statut || 'Non renseignée';
+  let fond = '#f2f4f7';
+  let couleur = '#667085';
+  let bordure = '#e4e7ec';
+
+  if (valeur === 'en_attente' || valeur === 'en attente') {
+    texte = 'En attente';
+    fond = '#fff4e5';
+    couleur = '#b54708';
+    bordure = '#fed7aa';
+  }
+
+  if (valeur === 'partiel' || valeur === 'partielle') {
+    texte = 'Partiel';
+    fond = '#fff8d8';
+    couleur = '#946200';
+    bordure = '#f7df80';
+  }
+
+  if (
+    valeur === 'paye' ||
+    valeur === 'payé' ||
+    valeur === 'payee' ||
+    valeur === 'payée' ||
+    valeur === 'a_jour' ||
+    valeur === 'à jour'
+  ) {
+    texte = 'À jour';
+    fond = '#e9f8ef';
+    couleur = '#067647';
+    bordure = '#a9dfbf';
+  }
+
+  if (
+    valeur === 'non renseignée' ||
+    valeur === 'non renseignee' ||
+    valeur === ''
+  ) {
+    texte = 'Non renseignée';
+  }
+
+  badge.textContent = label + ' : ' + texte;
+
+  badge.style.display = 'inline-flex';
+  badge.style.alignItems = 'center';
+  badge.style.padding = '6px 10px';
+  badge.style.borderRadius = '999px';
+  badge.style.fontSize = '12px';
+  badge.style.fontWeight = '700';
+  badge.style.background = fond;
+  badge.style.color = couleur;
+  badge.style.border = '1px solid ' + bordure;
+
+  return badge;
+}
+
+suivi.textContent = '';
+suivi.style.display = 'flex';
+suivi.style.flexWrap = 'wrap';
+suivi.style.gap = '7px';
+
+suivi.appendChild(
+  creerBadgeStatut('Adhésion', statutAdhesion)
+);
+
+suivi.appendChild(
+  creerBadgeStatut('Cotisation', statutCotisation)
+);
 if (details.textContent) {
   bloc.appendChild(details);
 }
