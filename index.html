@@ -1191,6 +1191,63 @@ button:hover {
     width: 100% !important;
   }
 }
+  /* ===== FINITION PAGE MEMBRES ===== */
+
+/* Bouton Nouveau membre plus compact */
+#btnNouveauMembre {
+  width: auto !important;
+  min-width: 185px !important;
+  max-width: 230px !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  padding: 11px 18px !important;
+}
+
+/* Cartes légèrement colorées */
+#membresListe > div:nth-child(3n + 1) {
+  background: #f2f9f4 !important;
+}
+
+#membresListe > div:nth-child(3n + 2) {
+  background: #fffaf0 !important;
+}
+
+#membresListe > div:nth-child(3n + 3) {
+  background: #f4f8fc !important;
+}
+
+/* Réduire les grands espaces vides */
+#membresListe > div {
+  min-height: 125px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Le bouton reste en bas à droite */
+#membresListe > div > button {
+  margin-top: auto !important;
+  margin-left: auto !important;
+}
+
+/* Badge adhésion / cotisation plus élégant */
+#membresListe > div > div + div {
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid rgba(11,107,58,.10) !important;
+  color: #344054 !important;
+}
+
+/* Hover plus doux */
+#membresListe > div:hover {
+  border-color: rgba(11,107,58,.22) !important;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  #btnNouveauMembre {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
   </style>
 </head>
 
