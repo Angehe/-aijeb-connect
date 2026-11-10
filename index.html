@@ -3502,8 +3502,16 @@ if (derniereAdhesion && derniereAdhesion[0]) {
     message.textContent =
       'Lien envoyé. Consultez votre boîte e-mail.';
   };
-
+function masquerPagesPrincipales() {
+  dashboardHome.classList.add('hidden');
+  membresPage.classList.add('hidden');
+  adhesionsPage.classList.add('hidden');
+  cotisationsPage.classList.add('hidden');
+  financesPage.classList.add('hidden');
+  activitesPage.classList.add('hidden');
+}
 btnMembres.onclick = async function () {
+  masquerPagesPrincipales();
  window.scrollTo({ top: 0, behavior: 'instant' });
   dashboardHome.classList.add('hidden');
   membresPage.classList.remove('hidden');
@@ -3993,7 +4001,14 @@ const profession = document.getElementById('nouvelleProfession').value.trim();
 };
 
 btnAdhesions.onclick = async function () {
- connectedBox.style.display = 'none';
+masquerPagesPrincipales();
+
+const dashboardMain = document.querySelector('.dashboard-main');
+
+if (adhesionsPage.parentElement !== dashboardMain) {
+  dashboardMain.appendChild(adhesionsPage);
+}
+
 adhesionsPage.classList.remove('hidden');
 
   adhesionsStatus.textContent = 'Chargement des adhésions...';
@@ -4152,12 +4167,13 @@ bloc.appendChild(boutonModifierAdhesion);
 adhesionsListe.appendChild(bloc);
   });
 };
-  retourDashboardAdhesions.onclick = function () {
+ retourDashboardAdhesions.onclick = function () {
   adhesionsPage.classList.add('hidden');
-  connectedBox.style.display = '';
-  connectedBox.classList.remove('hidden');
+  dashboardHome.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 };
 btnActivites.onclick = async function () {
+  masquerPagesPrincipales();
   const dashboardMain = document.querySelector('.dashboard-main');
 
   if (activitesPage.parentElement !== dashboardMain) {
@@ -4175,9 +4191,15 @@ retourDashboardActivites.onclick = function () {
   dashboardHome.classList.remove('hidden');
 };
   btnCotisations.onclick = async function () {
-  connectedBox.style.display = 'none';
-  cotisationsPage.classList.remove('hidden');
+  masquerPagesPrincipales();
 
+const dashboardMain = document.querySelector('.dashboard-main');
+
+if (cotisationsPage.parentElement !== dashboardMain) {
+  dashboardMain.appendChild(cotisationsPage);
+}
+
+cotisationsPage.classList.remove('hidden');
   cotisationsStatus.textContent = 'Chargement des cotisations...';
   cotisationsListe.innerHTML = '';
 
@@ -4440,13 +4462,14 @@ cotisationsListe.appendChild(bloc);
 
 retourDashboardCotisations.onclick = function () {
   cotisationsPage.classList.add('hidden');
-  connectedBox.style.display = '';
-  connectedBox.classList.remove('hidden');
+  dashboardHome.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
 retourDashboard.onclick = function () {
   membresPage.classList.add('hidden');
-  connectedBox.classList.remove('hidden');
+  dashboardHome.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
 document.getElementById('logout').onclick = async function () {
@@ -4492,7 +4515,7 @@ function formatMontant(montant) {
 }
 
 btnFinances.onclick = async function () {
-
+masquerPagesPrincipales();
  dashboardHome.classList.add('hidden');
   financesPage.classList.remove('hidden');
 
