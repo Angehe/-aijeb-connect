@@ -2489,7 +2489,83 @@ boutonTraduireActivite.style.color = 'white';
 boutonTraduireActivite.style.border = 'none';
 boutonTraduireActivite.style.borderRadius = '10px';
 boutonTraduireActivite.style.cursor = 'pointer';
+boutonTraduireActivite.onclick = async function () {
 
+  const langue = languageSelect.value;
+
+  if (langue === 'fr') {
+    alert(
+      'Le contenu original est déjà en français. Choisissez une autre langue.'
+    );
+    return;
+  }
+
+  boutonTraduireActivite.disabled = true;
+  boutonTraduireActivite.textContent =
+    'Traduction en cours...';
+
+  try {
+
+    const { data, error } = await sb.functions.invoke(
+      'translate-activity',
+      {
+        body: {
+          targetLanguage: langue,
+          fields: {
+            titre: activite.titre || '',
+            description: activite.description || '',
+            objectif: activite.objectif || '',
+            resultats_attendus:
+              activite.resultats_attendus || '',
+            resultats_obtenus:
+              activite.resultats_obtenus || '',
+            observations:
+              activite.observations || ''
+          }
+        }
+      }
+    );
+
+    if (error) {
+      console.error(error);
+      alert(
+        'Erreur de traduction : ' +
+        error.message
+      );
+      return;
+    }
+
+    console.log(
+      'Traduction reçue :',
+      data
+    );
+
+    alert(
+      'Traduction réussie !\n\n' +
+      (
+        data?.translations?.titre ||
+        'Réponse reçue de DeepL.'
+      )
+    );
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      'Erreur pendant la traduction.'
+    );
+
+  } finally {
+
+    boutonTraduireActivite.disabled = false;
+
+    boutonTraduireActivite.textContent =
+      languageSelect.value === 'fr'
+        ? 'Traduire le contenu'
+        : 'Translate content';
+  }
+};
 actionsActivite.appendChild(
   boutonTraduireActivite
 );
