@@ -597,6 +597,508 @@ label {
   min-height:50px !important;
 }
   </style>
+/* =========================================================
+   AIJEB CONNECT — DESIGN REFRESH
+   ========================================================= */
+
+:root {
+  --aijeb-green: #0b6b3a;
+  --aijeb-green-dark: #07522d;
+  --aijeb-green-soft: #eaf5ee;
+  --aijeb-gold: #f4c430;
+  --aijeb-navy: #10243e;
+  --aijeb-bg: #f5f8f4;
+  --aijeb-card: #ffffff;
+  --aijeb-border: #e5e9e6;
+  --aijeb-text: #1f2937;
+  --aijeb-muted: #667085;
+  --aijeb-danger: #d62828;
+  --aijeb-radius: 18px;
+  --aijeb-shadow: 0 8px 30px rgba(16, 36, 62, 0.07);
+}
+
+/* ===== TYPOGRAPHIE ===== */
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  color: var(--aijeb-text);
+  background: var(--aijeb-bg);
+}
+
+/* ===== SIDEBAR ===== */
+
+.aijeb-sidebar {
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(255,255,255,.12),
+      transparent 25%
+    ),
+    linear-gradient(
+      165deg,
+      #0c7440 0%,
+      #07552f 100%
+    );
+
+  box-shadow: 8px 0 30px rgba(0,0,0,.07);
+}
+
+.sidebar-brand {
+  padding-bottom: 25px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+}
+
+.sidebar-brand .logo {
+  background: rgba(255,255,255,.96);
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.sidebar-brand strong {
+  font-size: 20px;
+  letter-spacing: .5px;
+}
+
+.sidebar-menu {
+  gap: 7px;
+}
+
+.sidebar-menu button {
+  position: relative;
+  min-height: 46px;
+  padding: 11px 15px;
+  border-radius: 11px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,.92);
+  transition: all .2s ease;
+}
+
+.sidebar-menu button:hover {
+  background: rgba(255,255,255,.12);
+  transform: translateX(3px);
+}
+
+.sidebar-menu .dashboard-active {
+  background: rgba(255,255,255,.17);
+  box-shadow: inset 3px 0 0 var(--aijeb-gold);
+}
+
+.language-selector {
+  margin-top: 18px;
+}
+
+.language-selector select {
+  border: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+
+.sidebar-bottom {
+  border-top: 1px solid rgba(255,255,255,.15);
+  margin-top: auto;
+}
+
+.sidebar-bottom #logout {
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* ===== ZONE PRINCIPALE ===== */
+
+.dashboard-main {
+  background:
+    radial-gradient(
+      circle at 95% 3%,
+      rgba(244,196,48,.10),
+      transparent 24%
+    ),
+    #f5f8f4;
+
+  padding: 38px 42px;
+}
+
+/* ===== ENTETE ===== */
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 31px;
+  letter-spacing: -0.7px;
+  color: var(--aijeb-navy);
+}
+
+.dashboard-header p {
+  color: var(--aijeb-muted);
+  font-size: 15px;
+}
+
+/* ===== STATISTIQUES ===== */
+
+.dashboard-stats {
+  gap: 16px;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--aijeb-card);
+  border: 1px solid var(--aijeb-border);
+  border-top: none;
+  border-radius: var(--aijeb-radius);
+  padding: 20px 21px;
+  box-shadow: var(--aijeb-shadow);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  right: -22px;
+  top: -22px;
+  border-radius: 50%;
+  background: rgba(244,196,48,.12);
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--aijeb-gold);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(16,36,62,.11);
+}
+
+.stat-card span {
+  font-size: 13px;
+  color: var(--aijeb-muted);
+  text-transform: none;
+}
+
+.stat-card strong {
+  font-size: 26px;
+  color: var(--aijeb-green);
+}
+
+/* ===== SECTIONS ===== */
+
+.dashboard-section {
+  background: white;
+  border: 1px solid var(--aijeb-border);
+  border-radius: var(--aijeb-radius);
+  padding: 26px;
+  box-shadow: var(--aijeb-shadow);
+}
+
+.dashboard-section h2 {
+  font-size: 21px;
+  color: var(--aijeb-navy);
+}
+
+/* ===== PAGES / MODULES ===== */
+
+#membresPage,
+#adhesionsPage,
+#cotisationsPage,
+#financesPage,
+#activitesPage {
+  box-sizing: border-box !important;
+  border-top: none !important;
+  background: transparent !important;
+}
+
+#membresPage,
+#financesPage,
+#activitesPage {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#adhesionsPage,
+#cotisationsPage {
+  width: min(1100px, 94%) !important;
+  margin: 30px auto !important;
+  padding: 30px !important;
+  background: #f5f8f4 !important;
+  border-radius: 22px !important;
+}
+
+/* ===== TITRES MODULES ===== */
+
+#membresPage > h2,
+#adhesionsPage > h2,
+#cotisationsPage > h2,
+#financesPage > h2,
+#activitesPage h2 {
+  color: var(--aijeb-navy);
+  font-size: 28px;
+  letter-spacing: -.4px;
+  margin-top: 0;
+}
+
+/* ===== LISTES : MEMBRES / ADHESIONS / COTISATIONS / FINANCES ===== */
+
+#membresListe > div,
+#adhesionsListe > div,
+#cotisationsListe > div,
+#financesListe > div {
+  background: white !important;
+  border: 1px solid var(--aijeb-border) !important;
+  border-radius: 15px !important;
+  padding: 17px !important;
+  margin-top: 12px !important;
+  box-shadow: 0 5px 18px rgba(16,36,62,.055) !important;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease !important;
+}
+
+#membresListe > div:hover,
+#adhesionsListe > div:hover,
+#cotisationsListe > div:hover,
+#financesListe > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 25px rgba(16,36,62,.09) !important;
+}
+
+#membresListe strong,
+#adhesionsListe strong {
+  color: var(--aijeb-navy);
+  font-size: 16px;
+}
+
+/* ===== FINANCES RESUME ===== */
+
+#financesResume {
+  gap: 15px;
+}
+
+#financesResume > div {
+  background: white;
+  border: 1px solid var(--aijeb-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--aijeb-shadow);
+}
+
+#totalRecettes,
+#totalDepenses,
+#soldeFinances {
+  margin-top: 9px;
+  font-size: 24px;
+}
+
+/* ===== FORMULAIRES ===== */
+
+#formulaireFinance,
+#formulaireActivite {
+  background: white !important;
+  border: 1px solid var(--aijeb-border);
+  border-radius: 18px !important;
+  padding: 24px !important;
+  box-shadow: var(--aijeb-shadow);
+}
+
+input,
+textarea,
+select {
+  border: 1px solid #d9dfe4;
+  border-radius: 10px;
+  background: white;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--aijeb-green);
+  box-shadow: 0 0 0 3px rgba(11,107,58,.10);
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ===== BOUTONS ===== */
+
+button {
+  border-radius: 10px;
+  box-shadow: none;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    filter .16s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+#btnNouveauMembre,
+#btnNouvelleActivite,
+#btnNouvelleDepense,
+#btnNouvelleRecette {
+  background: linear-gradient(
+    135deg,
+    var(--aijeb-green),
+    var(--aijeb-green-dark)
+  );
+  box-shadow: 0 5px 15px rgba(11,107,58,.16);
+}
+
+#retourDashboard,
+#retourDashboardAdhesions,
+#retourDashboardCotisations,
+#retourDashboardFinances,
+#retourDashboardActivites {
+  background: #eef2f1 !important;
+  color: #344054 !important;
+  border: 1px solid #dce3df !important;
+  width: auto !important;
+  padding: 11px 18px !important;
+}
+
+/* ===== ACTIVITES ===== */
+
+#activitesStats > div {
+  background: white !important;
+  border: 1px solid var(--aijeb-border);
+  border-radius: 16px !important;
+  box-shadow: var(--aijeb-shadow);
+}
+
+#activitesListe > div,
+#activitesRealiseesListe > div {
+  border-radius: 17px !important;
+  border: 1px solid var(--aijeb-border);
+  box-shadow: var(--aijeb-shadow) !important;
+  overflow: hidden;
+}
+
+/* Boutons actions activités plus élégants */
+#activitesListe button,
+#activitesRealiseesListe button {
+  min-height: 42px;
+  padding: 10px 14px !important;
+  font-size: 14px;
+}
+
+/* ===== STATUS / TEXTE SECONDAIRE ===== */
+
+#membresStatus,
+#adhesionsStatus,
+#cotisationsStatus,
+#financesStatus,
+#activitesStatus,
+#activitesRealiseesStatus {
+  color: var(--aijeb-muted);
+  font-size: 14px;
+}
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eef2ef;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b3c6ba;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8da996;
+}
+
+/* ===== RESPONSIVE TABLETTE ===== */
+
+@media (max-width: 1050px) {
+  .dashboard-main {
+    padding: 30px 26px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+
+@media (max-width: 700px) {
+
+  #connectedBox > .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .aijeb-sidebar {
+    padding: 20px 18px;
+  }
+
+  .sidebar-brand {
+    margin-bottom: 18px;
+  }
+
+  .dashboard-main {
+    padding: 22px 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 17px;
+  }
+
+  #adhesionsPage,
+  #cotisationsPage {
+    width: 96% !important;
+    padding: 17px !important;
+    margin: 15px auto !important;
+  }
+
+  #financesResume {
+    grid-template-columns: 1fr;
+  }
+
+  #activitesListe button,
+  #activitesRealiseesListe button {
+    width: 100% !important;
+  }
+}
+</style>
 </head>
 
 <body>
