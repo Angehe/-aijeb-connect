@@ -2535,18 +2535,80 @@ boutonTraduireActivite.onclick = async function () {
       return;
     }
 
-    console.log(
-      'Traduction reçue :',
-      data
+   console.log(
+  'Traduction reçue :',
+  data
+);
+
+const traductions =
+  data?.translations || {};
+
+// Titre
+titre.textContent =
+  traductions.titre ||
+  activite.titre ||
+  t.sansTitre;
+
+// Description
+const descriptionElement =
+  infos.nextElementSibling !== detailsActivite
+    ? infos.nextElementSibling
+    : null;
+
+if (descriptionElement && activite.description) {
+  descriptionElement.innerHTML =
+    '<strong>' +
+    t.description +
+    '</strong><br>' +
+    (
+      traductions.description ||
+      activite.description
     );
-alert(JSON.stringify(data, null, 2));
-    alert(
-      'Traduction réussie !\n\n' +
-      (
-        data?.translations?.titre ||
-        'Réponse reçue de DeepL.'
-      )
-    );
+}
+
+// Reconstruction des détails
+detailsActivite.innerHTML = '';
+
+ajouterDetailActivite(
+  t.personnes,
+  activite.personnes_impliquees
+);
+
+ajouterDetailActivite(
+  t.objectif,
+  traductions.objectif ||
+  activite.objectif
+);
+
+ajouterDetailActivite(
+  t.resultatsAttendus,
+  traductions.resultats_attendus ||
+  activite.resultats_attendus
+);
+
+ajouterDetailActivite(
+  t.budget,
+  formaterMontant(
+    activite.budget_previsionnel
+  )
+);
+
+ajouterDetailActivite(
+  t.participants,
+  activite.participants_attendus
+);
+
+ajouterDetailActivite(
+  t.resultatsObtenus,
+  traductions.resultats_obtenus ||
+  activite.resultats_obtenus
+);
+
+ajouterDetailActivite(
+  t.observations,
+  traductions.observations ||
+  activite.observations
+);
 
   } catch (err) {
 
