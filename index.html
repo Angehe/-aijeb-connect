@@ -1441,96 +1441,226 @@ button:hover {
   </div>
 
 <div id="welcomePage" style="
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:40px;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 35%),
-    radial-gradient(circle at 80% 30%, rgba(255,214,0,0.18), transparent 30%),
-    linear-gradient(135deg, #063f2b, #0b6b3a 55%, #9acb3c);
-  color:white;
   position:fixed;
-inset:0;
-width:100vw;
-height:100vh;
-box-sizing:border-box;
-z-index:9999;
-overflow:auto;
+  inset:0;
+  width:100vw;
+  min-height:100vh;
+  z-index:9999;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  background:#f7f7f2;
+  overflow:auto;
 ">
 
-  <div style="
-    max-width:850px;
-    width:100%;
-    padding:60px 40px;
-    border:1px solid rgba(255,255,255,0.25);
-    border-radius:28px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(14px);
-    box-shadow:0 30px 80px rgba(0,0,0,0.25);
+  <!-- PARTIE GAUCHE -->
+  <section style="
+    min-height:100vh;
+    padding:70px 7vw;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,.10), transparent 26%),
+      radial-gradient(circle at 85% 85%, rgba(244,196,48,.12), transparent 32%),
+      linear-gradient(145deg,#063f2b 0%,#075a32 55%,#0b6b3a 100%);
+    color:white;
   ">
 
-    <img src="logo-aijeb.png.png"
-         alt="AIJEB"
-         style="width:120px; margin-bottom:25px;">
+    <div>
+      <div style="
+        width:92px;
+        height:68px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:white;
+        border-radius:18px;
+        box-shadow:0 14px 35px rgba(0,0,0,.16);
+        margin-bottom:110px;
+      ">
+        <img
+          src="logo-aijeb.png.png"
+          alt="AIJEB"
+          style="
+            width:76px;
+            height:auto;
+            display:block;
+          "
+        >
+      </div>
 
-    <div style="
-      font-size:14px;
-      letter-spacing:5px;
-      text-transform:uppercase;
-      opacity:0.85;
-      margin-bottom:14px;
-    ">
-      Plateforme officielle de gestion
+      <div style="
+        font-size:14px;
+        font-weight:700;
+        letter-spacing:4px;
+        text-transform:uppercase;
+        color:rgba(255,255,255,.72);
+        margin-bottom:24px;
+      ">
+        AIJEB • Gestion interne
+      </div>
+
+      <h1 style="
+        max-width:680px;
+        margin:0;
+        font-size:clamp(48px,5vw,78px);
+        line-height:1.02;
+        letter-spacing:-3px;
+        font-weight:700;
+      ">
+        Gérer l’essentiel.<br>
+        <span style="color:#f4c430;">
+          Comprendre le reste.
+        </span>
+      </h1>
+
+      <p style="
+        max-width:630px;
+        margin:32px 0 0;
+        font-size:21px;
+        line-height:1.6;
+        color:rgba(255,255,255,.78);
+      ">
+        Un espace unique pour suivre les membres, les adhésions,
+        les cotisations, les finances et les activités avec clarté.
+      </p>
     </div>
 
-    <h1 style="
-      font-size:64px;
-      line-height:1;
-      margin:0 0 20px 0;
-      font-weight:800;
+    <div style="
+      font-size:13px;
+      letter-spacing:.4px;
+      color:rgba(255,255,255,.48);
     ">
-    <span style="color:white;">AIJEB</span> <span style="color:#ffd21f;">CONNECT</span>
-    </h1>
+      Accès réservé aux responsables autorisés
+    </div>
+  </section>
 
-    <p style="
-      font-size:25px;
-      margin:0 0 15px 0;
-      font-weight:600;
-    color:white;">
-      Ensemble. Connectés. Organisés.
-    </p>
 
-    <p style="
-      max-width:650px;
-      margin:0 auto 38px auto;
-      font-size:18px;
-      line-height:1.6;
-      opacity:0.9;
-    color:white;">
-      Membres, adhésions, cotisations, finances et activités réunis dans une seule plateforme moderne.
-    </p>
+  <!-- PARTIE DROITE -->
+  <section style="
+    min-height:100vh;
+    padding:70px 7vw;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    background:
+      radial-gradient(circle at 90% 12%,rgba(244,196,48,.11),transparent 24%),
+      #f8f8f3;
+  ">
 
-    <button id="btnEntrerAIJEB"
-      type="button"
-      style="
-        max-width:360px;
-        padding:18px 28px;
-        font-size:18px;
+    <div style="
+      width:100%;
+      max-width:620px;
+      margin:auto;
+    ">
+
+      <div style="
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        padding:9px 15px;
+        border-radius:999px;
+        background:#edf6f0;
+        color:#0b6b3a;
+        font-size:14px;
         font-weight:700;
-        background:#ffd21f;
-        color:#063f2b;
-        border:none;
-        border-radius:14px;
-        cursor:pointer;
-        box-shadow:0 12px 30px rgba(0,0,0,0.22);
+        margin-bottom:34px;
       ">
-      Accéder à AIJEB Connect
-    </button>
+        <span style="
+          width:9px;
+          height:9px;
+          border-radius:50%;
+          background:#0b6b3a;
+          box-shadow:0 0 0 5px rgba(11,107,58,.10);
+        "></span>
 
-  </div>
+        Espace sécurisé
+      </div>
+
+      <h2 style="
+        margin:0;
+        color:#10243e;
+        font-size:clamp(42px,4vw,62px);
+        line-height:1.05;
+        letter-spacing:-2px;
+        font-weight:650;
+      ">
+        Bienvenue sur<br>
+        AIJEB Connect
+      </h2>
+
+      <p style="
+        margin:24px 0 0;
+        max-width:520px;
+        color:#667085;
+        font-size:18px;
+        line-height:1.65;
+      ">
+        Centralisez la gestion de l’AIJEB dans un environnement
+        moderne, clair et sécurisé.
+      </p>
+
+      <div style="
+        margin-top:48px;
+        padding:30px;
+        border:1px solid #e1e7e2;
+        border-radius:24px;
+        background:rgba(255,255,255,.72);
+        box-shadow:0 22px 60px rgba(16,36,62,.08);
+      ">
+
+        <div style="
+          color:#10243e;
+          font-size:18px;
+          font-weight:700;
+          margin-bottom:8px;
+        ">
+          Espace de gestion
+        </div>
+
+        <p style="
+          margin:0 0 24px;
+          color:#667085;
+          font-size:14px;
+          line-height:1.5;
+        ">
+          Connectez-vous pour accéder à votre tableau de bord.
+        </p>
+
+        <button
+          id="btnEntrerAIJEB"
+          type="button"
+          style="
+            width:100%;
+            padding:17px 24px;
+            border:none;
+            border-radius:13px;
+            background:#0b6b3a;
+            color:white;
+            font-size:17px;
+            font-weight:750;
+            cursor:pointer;
+            box-shadow:0 12px 28px rgba(11,107,58,.20);
+          "
+        >
+          Accéder à AIJEB Connect →
+        </button>
+
+      </div>
+
+      <div style="
+        margin-top:24px;
+        color:#98a2b3;
+        font-size:12px;
+        text-align:center;
+      ">
+        Plateforme officielle de gestion AIJEB
+      </div>
+
+    </div>
+  </section>
+
 </div>
 <div class="card hidden" id="connectedBox">
 
