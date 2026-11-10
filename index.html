@@ -1248,10 +1248,172 @@ button:hover {
     max-width: none !important;
   }
 }
+/* ===== PAGE FINANCES PREMIUM ===== */
+
+/* Actions principales */
+#financesPage > div:first-of-type {
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+#btnNouvelleDepense,
+#btnNouvelleRecette {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 180px !important;
+  padding: 11px 18px !important;
+  font-size: 14px !important;
+}
+
+/* Résumé financier */
+#financesResume {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+#financesResume > div {
+  min-height: 115px !important;
+  padding: 20px !important;
+  border-radius: 17px !important;
+  border: 1px solid #e5e9e6 !important;
+  box-shadow: 0 6px 20px rgba(16,36,62,.06) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* Recettes */
+#financesResume > div:nth-child(1) {
+  background: #eef9f2 !important;
+  border-top: 4px solid #0b6b3a !important;
+}
+
+#financesResume > div:nth-child(1) span {
+  color: #067647 !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+}
+
+/* Dépenses */
+#financesResume > div:nth-child(2) {
+  background: #fff3f2 !important;
+  border-top: 4px solid #d62828 !important;
+}
+
+#financesResume > div:nth-child(2) span {
+  color: #b42318 !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+}
+
+/* Solde */
+#financesResume > div:nth-child(3) {
+  background: #fff9e8 !important;
+  border-top: 4px solid #f4c430 !important;
+}
+
+#financesResume > div:nth-child(3) span {
+  color: #7a5b00 !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+}
+
+/* Liste des opérations */
+#financesListe {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+#financesListe > div {
+  margin: 0 !important;
+  padding: 18px !important;
+  border-radius: 17px !important;
+  border: 1px solid #e5e9e6 !important;
+  background: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(16,36,62,.055) !important;
+}
+
+/* Alternance douce */
+#financesListe > div:nth-child(odd) {
+  background: #f7fbf8 !important;
+}
+
+#financesListe > div:nth-child(even) {
+  background: #fffaf2 !important;
+}
+
+/* Titres opérations */
+#financesListe > div > strong {
+  font-size: 16px !important;
+  color: #10243e !important;
+}
+
+/* Boutons des opérations */
+#financesListe > div button {
+  width: auto !important;
+  min-width: 125px !important;
+  padding: 9px 14px !important;
+  font-size: 13px !important;
+}
+
+/* Le conteneur des actions */
+#financesListe > div > div:last-child {
+  display: flex !important;
+  gap: 8px !important;
+  justify-content: flex-end !important;
+  margin-top: 14px !important;
+}
+
+/* Bouton modifier */
+#financesListe > div button:first-child {
+  background: white !important;
+  color: #0b6b3a !important;
+  border: 1px solid #b8d9c5 !important;
+}
+
+/* Bouton supprimer */
+#financesListe > div button:last-child {
+  background: #fff0ef !important;
+  color: #b42318 !important;
+  border: 1px solid #f2b8b4 !important;
+}
+
+/* Responsive */
+@media (max-width: 1050px) {
+  #financesListe {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 700px) {
+  #financesResume {
+    grid-template-columns: 1fr !important;
+  }
+
+  #financesPage > div:first-of-type {
+    flex-direction: column !important;
+  }
+
+  #btnNouvelleDepense,
+  #btnNouvelleRecette {
+    width: 100% !important;
+  }
+
+  #financesListe > div > div:last-child {
+    flex-direction: column !important;
+  }
+
+  #financesListe > div button {
+    width: 100% !important;
+  }
+}
   </style>
 </head>
+<body>  
 
-<body>
+
  
 
   <div class="card" id="loginBox">
