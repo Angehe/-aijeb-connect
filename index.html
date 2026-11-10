@@ -2474,7 +2474,25 @@ async function chargerActivites() {
     actionsActivite.style.display = 'flex';
     actionsActivite.style.gap = '12px';
     actionsActivite.style.marginTop = '14px';
+const boutonTraduireActivite =
+  document.createElement('button');
 
+boutonTraduireActivite.textContent =
+  languageSelect.value === 'fr'
+    ? 'Traduire le contenu'
+    : 'Translate content';
+
+boutonTraduireActivite.style.flex = '1';
+boutonTraduireActivite.style.padding = '12px';
+boutonTraduireActivite.style.background = '#1f4e79';
+boutonTraduireActivite.style.color = 'white';
+boutonTraduireActivite.style.border = 'none';
+boutonTraduireActivite.style.borderRadius = '10px';
+boutonTraduireActivite.style.cursor = 'pointer';
+
+actionsActivite.appendChild(
+  boutonTraduireActivite
+);
     actionsActivite.appendChild(
       boutonModifierActivite
     );
