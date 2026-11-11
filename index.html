@@ -4760,7 +4760,39 @@ let boutonAdhesionOuvert = null;
     boutonModifier.style.marginTop = '16px';
     boutonModifier.style.width = 'auto';
     boutonModifier.style.alignSelf = 'flex-end';
-boutonModifier.onclick = function () {
+const boutonRetirer = document.createElement('button');
+boutonRetirer.textContent = 'Retirer de l’adhésion';
+boutonRetirer.style.marginTop = '8px';
+boutonRetirer.style.width = 'auto';
+boutonRetirer.style.alignSelf = 'flex-end';
+boutonRetirer.style.background = '#fff0ef';
+boutonRetirer.style.color = '#b42318';
+boutonRetirer.style.border = '1px solid #f2b8b4';
+boutonRetirer.style.boxShadow = 'none';
+
+boutonRetirer.onclick = async function () {
+  const confirmation = confirm(
+    'Retirer cette personne de la liste des adhésions ?'
+  );
+
+  if (!confirmation) {
+    return;
+  }
+
+  const { error } = await sb
+    .from('adhesions')
+    .delete()
+    .eq('id', adhesion.id);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert('La personne a été retirée de la liste des adhésions.');
+  btnAdhesions.click();
+};
+    boutonModifier.onclick = function () {
  if (formulaireAdhesionOuvert) {
   formulaireAdhesionOuvert.remove();
 
@@ -4882,12 +4914,15 @@ boutonAdhesionOuvert = boutonModifier;
 
   bloc.appendChild(formulaire);
 };
-    bloc.appendChild(nom);
-    bloc.appendChild(details);
-    bloc.appendChild(boutonModifier);
+   
 
-    adhesionsListe.appendChild(bloc);
-  });
+ bloc.appendChild(nom);
+bloc.appendChild(details);
+bloc.appendChild(boutonModifier);
+bloc.appendChild(boutonRetirer);
+
+adhesionsListe.appendChild(bloc);
+});
 };
 retourDashboardAdhesions.onclick = function () {
   adhesionsPage.classList.add('hidden');
