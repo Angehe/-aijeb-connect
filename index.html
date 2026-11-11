@@ -4671,7 +4671,8 @@ btnAdhesions.onclick = async function () {
 
   adhesionsStatus.textContent =
     data.length + ' adhésion(s) trouvée(s).';
-
+let formulaireAdhesionOuvert = null;
+let boutonAdhesionOuvert = null;
   data.forEach(function (adhesion) {
     const bloc = document.createElement('div');
 
@@ -4760,17 +4761,24 @@ btnAdhesions.onclick = async function () {
     boutonModifier.style.width = 'auto';
     boutonModifier.style.alignSelf = 'flex-end';
 boutonModifier.onclick = function () {
-  const ancienFormulaire = bloc.querySelector('.formulaire-adhesion');
+ if (formulaireAdhesionOuvert) {
+  formulaireAdhesionOuvert.remove();
 
-  if (ancienFormulaire) {
-    ancienFormulaire.remove();
-    boutonModifier.textContent = 'Voir / Modifier';
-    return;
+  if (boutonAdhesionOuvert) {
+    boutonAdhesionOuvert.textContent = 'Voir / Modifier';
   }
 
-  boutonModifier.textContent = 'Fermer';
+  if (boutonAdhesionOuvert === boutonModifier) {
+    formulaireAdhesionOuvert = null;
+    boutonAdhesionOuvert = null;
+    return;
+  }
+}
 
+boutonModifier.textContent = 'Fermer';
+boutonAdhesionOuvert = boutonModifier;
   const formulaire = document.createElement('div');
+  formulaireAdhesionOuvert = formulaire;
   formulaire.className = 'formulaire-adhesion';
   formulaire.style.marginTop = '16px';
   formulaire.style.paddingTop = '16px';
