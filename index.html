@@ -5000,26 +5000,108 @@ data.forEach(function (cotisation) {
     ? (cotisation.membres.nom || '') + ' ' + (cotisation.membres.prenoms || '')
     : 'Membre non renseigné';
 
-bloc.textContent =
-  nomMembre +
- ' | Période : ' + (cotisation.periode || 'Non renseignée') +
-' | Année : ' + (cotisation.annee || 'Non renseignée') +
-' | Attendu : ' + formaterMontant(cotisation.montant_attendu) +
-' | Payé : ' + formaterMontant(cotisation.montant_paye) +
-' | Date : ' + (cotisation.date_paiement || 'Non renseignée') +
-' | Mode : ' + (cotisation.mode_paiement || 'Non renseigné') +
-' | Statut : ' +
-(
+bloc.textContent = '';
+
+const titreCotisation = document.createElement('strong');
+titreCotisation.textContent = nomMembre;
+titreCotisation.style.display = 'block';
+titreCotisation.style.fontSize = '17px';
+titreCotisation.style.color = '#10243e';
+
+const infosCotisation = document.createElement('div');
+infosCotisation.style.display = 'flex';
+infosCotisation.style.flexWrap = 'wrap';
+infosCotisation.style.gap = '8px';
+infosCotisation.style.marginTop = '12px';
+
+const badgePeriode = document.createElement('span');
+badgePeriode.textContent =
+  'Période : ' +
+  (cotisation.periode || 'Non renseignée');
+
+badgePeriode.style.padding = '6px 10px';
+badgePeriode.style.borderRadius = '999px';
+badgePeriode.style.background = '#f2f4f7';
+badgePeriode.style.color = '#475467';
+badgePeriode.style.border = '1px solid #d0d5dd';
+badgePeriode.style.fontSize = '13px';
+
+const badgeAttendu = document.createElement('span');
+badgeAttendu.textContent =
+  'Attendu : ' + formaterMontant(cotisation.montant_attendu);
+
+badgeAttendu.style.padding = '6px 10px';
+badgeAttendu.style.borderRadius = '999px';
+badgeAttendu.style.background = '#eef4ff';
+badgeAttendu.style.color = '#344054';
+badgeAttendu.style.border = '1px solid #d6e4ff';
+badgeAttendu.style.fontSize = '13px';
+
+const badgePaye = document.createElement('span');
+badgePaye.textContent =
+  'Payé : ' + formaterMontant(cotisation.montant_paye);
+
+badgePaye.style.padding = '6px 10px';
+badgePaye.style.borderRadius = '999px';
+badgePaye.style.background = '#e9f8ef';
+badgePaye.style.color = '#067647';
+badgePaye.style.border = '1px solid #a9dfbf';
+badgePaye.style.fontSize = '13px';
+
+const badgeDate = document.createElement('span');
+badgeDate.textContent =
+  'Date : ' +
+  (cotisation.date_paiement || 'Non renseignée');
+
+badgeDate.style.padding = '6px 10px';
+badgeDate.style.borderRadius = '999px';
+badgeDate.style.background = 'rgba(255,255,255,.75)';
+badgeDate.style.color = '#475467';
+badgeDate.style.border = '1px solid #e1e6e3';
+badgeDate.style.fontSize = '13px';
+
+const badgeStatutCotisation = document.createElement('span');
+
+badgeStatutCotisation.textContent =
   cotisation.statut === 'a_jour' ? 'À jour' :
   cotisation.statut === 'partiel' ? 'Partiel' :
   cotisation.statut === 'en_retard' ? 'En retard' :
-  (cotisation.statut || 'Non renseigné')
-);
-   const statutAffiche =
-  cotisation.statut === 'a_jour' ? 'À jour' :
-  cotisation.statut === 'partiel' ? 'Partiel' :
-  cotisation.statut === 'en_retard' ? 'En retard' :
+  cotisation.statut === 'en_attente' ? 'En attente' :
+  cotisation.statut === 'exonere' ? 'Exonéré' :
   'Non renseigné';
+
+badgeStatutCotisation.style.padding = '6px 10px';
+badgeStatutCotisation.style.borderRadius = '999px';
+badgeStatutCotisation.style.fontWeight = '700';
+badgeStatutCotisation.style.fontSize = '13px';
+
+if (cotisation.statut === 'a_jour') {
+  badgeStatutCotisation.style.background = '#e9f8ef';
+  badgeStatutCotisation.style.color = '#067647';
+  badgeStatutCotisation.style.border = '1px solid #a9dfbf';
+} else if (cotisation.statut === 'partiel') {
+  badgeStatutCotisation.style.background = '#fff7e8';
+  badgeStatutCotisation.style.color = '#b54708';
+  badgeStatutCotisation.style.border = '1px solid #f7c97c';
+} else if (cotisation.statut === 'en_retard') {
+  badgeStatutCotisation.style.background = '#fff0ef';
+  badgeStatutCotisation.style.color = '#b42318';
+  badgeStatutCotisation.style.border = '1px solid #f2b8b4';
+} else {
+  badgeStatutCotisation.style.background = '#f2f4f7';
+  badgeStatutCotisation.style.color = '#667085';
+  badgeStatutCotisation.style.border = '1px solid #d0d5dd';
+}
+
+infosCotisation.appendChild(badgePeriode);
+infosCotisation.appendChild(badgeAttendu);
+infosCotisation.appendChild(badgePaye);
+infosCotisation.appendChild(badgeDate);
+infosCotisation.appendChild(badgeStatutCotisation);
+
+bloc.appendChild(titreCotisation);
+bloc.appendChild(infosCotisation);//
+
 
 if (cotisation.statut === 'a_jour') {
   bloc.style.borderLeft = '6px solid #2e7d32';
