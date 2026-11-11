@@ -4759,7 +4759,121 @@ btnAdhesions.onclick = async function () {
     boutonModifier.style.marginTop = '16px';
     boutonModifier.style.width = 'auto';
     boutonModifier.style.alignSelf = 'flex-end';
+boutonModifier.onclick = function () {
+  const ancienFormulaire = bloc.querySelector('.formulaire-adhesion');
 
+  if (ancienFormulaire) {
+    ancienFormulaire.remove();
+    boutonModifier.textContent = 'Voir / Modifier';
+    return;
+  }
+
+  boutonModifier.textContent = 'Fermer';
+
+  const formulaire = document.createElement('div');
+  formulaire.className = 'formulaire-adhesion';
+  formulaire.style.marginTop = '16px';
+  formulaire.style.paddingTop = '16px';
+  formulaire.style.borderTop = '1px solid #e4e7ec';
+
+  const labelMontant = document.createElement('label');
+  labelMontant.textContent = 'Montant';
+
+  const inputMontant = document.createElement('input');
+  inputMontant.type = 'number';
+  inputMontant.value = adhesion.montant || 0;
+  inputMontant.style.marginBottom = '10px';
+
+  const labelDate = document.createElement('label');
+  labelDate.textContent = 'Date de paiement';
+
+  const inputDate = document.createElement('input');
+  inputDate.type = 'date';
+  inputDate.value = adhesion.date_paiement || '';
+  inputDate.style.marginBottom = '10px';
+
+  const labelMode = document.createElement('label');
+  labelMode.textContent = 'Mode de paiement';
+
+  const inputMode = document.createElement('input');
+  inputMode.type = 'text';
+  inputMode.value = adhesion.mode_paiement || '';
+  inputMode.placeholder = 'Exemple : Mobile Money, Espèces, Banque';
+  inputMode.style.marginBottom = '10px';
+
+  const labelReference = document.createElement('label');
+  labelReference.textContent = 'Référence de paiement';
+
+  const inputReference = document.createElement('input');
+  inputReference.type = 'text';
+  inputReference.value = adhesion.reference_paiement || '';
+  inputReference.style.marginBottom = '10px';
+
+  const labelStatut = document.createElement('label');
+  labelStatut.textContent = 'Statut';
+
+  const inputStatut = document.createElement('select');
+  inputStatut.style.marginBottom = '12px';
+
+  const optionAttente = document.createElement('option');
+  optionAttente.value = 'en_attente';
+  optionAttente.textContent = 'En attente';
+
+  const optionPaye = document.createElement('option');
+  optionPaye.value = 'paye';
+  optionPaye.textContent = 'Payé';
+
+  const optionValide = document.createElement('option');
+  optionValide.value = 'valide';
+  optionValide.textContent = 'Validé';
+
+  inputStatut.appendChild(optionAttente);
+  inputStatut.appendChild(optionPaye);
+  inputStatut.appendChild(optionValide);
+
+  inputStatut.value = adhesion.statut || 'en_attente';
+
+  const boutonEnregistrer = document.createElement('button');
+  boutonEnregistrer.textContent = 'Enregistrer les modifications';
+  boutonEnregistrer.style.width = '100%';
+  boutonEnregistrer.style.marginTop = '8px';
+
+  boutonEnregistrer.onclick = async function () {
+    const { error } = await sb
+      .from('adhesions')
+      .update({
+        montant: Number(inputMontant.value || 0),
+        date_paiement: inputDate.value || null,
+        mode_paiement: inputMode.value.trim() || null,
+        reference_paiement: inputReference.value.trim() || null,
+        statut: inputStatut.value,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', adhesion.id);
+
+    if (error) {
+      alert('Erreur : ' + error.message);
+      return;
+    }
+
+    alert('Adhésion modifiée avec succès.');
+    btnAdhesions.click();
+  };
+
+  formulaire.appendChild(labelMontant);
+  formulaire.appendChild(inputMontant);
+  formulaire.appendChild(labelDate);
+  formulaire.appendChild(inputDate);
+  formulaire.appendChild(labelMode);
+  formulaire.appendChild(inputMode);
+  formulaire.appendChild(labelReference);
+  formulaire.appendChild(inputReference);
+  formulaire.appendChild(labelStatut);
+  formulaire.appendChild(inputStatut);
+  formulaire.appendChild(boutonEnregistrer);
+
+  bloc.appendChild(formulaire);
+};
     bloc.appendChild(nom);
     bloc.appendChild(details);
     bloc.appendChild(boutonModifier);
