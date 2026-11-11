@@ -1409,6 +1409,115 @@ button:hover {
     width: 100% !important;
   }
 }
+/* ===== PAGE ADHESIONS PREMIUM ===== */
+
+#adhesionsPage {
+  width: 100%;
+}
+
+/* Texte d'état */
+#adhesionsStatus {
+  color: #667085 !important;
+  margin-bottom: 20px !important;
+}
+
+/* Grille des adhésions */
+#adhesionsListe {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+/* Cartes */
+#adhesionsListe > div {
+  margin: 0 !important;
+  padding: 20px !important;
+  border-radius: 17px !important;
+  border: 1px solid #e4e9e6 !important;
+  background: white !important;
+  box-shadow: 0 6px 20px rgba(16,36,62,.055) !important;
+  min-height: 150px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Alternance douce */
+#adhesionsListe > div:nth-child(3n + 1) {
+  background: #f2f9f4 !important;
+}
+
+#adhesionsListe > div:nth-child(3n + 2) {
+  background: #fffaf0 !important;
+}
+
+#adhesionsListe > div:nth-child(3n + 3) {
+  background: #f4f8fc !important;
+}
+
+/* Nom du membre */
+#adhesionsListe > div > strong {
+  font-size: 17px !important;
+  color: #10243e !important;
+  margin-bottom: 8px !important;
+}
+
+/* Informations adhésion */
+#adhesionsListe > div > div:first-of-type {
+  color: #667085 !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+}
+
+/* Bouton Voir / Modifier */
+#adhesionsListe > div > button {
+  width: auto !important;
+  min-width: 135px !important;
+  align-self: flex-end !important;
+  margin-top: auto !important;
+  padding: 9px 15px !important;
+
+  background: white !important;
+  color: #0b6b3a !important;
+  border: 1px solid #b8d9c5 !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+}
+
+/* Survol */
+#adhesionsListe > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(16,36,62,.08) !important;
+  border-color: rgba(11,107,58,.22) !important;
+}
+
+/* Formulaire ouvert dans une carte */
+#adhesionsListe > div > div:last-child:not(:first-of-type) {
+  margin-top: 14px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(16,36,62,.08) !important;
+}
+
+/* Retour tableau de bord */
+#retourDashboardAdhesions {
+  width: auto !important;
+  margin-top: 25px !important;
+  padding: 11px 18px !important;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  #adhesionsListe {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 700px) {
+  #adhesionsListe > div > button,
+  #retourDashboardAdhesions {
+    width: 100% !important;
+  }
+}  
   </style>
 </head>
 <body>  
