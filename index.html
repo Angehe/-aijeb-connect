@@ -4671,12 +4671,57 @@ let boutonAdhesionOuvert = null;
     const nom = document.createElement('strong');
     nom.textContent = (membre.nom || '') + ' ' + (membre.prenoms || '');
 
-    const details = document.createElement('div');
-    details.style.marginTop = '6px';
-    details.textContent =
-      'Date d’adhésion : ' + (membre.date_adhesion || 'Non renseignée') +
-      ' | Statut : ' + (membre.statut || 'Non renseigné') +
-      ' | Section : ' + (membre.section_aijeb || 'Non renseignée');
+   const details = document.createElement('div');
+
+details.style.display = 'flex';
+details.style.flexWrap = 'wrap';
+details.style.gap = '8px';
+details.style.marginTop = '12px';
+
+const badgeDate = document.createElement('span');
+badgeDate.textContent =
+  'Date : ' + (membre.date_adhesion || 'Non renseignée');
+badgeDate.style.padding = '6px 10px';
+badgeDate.style.borderRadius = '999px';
+badgeDate.style.background = 'rgba(255,255,255,.75)';
+badgeDate.style.border = '1px solid #e1e6e3';
+badgeDate.style.color = '#475467';
+badgeDate.style.fontSize = '13px';
+
+const badgeStatut = document.createElement('span');
+badgeStatut.textContent =
+  membre.statut === 'actif' ? 'Actif' :
+  membre.statut === 'inactif' ? 'Inactif' :
+  'Non renseigné';
+
+badgeStatut.style.padding = '6px 10px';
+badgeStatut.style.borderRadius = '999px';
+badgeStatut.style.fontWeight = '700';
+badgeStatut.style.fontSize = '13px';
+
+if (membre.statut === 'actif') {
+  badgeStatut.style.background = '#e9f8ef';
+  badgeStatut.style.color = '#067647';
+  badgeStatut.style.border = '1px solid #a9dfbf';
+} else {
+  badgeStatut.style.background = '#f2f4f7';
+  badgeStatut.style.color = '#667085';
+  badgeStatut.style.border = '1px solid #d0d5dd';
+}
+
+const badgeSection = document.createElement('span');
+badgeSection.textContent =
+  'Section : ' + (membre.section_aijeb || 'Non renseignée');
+badgeSection.style.padding = '6px 10px';
+badgeSection.style.borderRadius = '999px';
+badgeSection.style.background = '#eef4ff';
+badgeSection.style.color = '#344054';
+badgeSection.style.border = '1px solid #d6e4ff';
+badgeSection.style.fontSize = '13px';
+
+details.appendChild(badgeDate);
+details.appendChild(badgeStatut);
+details.appendChild(badgeSection);
 const boutonModifierAdhesion = document.createElement('button');
 boutonModifierAdhesion.textContent = 'Voir / Modifier';
 boutonModifierAdhesion.style.marginTop = '10px';
