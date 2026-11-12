@@ -1980,7 +1980,54 @@ box-shadow:0 12px 28px rgba(244,196,48,.28);
 </div>
 
 
-<div id="activitesPage" class="hidden">
+<div id="permissionsPage" class="hidden">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+  ">
+    <div>
+      <h2 style="margin-bottom:6px;">
+        Utilisateurs & permissions
+      </h2>
+
+      <p style="
+        margin:0;
+        color:#667085;
+        max-width:700px;
+      ">
+        Gérez les accès des utilisateurs aux différentes sections de AIJEB Connect.
+      </p>
+    </div>
+  </div>
+
+  <div id="permissionsStatus" style="
+    margin-bottom:18px;
+    color:#667085;
+  ">
+    Chargement des utilisateurs...
+  </div>
+
+  <div id="permissionsListe"></div>
+
+  <button
+    id="retourDashboardPermissions"
+    type="button"
+    style="
+      width:auto;
+      margin-top:24px;
+      padding:12px 18px;
+    "
+  >
+    Retour au tableau de bord
+  </button>
+
+</div>
+  <div id="activitesPage" class="hidden">
 
   <div style="
     display:flex;
@@ -2270,7 +2317,12 @@ const cotisationsPage = document.getElementById('cotisationsPage');
 const cotisationsStatus = document.getElementById('cotisationsStatus');
 const cotisationsListe = document.getElementById('cotisationsListe');
 const retourDashboardCotisations = document.getElementById('retourDashboardCotisations');
-const btnActivites = document.querySelector('[data-page="activites"]');
+const btnUtilisateursPermissions = document.getElementById('btnUtilisateursPermissions');
+const permissionsPage = document.getElementById('permissionsPage');
+const permissionsStatus = document.getElementById('permissionsStatus');
+const permissionsListe = document.getElementById('permissionsListe');
+const retourDashboardPermissions = document.getElementById('retourDashboardPermissions');
+  const btnActivites = document.querySelector('[data-page="activites"]');
 const activitesPage = document.getElementById('activitesPage');
 const activitesStatus = document.getElementById('activitesStatus');
 const activitesListe = document.getElementById('activitesListe');
@@ -4097,8 +4149,138 @@ function masquerPagesPrincipales() {
   cotisationsPage.classList.add('hidden');
   financesPage.classList.add('hidden');
   activitesPage.classList.add('hidden');
+permissionsPage.classList.add('hidden');
 }
-btnMembres.onclick = async function () {
+btnUtilisateursPermissions.onclick = async function () {
+  masquerPagesPrincipales();
+  permissionsPage.classList.remove('hidden');
+  await chargerPermissionsUtilisateurs();
+  window.scrollTo({ top: 0, behavior: 'instant' });
+};
+
+retourDashboardPermissions.onclick = function () {
+  permissionsPage.classList.add('hidden');
+  dashboardHome.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+};
+async function chargerPermissionsUtilisateurs() {
+  permissionsStatus.textContent = 'Chargement des utilisateurs...';
+  permissionsListe.innerHTML = '';
+
+  const { data: profils, error: erreurProfils } = await sb
+    .from('profiles')
+    .select('id, nom_complet, email, role, actif, pays')
+    .order('created_at', { ascending: true });
+
+  if (erreurProfils) {
+    permissionsStatus.textContent =
+      'Erreur : ' + erreurProfils.message;
+    return;
+  }
+
+  const { data: permissions, error: erreurPermissions } = await sb
+    .from('user_permissions')
+    .select('user_id, section, can_view, can_edit');
+
+  if (erreurPermissions) {
+    permissionsStatus.textContent =
+      'Erreur : ' + erreurPermissions.message;
+    return;
+  }
+
+  permissionsStatus.textContent =
+    profils.length + ' utilisateur(s) trouvé(s).';
+
+  profils.forEach(function (profil) {
+    const carte = document.createElement('div');
+
+    carte.style.background = '#ffffff';
+    carte.style.border = '1px solid #e4e7ec';
+    carte.style.borderRadius = '16px';
+    carte.style.padding = '20px';
+    carte.style.marginBottom = '16px';
+    carte.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+
+    const nom = document.createElement('h3');
+    nom.textContent =
+      profil.nom_complet || profil.email || 'Utilisateur';
+
+    nom.style.margin = '0 0 6px 0';
+    nom.style.color = '#10243e';
+
+    const email = document.createElement('div');
+    email.textContent = profil.email || 'E-mail non renseigné';
+    email.style.color = '#667085';
+    email.style.marginBottom = '12px';
+
+    const infos = document.createElement('div');
+    infos.style.display = 'flex';
+    infos.style.gap = '8px';
+    infos.style.flexWrap = 'wrap';
+    infos.style.marginBottom = '16px';
+
+    const badgeRole = document.createElement('span');
+    badgeRole.textContent = 'Rôle : ' + (profil.role || 'Non renseigné');
+    badgeRole.style.padding = '6px 10px';
+    badgeRole.style.borderRadius = '999px';
+    badgeRole.style.background = '#eef4ff';
+    badgeRole.style.color = '#344054';
+
+    const badgeStatut = document.createElement('span');
+    badgeStatut.textContent =
+      profil.actif === true ? 'Actif' : 'Inactif';
+    badgeStatut.style.padding = '6px 10px';
+    badgeStatut.style.borderRadius = '999px';
+    badgeStatut.style.background =
+      profil.actif === true ? '#e9f8ef' : '#f2f4f7';
+    badgeStatut.style.color =
+      profil.actif === true ? '#067647' : '#667085';
+
+    infos.appendChild(badgeRole);
+    infos.appendChild(badgeStatut);
+
+    const permissionsUtilisateur = permissions.filter(function (p) {
+      return p.user_id === profil.id;
+    });
+
+    const resume = document.createElement('div');
+    resume.style.display = 'flex';
+    resume.style.flexWrap = 'wrap';
+    resume.style.gap = '8px';
+
+    permissionsUtilisateur.forEach(function (permission) {
+      const badge = document.createElement('span');
+
+      let texte = permission.section;
+
+      if (permission.can_view) {
+        texte += ' · Voir';
+      }
+
+      if (permission.can_edit) {
+        texte += ' · Modifier';
+      }
+
+      badge.textContent = texte;
+      badge.style.padding = '7px 10px';
+      badge.style.borderRadius = '10px';
+      badge.style.background = '#f8fafc';
+      badge.style.border = '1px solid #e4e7ec';
+      badge.style.color = '#475467';
+      badge.style.fontSize = '13px';
+
+      resume.appendChild(badge);
+    });
+
+    carte.appendChild(nom);
+    carte.appendChild(email);
+    carte.appendChild(infos);
+    carte.appendChild(resume);
+
+    permissionsListe.appendChild(carte);
+  });
+}
+  btnMembres.onclick = async function () {
   masquerPagesPrincipales();
  window.scrollTo({ top: 0, behavior: 'instant' });
   dashboardHome.classList.add('hidden');
