@@ -5271,16 +5271,39 @@ boutonCotisationOuvert = null;
 
 
 boutonEnregistrerCotisation.onclick = async function () {
+  const montantPaye = Number(inputMontantPaye.value || 0);
+  const montantAttendu = Number(cotisation.montant_attendu || 0);
+
+  let statutCalcule = 'en_attente';
+
+  if (montantAttendu > 0 && montantPaye >= montantAttendu) {
+    statutCalcule = 'a_jour';
+  } else if (montantPaye > 0 && montantPaye < montantAttendu) {
+    statutCalcule = 'partiel';
+  } else if (montantPaye === 0) {
+    statutCalcule = 'en_attente';
+  }
+
   const { error } = await sb
     .from('cotisations')
     .update({
-      montant_paye: inputMontantPaye.value || 0,
+      montant_paye: montantPaye,
       date_paiement: inputDatePaiement.value || null,
       mode_paiement: inputModePaiement.value.trim(),
-      statut: inputStatutCotisation.value.trim(),
+      statut: statutCalcule,
       reference_paiement: inputReferencePaiement.value.trim() || null,
       observations: inputObservations.value.trim() || null
     })
+    .eq('id', cotisation.id);
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+
+  alert('Cotisation modifiée avec succès.');
+  btnCotisations.click();
+};
     .eq('id', cotisation.id);
 
   if (error) {
