@@ -4279,13 +4279,19 @@ async function chargerPermissionsUtilisateurs() {
   nomSection.style.color = '#344054';
 
   const labelVoir = document.createElement('label');
-  labelVoir.style.display = 'flex';
+  if (profil.role === 'super_admin') {
+  inputVoir.disabled = true;
+}
+     labelVoir.style.display = 'flex';
   labelVoir.style.alignItems = 'center';
   labelVoir.style.gap = '6px';
 
   const inputVoir = document.createElement('input');
   inputVoir.type = 'checkbox';
-  inputVoir.checked = permission.can_view === true;
+  if (profil.role === 'super_admin') {
+  inputVoir.disabled = true;
+}
+     inputVoir.checked = permission.can_view === true;
   inputVoir.dataset.section = permission.section;
   inputVoir.dataset.type = 'view';
 
@@ -4299,7 +4305,10 @@ async function chargerPermissionsUtilisateurs() {
 
   const inputModifier = document.createElement('input');
   inputModifier.type = 'checkbox';
-  inputModifier.checked = permission.can_edit === true;
+  if (profil.role === 'super_admin') {
+  inputModifier.disabled = true;
+}
+     inputModifier.checked = permission.can_edit === true;
   inputModifier.dataset.section = permission.section;
   inputModifier.dataset.type = 'edit';
 
@@ -4313,12 +4322,60 @@ async function chargerPermissionsUtilisateurs() {
   resume.appendChild(lignePermission);
 });
 const boutonEnregistrerPermissions = document.createElement('button');
-boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+if (profil.role === 'super_admin') {
+  boutonEnregistrerPermissions.disabled = true;
+  boutonEnregistrerPermissions.textContent = 'Permissions protégées';
+}
+    if (profil.role !== 'super_admin') {
+  boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+}
 boutonEnregistrerPermissions.style.marginTop = '16px';
 boutonEnregistrerPermissions.style.width = 'auto';
 boutonEnregistrerPermissions.style.padding = '10px 16px';
 
 resume.appendChild(boutonEnregistrerPermissions);
+    boutonEnregistrerPermissions.onclick = async function () {
+  boutonEnregistrerPermissions.disabled = true;
+  boutonEnregistrerPermissions.textContent = 'Enregistrement...';
+
+  const lignesPermissions = permissionsUtilisateur.map(function (permission) {
+    const inputVoir = resume.querySelector(
+      `input[data-section="${permission.section}"][data-type="view"]`
+    );
+
+    const inputModifier = resume.querySelector(
+      `input[data-section="${permission.section}"][data-type="edit"]`
+    );
+
+    return {
+      user_id: profil.id,
+      section: permission.section,
+      can_view: inputVoir ? inputVoir.checked : false,
+      can_edit: inputModifier ? inputModifier.checked : false,
+      updated_at: new Date().toISOString()
+    };
+  });
+
+  const { error } = await sb
+    .from('user_permissions')
+    .upsert(lignesPermissions, {
+      onConflict: 'user_id,section'
+    });
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    boutonEnregistrerPermissions.disabled = false;
+    boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+    return;
+  }
+
+  alert('Permissions enregistrées avec succès.');
+
+  boutonEnregistrerPermissions.disabled = false;
+  boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+
+  await chargerPermissionsUtilisateurs();
+};
     carte.appendChild(nom);
     carte.appendChild(email);
     carte.appendChild(infos);
