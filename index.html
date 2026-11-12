@@ -2013,7 +2013,36 @@ box-shadow:0 12px 28px rgba(244,196,48,.28);
   </div>
 
   <div id="permissionsListe"></div>
+<div style="
+  margin-top:32px;
+  padding-top:26px;
+  border-top:1px solid #e4e7ec;
+">
 
+  <h3 style="
+    margin:0 0 6px 0;
+    color:#10243e;
+  ">
+    Historique des modifications
+  </h3>
+
+  <p style="
+    margin:0 0 18px 0;
+    color:#667085;
+  ">
+    Consultez qui a créé, modifié ou supprimé des informations dans AIJEB Connect.
+  </p>
+
+  <div id="auditStatus" style="
+    margin-bottom:14px;
+    color:#667085;
+  ">
+    Chargement de l’historique...
+  </div>
+
+  <div id="auditListe"></div>
+
+</div>
   <button
     id="retourDashboardPermissions"
     type="button"
@@ -2322,6 +2351,8 @@ const permissionsPage = document.getElementById('permissionsPage');
 const permissionsStatus = document.getElementById('permissionsStatus');
 const permissionsListe = document.getElementById('permissionsListe');
 const retourDashboardPermissions = document.getElementById('retourDashboardPermissions');
+  const auditStatus = document.getElementById('auditStatus');
+const auditListe = document.getElementById('auditListe');
   const btnActivites = document.querySelector('[data-page="activites"]');
 const activitesPage = document.getElementById('activitesPage');
 const activitesStatus = document.getElementById('activitesStatus');
@@ -4169,6 +4200,7 @@ btnUtilisateursPermissions.onclick = async function () {
   masquerPagesPrincipales();
   permissionsPage.classList.remove('hidden');
   await chargerPermissionsUtilisateurs();
+  await chargerAuditLogs();
   window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
@@ -4354,7 +4386,76 @@ resume.appendChild(boutonEnregistrerPermissions);
       updated_at: new Date().toISOString()
     };
   });
+async function chargerAuditLogs() {
+  auditStatus.textContent = 'Chargement de l’historique...';
+  auditListe.innerHTML = '';
 
+  const { data, error } = await sb
+    .from('audit_logs')
+    .select('*')
+    .order('occurred_at', { ascending: false })
+    .limit(50);
+
+  if (error) {
+    auditStatus.textContent = 'Erreur : ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    auditStatus.textContent = 'Aucune modification enregistrée.';
+    return;
+  }
+
+  auditStatus.textContent =
+    data.length + ' modification(s) récente(s).';
+
+  data.forEach(function (log) {
+    const carte = document.createElement('div');
+
+    carte.style.background = '#ffffff';
+    carte.style.border = '1px solid #e4e7ec';
+    carte.style.borderRadius = '12px';
+    carte.style.padding = '14px 16px';
+    carte.style.marginBottom = '10px';
+
+    const date = new Date(log.occurred_at);
+
+    const titre = document.createElement('strong');
+
+    let actionTexte = log.action;
+
+    if (log.action === 'INSERT') actionTexte = 'Création';
+    if (log.action === 'UPDATE') actionTexte = 'Modification';
+    if (log.action === 'DELETE') actionTexte = 'Suppression';
+
+    titre.textContent =
+      actionTexte +
+      ' · ' +
+      (log.table_name || 'Donnée');
+
+    const auteur = document.createElement('div');
+    auteur.style.marginTop = '6px';
+    auteur.style.color = '#475467';
+
+    auteur.textContent =
+      'Par : ' +
+      (log.actor_email || 'Utilisateur non identifié');
+
+    const dateElement = document.createElement('div');
+    dateElement.style.marginTop = '4px';
+    dateElement.style.color = '#667085';
+    dateElement.style.fontSize = '13px';
+
+    dateElement.textContent =
+      date.toLocaleString('fr-FR');
+
+    carte.appendChild(titre);
+    carte.appendChild(auteur);
+    carte.appendChild(dateElement);
+
+    auditListe.appendChild(carte);
+  });
+}
   const { error } = await sb
     .from('user_permissions')
     .upsert(lignesPermissions, {
