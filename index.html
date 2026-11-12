@@ -5115,9 +5115,14 @@ bloc.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
 
 const boutonModifierCotisation = document.createElement('button');
 boutonModifierCotisation.textContent = 'Voir / Modifier';
-boutonModifierCotisation.style.marginTop = '10px';
-boutonModifierCotisation.style.width = '100%';
-boutonModifierCotisation.onclick = function () {
+boutonModifierCotisation.style.marginTop = '14px';
+boutonModifierCotisation.style.width = 'auto';
+boutonModifierCotisation.style.alignSelf = 'flex-end';
+boutonModifierCotisation.style.padding = '9px 15px';
+boutonModifierCotisation.style.background = 'white';
+boutonModifierCotisation.style.color = '#0b6b3a';
+boutonModifierCotisation.style.border = '1px solid #b8d9c5';
+boutonModifierCotisation.style.boxShadow = 'none';
   if (formulaireCotisationOuvert) {
     formulaireCotisationOuvert.remove();
 
