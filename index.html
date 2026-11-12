@@ -1795,6 +1795,14 @@ box-shadow:0 12px 28px rgba(244,196,48,.28);
         
         
         <button class="menu-btn" data-page="galerie">Galerie photos</button>
+      <button
+  id="btnUtilisateursPermissions"
+  class="menu-btn"
+  data-page="permissions"
+  style="display:none;"
+>
+  Utilisateurs & permissions
+</button>
       </div>
 <div class="language-selector">
   <label for="languageSelect">Langue</label>
@@ -3720,23 +3728,49 @@ actionsActivite.appendChild(
   const activitesRealiseesSection = document.getElementById('activitesRealiseesSection');
 const activitesRealiseesStatus = document.getElementById('activitesRealiseesStatus');
 const activitesRealiseesListe = document.getElementById('activitesRealiseesListe');
+async function verifierAccesSuperAdmin() {
+  const btnPermissions = document.getElementById('btnUtilisateursPermissions');
 
+  const {
+    data: { user }
+  } = await sb.auth.getUser();
+
+  if (!user || !btnPermissions) {
+    return;
+  }
+
+  const { data: profil, error } = await sb
+    .from('profiles')
+    .select('role, actif')
+    .eq('id', user.id)
+    .single();
+
+  if (error || !profil) {
+    btnPermissions.style.display = 'none';
+    return;
+  }
+
+  if (profil.actif === true && profil.role === 'super_admin') {
+    btnPermissions.style.display = 'block';
+  } else {
+    btnPermissions.style.display = 'none';
+  }
+}
 
   async function showSession() {
     const {
       data: { session }
     } = await sb.auth.getSession();
 
-    if (session) {
-      loginBox.classList.add('hidden');
-      connectedBox.classList.remove('hidden');
-    chargerStatsDashboard();
-   chargerActivites();
-    }
-  }
-  function formaterMontant(montant) {
+  if (session) {
+  loginBox.classList.add('hidden');
+  connectedBox.classList.remove('hidden');
+  verifierAccesSuperAdmin();
+  chargerStatsDashboard();
+  chargerActivites();
+}
+    function formaterMontant(montant) {
   const valeur = Number(montant || 0);
-
   if (currencySelect.value === 'EUR') {
     const montantEuro = valeur / 655.957;
 
