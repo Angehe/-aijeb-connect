@@ -4386,7 +4386,7 @@ resume.appendChild(boutonEnregistrerPermissions);
       updated_at: new Date().toISOString()
     };
   });
-
+const { error } = await sb
     .from('user_permissions')
     .upsert(lignesPermissions, {
       onConflict: 'user_id,section'
