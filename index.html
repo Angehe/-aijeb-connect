@@ -5274,15 +5274,20 @@ boutonEnregistrerCotisation.onclick = async function () {
   const montantPaye = Number(inputMontantPaye.value || 0);
   const montantAttendu = Number(cotisation.montant_attendu || 0);
 
-  let statutCalcule = 'en_attente';
+const maintenant = new Date();
+const moisActuel = maintenant.getMonth() + 1;
 
-  if (montantAttendu > 0 && montantPaye >= montantAttendu) {
-    statutCalcule = 'a_jour';
-  } else if (montantPaye > 0 && montantPaye < montantAttendu) {
-    statutCalcule = 'partiel';
-  } else if (montantPaye === 0) {
-    statutCalcule = 'en_attente';
-  }
+let statutCalcule = 'en_attente';
+
+if (montantAttendu > 0 && montantPaye >= montantAttendu) {
+  statutCalcule = 'a_jour';
+} else if (moisActuel >= 7) {
+  statutCalcule = 'en_retard';
+} else if (montantPaye > 0) {
+  statutCalcule = 'partiel';
+} else {
+  statutCalcule = 'en_attente';
+}
 
   const { error } = await sb
     .from('cotisations')
