@@ -3814,7 +3814,21 @@ async function verifierAccesSuperAdmin() {
       data: { session }
     } = await sb.auth.getSession();
 
-  if (session) {
+ if (session) {
+  const { data: profil } = await sb
+    .from('profiles')
+    .select('actif')
+    .eq('id', session.user.id)
+    .single();
+
+  if (!profil || profil.actif !== true) {
+    await sb.auth.signOut();
+    loginBox.classList.remove('hidden');
+    connectedBox.classList.add('hidden');
+    alert('Votre accès à AIJEB Connect est temporairement désactivé.');
+    return;
+  }
+
   loginBox.classList.add('hidden');
   connectedBox.classList.remove('hidden');
   verifierAccesSuperAdmin();
@@ -5558,11 +5572,28 @@ document.getElementById('logout').onclick = async function () {
   window.location.reload();
 };
 
-sb.auth.onAuthStateChange(function(event, session) {
-  if (session) {
-    loginBox.classList.add('hidden');
-    connectedBox.classList.remove('hidden');
+sb.auth.onAuthStateChange(async function(event, session) {
+  if (!session) {
+    loginBox.classList.remove('hidden');
+    connectedBox.classList.add('hidden');
+    return;
   }
+
+  const { data: profil } = await sb
+    .from('profiles')
+    .select('actif')
+    .eq('id', session.user.id)
+    .single();
+
+  if (!profil || profil.actif !== true) {
+    await sb.auth.signOut();
+    loginBox.classList.remove('hidden');
+    connectedBox.classList.add('hidden');
+    return;
+  }
+
+  loginBox.classList.add('hidden');
+  connectedBox.classList.remove('hidden');
 });
 
 
