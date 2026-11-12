@@ -4386,7 +4386,35 @@ resume.appendChild(boutonEnregistrerPermissions);
       updated_at: new Date().toISOString()
     };
   });
-async function chargerAuditLogs() {
+
+    .from('user_permissions')
+    .upsert(lignesPermissions, {
+      onConflict: 'user_id,section'
+    });
+
+  if (error) {
+    alert('Erreur : ' + error.message);
+    boutonEnregistrerPermissions.disabled = false;
+    boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+    return;
+  }
+
+  alert('Permissions enregistrées avec succès.');
+
+  boutonEnregistrerPermissions.disabled = false;
+  boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+
+  await chargerPermissionsUtilisateurs();
+};
+    carte.appendChild(nom);
+    carte.appendChild(email);
+    carte.appendChild(infos);
+    carte.appendChild(resume);
+
+    permissionsListe.appendChild(carte);
+  });
+}
+  async function chargerAuditLogs() {
   auditStatus.textContent = 'Chargement de l’historique...';
   auditListe.innerHTML = '';
 
@@ -4454,34 +4482,6 @@ async function chargerAuditLogs() {
     carte.appendChild(dateElement);
 
     auditListe.appendChild(carte);
-  });
-}
-  const { error } = await sb
-    .from('user_permissions')
-    .upsert(lignesPermissions, {
-      onConflict: 'user_id,section'
-    });
-
-  if (error) {
-    alert('Erreur : ' + error.message);
-    boutonEnregistrerPermissions.disabled = false;
-    boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
-    return;
-  }
-
-  alert('Permissions enregistrées avec succès.');
-
-  boutonEnregistrerPermissions.disabled = false;
-  boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
-
-  await chargerPermissionsUtilisateurs();
-};
-    carte.appendChild(nom);
-    carte.appendChild(email);
-    carte.appendChild(infos);
-    carte.appendChild(resume);
-
-    permissionsListe.appendChild(carte);
   });
 }
   btnMembres.onclick = async function () {
