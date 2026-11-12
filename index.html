@@ -4262,30 +4262,63 @@ async function chargerPermissionsUtilisateurs() {
     resume.style.flexWrap = 'wrap';
     resume.style.gap = '8px';
 
-    permissionsUtilisateur.forEach(function (permission) {
-      const badge = document.createElement('span');
+   permissionsUtilisateur.forEach(function (permission) {
+  const lignePermission = document.createElement('div');
 
-      let texte = permission.section;
+  lignePermission.style.display = 'flex';
+  lignePermission.style.alignItems = 'center';
+  lignePermission.style.gap = '12px';
+  lignePermission.style.padding = '10px 12px';
+  lignePermission.style.border = '1px solid #e4e7ec';
+  lignePermission.style.borderRadius = '10px';
+  lignePermission.style.background = '#f8fafc';
 
-      if (permission.can_view) {
-        texte += ' · Voir';
-      }
+  const nomSection = document.createElement('strong');
+  nomSection.textContent = permission.section;
+  nomSection.style.minWidth = '110px';
+  nomSection.style.color = '#344054';
 
-      if (permission.can_edit) {
-        texte += ' · Modifier';
-      }
+  const labelVoir = document.createElement('label');
+  labelVoir.style.display = 'flex';
+  labelVoir.style.alignItems = 'center';
+  labelVoir.style.gap = '6px';
 
-      badge.textContent = texte;
-      badge.style.padding = '7px 10px';
-      badge.style.borderRadius = '10px';
-      badge.style.background = '#f8fafc';
-      badge.style.border = '1px solid #e4e7ec';
-      badge.style.color = '#475467';
-      badge.style.fontSize = '13px';
+  const inputVoir = document.createElement('input');
+  inputVoir.type = 'checkbox';
+  inputVoir.checked = permission.can_view === true;
+  inputVoir.dataset.section = permission.section;
+  inputVoir.dataset.type = 'view';
 
-      resume.appendChild(badge);
-    });
+  labelVoir.appendChild(inputVoir);
+  labelVoir.appendChild(document.createTextNode('Voir'));
 
+  const labelModifier = document.createElement('label');
+  labelModifier.style.display = 'flex';
+  labelModifier.style.alignItems = 'center';
+  labelModifier.style.gap = '6px';
+
+  const inputModifier = document.createElement('input');
+  inputModifier.type = 'checkbox';
+  inputModifier.checked = permission.can_edit === true;
+  inputModifier.dataset.section = permission.section;
+  inputModifier.dataset.type = 'edit';
+
+  labelModifier.appendChild(inputModifier);
+  labelModifier.appendChild(document.createTextNode('Modifier'));
+
+  lignePermission.appendChild(nomSection);
+  lignePermission.appendChild(labelVoir);
+  lignePermission.appendChild(labelModifier);
+
+  resume.appendChild(lignePermission);
+});
+const boutonEnregistrerPermissions = document.createElement('button');
+boutonEnregistrerPermissions.textContent = 'Enregistrer les permissions';
+boutonEnregistrerPermissions.style.marginTop = '16px';
+boutonEnregistrerPermissions.style.width = 'auto';
+boutonEnregistrerPermissions.style.padding = '10px 16px';
+
+resume.appendChild(boutonEnregistrerPermissions);
     carte.appendChild(nom);
     carte.appendChild(email);
     carte.appendChild(infos);
