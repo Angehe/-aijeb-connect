@@ -5123,7 +5123,8 @@ boutonModifierCotisation.style.background = 'white';
 boutonModifierCotisation.style.color = '#0b6b3a';
 boutonModifierCotisation.style.border = '1px solid #b8d9c5';
 boutonModifierCotisation.style.boxShadow = 'none';
-  if (formulaireCotisationOuvert) {
+  boutonModifierCotisation.onclick = function () {
+    if (formulaireCotisationOuvert) {
     formulaireCotisationOuvert.remove();
 
     if (boutonCotisationOuvert) {
