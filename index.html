@@ -4508,13 +4508,61 @@ details.style.borderRadius = '10px';
 details.style.fontSize = '13px';
 details.style.color = '#475467';
 
-function formaterValeurAudit(valeur) {
+function formaterNomChampAudit(champ) {
+  const noms = {
+    statut: 'Statut',
+    montant: 'Montant',
+    montant_paye: 'Montant payé',
+    montant_attendu: 'Montant attendu',
+    date_paiement: 'Date de paiement',
+    periode: 'Période',
+    annee: 'Année',
+    nom: 'Nom',
+    prenom: 'Prénom',
+    email: 'E-mail',
+    telephone: 'Téléphone',
+    actif: 'Compte actif',
+    role: 'Rôle',
+    can_view: 'Autorisation de voir',
+    can_edit: 'Autorisation de modifier'
+  };
+
+  return noms[champ] || champ.replaceAll('_', ' ');
+}
+
+function formaterValeurAudit(valeur, champ) {
   if (valeur === null || valeur === undefined || valeur === '') {
     return '—';
   }
 
   if (typeof valeur === 'boolean') {
     return valeur ? 'Oui' : 'Non';
+  }
+
+  const statuts = {
+    en_retard: 'En retard',
+    a_jour: 'À jour',
+    paye: 'Payé',
+    impaye: 'Impayé',
+    en_attente: 'En attente',
+    actif: 'Actif',
+    inactif: 'Inactif'
+  };
+
+  if (statuts[valeur]) {
+    return statuts[valeur];
+  }
+
+  if (
+    champ === 'montant' ||
+    champ === 'montant_paye' ||
+    champ === 'montant_attendu'
+  ) {
+    const nombre = Number(valeur);
+
+    if (!Number.isNaN(nombre)) {
+      return nombre.toLocaleString('fr-FR') + ' FCFA';
+    }
   }
 
   return String(valeur);
@@ -4544,24 +4592,38 @@ champs.forEach(function (champ) {
   ligne.style.marginBottom = '8px';
 
   const nomChamp = document.createElement('strong');
-  nomChamp.textContent = champ + ' : ';
+  nomChamp.textContent = formaterNomChampAudit(champ) + ' : ';
 
   ligne.appendChild(nomChamp);
 
-  if (log.action === 'INSERT') {
-    ligne.appendChild(
-      document.createTextNode(formaterValeurAudit(apres))
-    );
-  } else if (log.action === 'DELETE') {
-    ligne.appendChild(
-      document.createTextNode(formaterValeurAudit(avant))
-    );
-  } else {
+ if (log.action === 'INSERT') {
+  ligne.appendChild(
+    document.createTextNode(
+      formaterValeurAudit(apres, champ)
+    )
+  );
+
+} else if (log.action === 'DELETE') {
+  ligne.appendChild(
+    document.createTextNode(
+      formaterValeurAudit(avant, champ)
+    )
+  );
+
+} else {
+  ligne.appendChild(
+    document.createTextNode(
+      formaterValeurAudit(avant, champ) +
+      ' → ' +
+      formaterValeurAudit(apres, champ)
+    )
+  );
+}
     ligne.appendChild(
       document.createTextNode(
-        formaterValeurAudit(avant) +
-        ' → ' +
-        formaterValeurAudit(apres)
+       formaterValeurAudit(avant, champ) +
+' → ' +
+formaterValeurAudit(apres, champ)
       )
     );
   }
