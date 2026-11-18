@@ -4486,11 +4486,105 @@ const { error } = await sb
 
     dateElement.textContent =
       date.toLocaleString('fr-FR');
+const boutonDetails = document.createElement('button');
+boutonDetails.type = 'button';
+boutonDetails.textContent = 'Voir les détails';
 
+boutonDetails.style.marginTop = '10px';
+boutonDetails.style.width = 'auto';
+boutonDetails.style.padding = '8px 12px';
+boutonDetails.style.background = '#ffffff';
+boutonDetails.style.color = '#0b6b3a';
+boutonDetails.style.border = '1px solid #b8d9c5';
+boutonDetails.style.boxShadow = 'none';
+
+const details = document.createElement('div');
+details.style.display = 'none';
+details.style.marginTop = '12px';
+details.style.padding = '12px';
+details.style.background = '#f8fafc';
+details.style.border = '1px solid #e4e7ec';
+details.style.borderRadius = '10px';
+details.style.fontSize = '13px';
+details.style.color = '#475467';
+
+function formaterValeurAudit(valeur) {
+  if (valeur === null || valeur === undefined || valeur === '') {
+    return '—';
+  }
+
+  if (typeof valeur === 'boolean') {
+    return valeur ? 'Oui' : 'Non';
+  }
+
+  return String(valeur);
+}
+
+const ancien = log.old_data || {};
+const nouveau = log.new_data || {};
+
+const champs = new Set([
+  ...Object.keys(ancien),
+  ...Object.keys(nouveau)
+]);
+
+let nombreChangements = 0;
+
+champs.forEach(function (champ) {
+  const avant = ancien[champ];
+  const apres = nouveau[champ];
+
+  if (JSON.stringify(avant) === JSON.stringify(apres)) {
+    return;
+  }
+
+  nombreChangements++;
+
+  const ligne = document.createElement('div');
+  ligne.style.marginBottom = '8px';
+
+  const nomChamp = document.createElement('strong');
+  nomChamp.textContent = champ + ' : ';
+
+  ligne.appendChild(nomChamp);
+
+  if (log.action === 'INSERT') {
+    ligne.appendChild(
+      document.createTextNode(formaterValeurAudit(apres))
+    );
+  } else if (log.action === 'DELETE') {
+    ligne.appendChild(
+      document.createTextNode(formaterValeurAudit(avant))
+    );
+  } else {
+    ligne.appendChild(
+      document.createTextNode(
+        formaterValeurAudit(avant) +
+        ' → ' +
+        formaterValeurAudit(apres)
+      )
+    );
+  }
+
+  details.appendChild(ligne);
+});
+
+if (nombreChangements === 0) {
+  details.textContent = 'Aucun détail disponible.';
+}
+
+boutonDetails.onclick = function () {
+  const ouvert = details.style.display === 'block';
+
+  details.style.display = ouvert ? 'none' : 'block';
+  boutonDetails.textContent =
+    ouvert ? 'Voir les détails' : 'Masquer les détails';
+};
     carte.appendChild(titre);
     carte.appendChild(auteur);
     carte.appendChild(dateElement);
-
+carte.appendChild(boutonDetails);
+carte.appendChild(details);
     auditListe.appendChild(carte);
   });
 }
