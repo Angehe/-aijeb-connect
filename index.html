@@ -626,7 +626,80 @@ label {
   --aijeb-radius: 18px;
   --aijeb-shadow: 0 8px 30px rgba(16, 36, 62, 0.07);
 }
+html[data-theme="dark"] {
+  --aijeb-bg: #0f172a;
+  --aijeb-card: #1e293b;
+  --aijeb-border: #334155;
+  --aijeb-text: #f8fafc;
+  --aijeb-muted: #cbd5e1;
+  --aijeb-navy: #f8fafc;
+  --aijeb-shadow: 0 8px 30px rgba(0,0,0,.28);
+}
 
+html[data-theme="dark"] body {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .dashboard-main {
+  background:
+    radial-gradient(
+      circle at 95% 3%,
+      rgba(244,196,48,.05),
+      transparent 24%
+    ),
+    #0f172a !important;
+
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .dashboard-section,
+html[data-theme="dark"] #permissionsListe > div,
+html[data-theme="dark"] #auditListe > div {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .dashboard-main h1,
+html[data-theme="dark"] .dashboard-main h2,
+html[data-theme="dark"] .dashboard-main h3,
+html[data-theme="dark"] .dashboard-main strong {
+  color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .dashboard-main p,
+html[data-theme="dark"] .dashboard-main span,
+html[data-theme="dark"] .dashboard-main label {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .dashboard-main input,
+html[data-theme="dark"] .dashboard-main textarea,
+html[data-theme="dark"] .dashboard-main select {
+  background: #111827 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+html[data-theme="dark"] #auditListe > div > div {
+  color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] #themeToggleWelcome {
+  background: #172033 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html[data-theme="dark"] #welcomePage {
+  background: #08111f !important;
+}
+
+html[data-theme="dark"] #welcomePage section:last-child {
+  background: #08111f !important;
+}
 /* ===== TYPOGRAPHIE ===== */
 
 body {
@@ -1570,7 +1643,27 @@ button:hover {
   background:#f7f7f2;
   overflow:auto;
 ">
-
+<button
+  id="themeToggleWelcome"
+  type="button"
+  style="
+    position:fixed;
+    top:24px;
+    right:28px;
+    z-index:10050;
+    width:auto;
+    padding:10px 16px;
+    border-radius:12px;
+    border:1px solid rgba(16,36,62,.12);
+    background:#ffffff;
+    color:#10243e;
+    box-shadow:0 8px 24px rgba(16,36,62,.10);
+    font-weight:700;
+    cursor:pointer;
+  "
+>
+  ☾ Mode nuit
+</button>
   <!-- PARTIE GAUCHE -->
   <section style="
     min-height:100vh;
@@ -2325,6 +2418,48 @@ box-shadow:0 12px 28px rgba(244,196,48,.28);
   const emailInput = document.getElementById('email');
   const message = document.getElementById('message');
   const loginBox = document.getElementById('loginBox');
+ const themeToggleWelcome =
+  document.getElementById('themeToggleWelcome');
+
+const themeMemorise =
+  localStorage.getItem('aijebTheme') || 'light';
+
+document.documentElement.setAttribute(
+  'data-theme',
+  themeMemorise
+);
+
+function mettreAJourBoutonTheme() {
+  const theme =
+    document.documentElement.getAttribute('data-theme');
+
+  themeToggleWelcome.textContent =
+    theme === 'dark'
+      ? '☀ Mode clair'
+      : '☾ Mode nuit';
+}
+
+mettreAJourBoutonTheme();
+
+themeToggleWelcome.onclick = function () {
+  const themeActuel =
+    document.documentElement.getAttribute('data-theme');
+
+  const nouveauTheme =
+    themeActuel === 'dark' ? 'light' : 'dark';
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    nouveauTheme
+  );
+
+  localStorage.setItem(
+    'aijebTheme',
+    nouveauTheme
+  );
+
+  mettreAJourBoutonTheme();
+}; 
   const connectedBox = document.getElementById('connectedBox');
 const dashboardHome = document.getElementById('dashboardHome');
 const membresPage = document.getElementById('membresPage');
