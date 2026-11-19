@@ -1768,99 +1768,227 @@ padding-top:150px;
       margin:auto;
     ">
 
-      <div style="
-        display:inline-flex;
-        align-items:center;
-        gap:10px;
-        padding:9px 15px;
-        border-radius:999px;
-        background:#edf6f0;
-        color:#0b6b3a;
-        font-size:14px;
-        font-weight:700;
-        margin-bottom:34px;
-      ">
-        <span style="
-          width:9px;
-          height:9px;
-          border-radius:50%;
-          background:#0b6b3a;
-          box-shadow:0 0 0 5px rgba(11,107,58,.10);
-        "></span>
+     <div style="
+  display:flex;
+  gap:6px;
+  padding:5px;
+  border-radius:14px;
+  background:#edf1ee;
+  margin-bottom:34px;
+">
+  <button id="tabPublicAIJEB" type="button" style="
+    width:50%;
+    margin:0;
+    padding:13px 16px;
+    border-radius:10px;
+    background:#0b6b3a;
+    color:white;
+    box-shadow:none;
+    font-size:14px;
+  ">
+    Public
+  </button>
 
-        Espace sécurisé
-      </div>
+  <button id="tabPersonnelAIJEB" type="button" style="
+    width:50%;
+    margin:0;
+    padding:13px 16px;
+    border-radius:10px;
+    background:transparent;
+    color:#667085;
+    box-shadow:none;
+    font-size:14px;
+  ">
+    Personnel AIJEB
+  </button>
+</div>
 
-      <h2 style="
-        margin:0;
-        color:#10243e;
-        font-size:clamp(42px,4vw,62px);
-        line-height:1.05;
-        letter-spacing:-2px;
-        font-weight:650;
-      ">
-        Bienvenue sur<br>
-        AIJEB Connect
-      </h2>
+<!-- ESPACE PUBLIC -->
+<div id="welcomePublicPanel">
 
-      <p style="
-        margin:24px 0 0;
-        max-width:520px;
-        color:#667085;
-        font-size:18px;
-        line-height:1.65;
-      ">
-        Centralisez la gestion de l’AIJEB dans un environnement
-        moderne, clair et sécurisé.
-      </p>
+  <div style="
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 15px;
+    border-radius:999px;
+    background:#edf6f0;
+    color:#0b6b3a;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:34px;
+  ">
+    <span style="
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:#0b6b3a;
+      box-shadow:0 0 0 5px rgba(11,107,58,.10);
+    "></span>
 
-      <div style="
-        margin-top:48px;
-        padding:30px;
-        border:1px solid #e1e7e2;
-        border-radius:24px;
-        background:rgba(255,255,255,.72);
-        box-shadow:0 22px 60px rgba(16,36,62,.08);
-      ">
+    Espace public
+  </div>
 
-        <div style="
-          color:#10243e;
-          font-size:18px;
-          font-weight:700;
-          margin-bottom:8px;
-        ">
-          Espace de gestion
-        </div>
+  <h2 style="
+    margin:0;
+    color:#10243e;
+    font-size:clamp(42px,4vw,62px);
+    line-height:1.05;
+    letter-spacing:-2px;
+    font-weight:650;
+  ">
+    Bienvenue sur<br>
+    AIJEB Connect
+  </h2>
 
-        <p style="
-          margin:0 0 24px;
-          color:#667085;
-          font-size:14px;
-          line-height:1.5;
-        ">
-          Connectez-vous pour accéder à votre tableau de bord.
-        </p>
+  <p style="
+    margin:24px 0 0;
+    max-width:520px;
+    color:#667085;
+    font-size:18px;
+    line-height:1.65;
+  ">
+    Découvrez l’AIJEB, ses activités, ses projets et ses initiatives.
+  </p>
 
-        <button
-          id="btnEntrerAIJEB"
-          type="button"
-          style="
-            width:100%;
-            padding:17px 24px;
-            border:none;
-            border-radius:13px;
-            background:#f4c430;
-color:#063f2b;
-box-shadow:0 12px 28px rgba(244,196,48,.28);
-            font-weight:750;
-            cursor:pointer;
-           
-          "
-        >
-          Accéder à AIJEB Connect →
-        </button>
+  <div style="
+    margin-top:48px;
+    padding:30px;
+    border:1px solid #e1e7e2;
+    border-radius:24px;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 22px 60px rgba(16,36,62,.08);
+  ">
 
-      </div>
+    <div style="
+      color:#10243e;
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    ">
+      Découvrir l’AIJEB
+    </div>
+
+    <p style="
+      margin:0 0 24px;
+      color:#667085;
+      font-size:14px;
+      line-height:1.5;
+    ">
+      Accédez à l’espace public sans connexion.
+    </p>
+
+    <button id="btnEntrerPublicAIJEB" type="button" style="
+      width:100%;
+      padding:17px 24px;
+      border:none;
+      border-radius:13px;
+      background:#f4c430;
+      color:#063f2b;
+      box-shadow:0 12px 28px rgba(244,196,48,.28);
+      font-weight:750;
+      cursor:pointer;
+    ">
+      Accéder à l’espace public →
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ESPACE PERSONNEL -->
+<div id="welcomePersonnelPanel" style="display:none;">
+
+  <div style="
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 15px;
+    border-radius:999px;
+    background:#edf6f0;
+    color:#0b6b3a;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:34px;
+  ">
+    <span style="
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:#0b6b3a;
+      box-shadow:0 0 0 5px rgba(11,107,58,.10);
+    "></span>
+
+    Espace sécurisé
+  </div>
+
+  <h2 style="
+    margin:0;
+    color:#10243e;
+    font-size:clamp(42px,4vw,62px);
+    line-height:1.05;
+    letter-spacing:-2px;
+    font-weight:650;
+  ">
+    Espace personnel<br>
+    AIJEB
+  </h2>
+
+  <p style="
+    margin:24px 0 0;
+    max-width:520px;
+    color:#667085;
+    font-size:18px;
+    line-height:1.65;
+  ">
+    Connectez-vous pour accéder à l’administration
+    et au tableau de bord interne.
+  </p>
+
+  <div style="
+    margin-top:48px;
+    padding:30px;
+    border:1px solid #e1e7e2;
+    border-radius:24px;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 22px 60px rgba(16,36,62,.08);
+  ">
+
+    <div style="
+      color:#10243e;
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    ">
+      Espace de gestion
+    </div>
+
+    <p style="
+      margin:0 0 24px;
+      color:#667085;
+      font-size:14px;
+      line-height:1.5;
+    ">
+      Accès réservé au personnel et aux responsables autorisés.
+    </p>
+
+    <button id="btnEntrerAIJEB" type="button" style="
+      width:100%;
+      padding:17px 24px;
+      border:none;
+      border-radius:13px;
+      background:#f4c430;
+      color:#063f2b;
+      box-shadow:0 12px 28px rgba(244,196,48,.28);
+      font-weight:750;
+      cursor:pointer;
+    ">
+      Se connecter →
+    </button>
+
+  </div>
+
+</div>
 
       <div style="
         margin-top:24px;
@@ -6558,6 +6686,46 @@ if (boutonEntrerAIJEB) {
   };
 }
 
+const tabPublicAIJEB = document.getElementById('tabPublicAIJEB');
+const tabPersonnelAIJEB = document.getElementById('tabPersonnelAIJEB');
+
+const welcomePublicPanel =
+  document.getElementById('welcomePublicPanel');
+
+const welcomePersonnelPanel =
+  document.getElementById('welcomePersonnelPanel');
+
+function afficherOngletAIJEB(type) {
+  const publicActif = type === 'public';
+
+  welcomePublicPanel.style.display =
+    publicActif ? 'block' : 'none';
+
+  welcomePersonnelPanel.style.display =
+    publicActif ? 'none' : 'block';
+
+  tabPublicAIJEB.style.background =
+    publicActif ? '#0b6b3a' : 'transparent';
+
+  tabPublicAIJEB.style.color =
+    publicActif ? '#ffffff' : '#667085';
+
+  tabPersonnelAIJEB.style.background =
+    publicActif ? 'transparent' : '#0b6b3a';
+
+  tabPersonnelAIJEB.style.color =
+    publicActif ? '#667085' : '#ffffff';
+}
+
+tabPublicAIJEB.onclick = function () {
+  afficherOngletAIJEB('public');
+};
+
+tabPersonnelAIJEB.onclick = function () {
+  afficherOngletAIJEB('personnel');
+};
+
+afficherOngletAIJEB('public');
 </script>
 </body>
 </html>
