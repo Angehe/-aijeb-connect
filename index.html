@@ -7212,6 +7212,34 @@ if (btnPersonnelDepuisPublic) {
     });
   };
 }
+  // =========================
+// ETAT INITIAL AIJEB CONNECT
+// =========================
+window.addEventListener('load', function () {
+
+  const accueil = document.getElementById('welcomePage');
+  const publicPage = document.getElementById('publicPageAIJEB');
+
+  if (accueil) {
+    accueil.style.display = 'grid';
+  }
+
+  if (publicPage) {
+    publicPage.classList.add('hidden');
+  }
+
+  if (loginBox) {
+    loginBox.classList.add('hidden');
+  }
+
+  if (connectedBox) {
+    connectedBox.classList.add('hidden');
+  }
+
+  afficherOngletAIJEB('public');
+
+  window.scrollTo(0, 0);
+});
 </script>
 </body>
 </html>
