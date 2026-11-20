@@ -6631,12 +6631,17 @@ document.getElementById('logout').onclick = async function () {
 };
 
 sb.auth.onAuthStateChange(async function(event, session) {
+
+  // Au chargement de la plateforme,
+  // ne jamais ouvrir automatiquement le tableau de bord.
+  loginBox.classList.add('hidden');
+  connectedBox.classList.add('hidden');
+
   if (!session) {
-    loginBox.classList.remove('hidden');
-    connectedBox.classList.add('hidden');
     return;
   }
 
+  // Vérifier seulement si le compte est toujours actif.
   const { data: profil } = await sb
     .from('profiles')
     .select('actif')
@@ -6645,17 +6650,10 @@ sb.auth.onAuthStateChange(async function(event, session) {
 
   if (!profil || profil.actif !== true) {
     await sb.auth.signOut();
-    loginBox.classList.remove('hidden');
     connectedBox.classList.add('hidden');
-    return;
   }
-
-  loginBox.classList.add('hidden');
-  connectedBox.classList.remove('hidden');
 });
-
-
-  showSession();
+ 
 // =========================
 // FINANCES
 // =========================
