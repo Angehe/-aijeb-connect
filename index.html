@@ -4564,11 +4564,26 @@ async function verifierAccesSuperAdmin() {
     return;
   }
 
-  loginBox.classList.add('hidden');
-  connectedBox.classList.remove('hidden');
-  verifierAccesSuperAdmin();
-  chargerStatsDashboard();
-  chargerActivites();
+ loginBox.classList.add('hidden');
+
+// Masquer complètement les espaces public et accueil
+const publicPageAIJEB = document.getElementById('publicPageAIJEB');
+const welcomePage = document.getElementById('welcomePage');
+
+if (publicPageAIJEB) {
+  publicPageAIJEB.classList.add('hidden');
+}
+
+if (welcomePage) {
+  welcomePage.style.display = 'none';
+}
+
+// Afficher uniquement l'espace personnel
+connectedBox.classList.remove('hidden');
+
+verifierAccesSuperAdmin();
+chargerStatsDashboard();
+chargerActivites();
 }
   }
     function formaterMontant(montant) {
