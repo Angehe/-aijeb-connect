@@ -7115,9 +7115,14 @@ if (boutonEntrerAIJEB) {
       data: { session }
     } = await sb.auth.getSession();
 
-    if (session) {
-      loginBox.classList.add('hidden');
-      connectedBox.classList.remove('hidden');
+   if (session) {
+  loginBox.classList.add('hidden');
+  connectedBox.classList.remove('hidden');
+
+  verifierAccesSuperAdmin();
+  chargerStatsDashboard();
+  chargerActivites();
+}
      
     } else {
       loginBox.classList.remove('hidden');
