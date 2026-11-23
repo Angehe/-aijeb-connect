@@ -2097,7 +2097,23 @@ padding-top:150px;
         Contact
       </a>
     </nav>
-
+<select id="publicLanguageSelect" style="
+  width:auto;
+  min-width:120px;
+  padding:10px 12px;
+  margin:0;
+  border-radius:10px;
+  border:1px solid #d8e0dc;
+  background:white;
+  color:#10243e;
+  font-weight:600;
+">
+  <option value="fr">Français</option>
+  <option value="en">English</option>
+  <option value="es">Español</option>
+  <option value="de">Deutsch</option>
+  <option value="ja">日本語</option>
+</select>
     <button
       id="btnPersonnelDepuisPublic"
       type="button"
@@ -2177,45 +2193,155 @@ padding-top:150px;
   </section>
 
 
-  <!-- PRESENTATION -->
-  <section id="publicPresentation" style="
+ <!-- =========================
+     PRESENTATION AIJEB
+     ========================= -->
+
+<section id="publicPresentation" style="
+  padding:90px 6vw;
+  background:#f7f9f6;
+">
+
+  <div style="
     max-width:1150px;
     margin:auto;
-    padding:90px 6vw;
   ">
 
-    <div style="
-      color:#0b6b3a;
-      font-size:13px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:2px;
-    ">
-      À propos
+    <div
+      id="publicAPropos"
+      style="
+        color:#0b6b3a;
+        font-size:13px;
+        font-weight:800;
+        text-transform:uppercase;
+        letter-spacing:2px;
+        margin-bottom:12px;
+      "
+    >
+      À propos de nous
     </div>
 
-    <h2 style="
-      margin:12px 0 20px;
-      font-size:40px;
-      color:#10243e;
-    ">
-      Présentation de l’AIJEB
+    <h2
+      id="publicPresentationTitre"
+      style="
+        margin:0 0 24px;
+        font-size:42px;
+        color:#10243e;
+        letter-spacing:-1px;
+      "
+    >
+      Découvrez l’AIJEB
     </h2>
 
-    <p style="
-      max-width:850px;
-      color:#667085;
-      font-size:18px;
-      line-height:1.8;
-    ">
-      L’AIJEB rassemble des jeunes et des partenaires autour
-      d’initiatives favorisant les échanges, la formation,
-      le leadership, la coopération et le développement.
+    <p
+      id="publicPresentationTexte"
+      style="
+        max-width:900px;
+        color:#667085;
+        font-size:18px;
+        line-height:1.8;
+        margin-bottom:45px;
+      "
+    >
+      L’Amicale Internationale des Jeunes de l’Europe et du Bénin
+      (AIJEB) rassemble des jeunes, des responsables, des partenaires
+      et des sympathisants autour d’initiatives favorisant l’éducation,
+      le leadership, la coopération internationale, la solidarité
+      et le développement.
     </p>
 
-  </section>
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:20px;
+    ">
 
+      <div style="
+        padding:28px;
+        background:white;
+        border:1px solid #e4e9e6;
+        border-radius:20px;
+      ">
+        <h3 id="publicMissionTitre" style="color:#10243e;">
+          Notre mission
+        </h3>
 
+        <p id="publicMissionTexte" style="
+          color:#667085;
+          line-height:1.7;
+        ">
+          Créer un cadre de rencontre, de formation et de coopération
+          permettant aux jeunes de développer leurs compétences,
+          leur leadership et leur capacité à contribuer positivement
+          à la société.
+        </p>
+      </div>
+
+      <div style="
+        padding:28px;
+        background:white;
+        border:1px solid #e4e9e6;
+        border-radius:20px;
+      ">
+        <h3 id="publicVisionTitre" style="color:#10243e;">
+          Notre vision
+        </h3>
+
+        <p id="publicVisionTexte" style="
+          color:#667085;
+          line-height:1.7;
+        ">
+          Construire un réseau international de jeunes responsables,
+          solidaires et engagés, capables de créer des ponts entre
+          les peuples et de participer au développement de leurs communautés.
+        </p>
+      </div>
+
+      <div style="
+        padding:28px;
+        background:white;
+        border:1px solid #e4e9e6;
+        border-radius:20px;
+      ">
+        <h3 id="publicValeursTitre" style="color:#10243e;">
+          Nos valeurs
+        </h3>
+
+        <p id="publicValeursTexte" style="
+          color:#667085;
+          line-height:1.7;
+        ">
+          Respect, responsabilité, solidarité, coopération,
+          intégrité, engagement et ouverture aux autres constituent
+          les principes qui orientent nos actions.
+        </p>
+      </div>
+
+      <div style="
+        padding:28px;
+        background:white;
+        border:1px solid #e4e9e6;
+        border-radius:20px;
+      ">
+        <h3 id="publicObjectifsTitre" style="color:#10243e;">
+          Nos objectifs
+        </h3>
+
+        <p id="publicObjectifsTexte" style="
+          color:#667085;
+          line-height:1.7;
+        ">
+          Organiser des formations, conférences, rencontres,
+          actions sociales et projets favorisant l’épanouissement
+          des jeunes, les échanges internationaux et le développement
+          des communautés.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
   <!-- ACTIVITES -->
   <section id="publicActivites" style="
     padding:90px 6vw;
@@ -3077,6 +3203,21 @@ const traductions = {
     finances: 'Finances',
     activites: 'Activités',
     galerie: 'Galerie photos',
+    publicAPropos: 'À propos de nous',
+publicPresentationTitre: 'Découvrez l’AIJEB',
+publicPresentationTexte: 'L’Amicale Internationale des Jeunes de l’Europe et du Bénin (AIJEB) rassemble des jeunes, des responsables, des partenaires et des sympathisants autour d’initiatives favorisant l’éducation, le leadership, la coopération internationale, la solidarité et le développement.',
+
+publicMissionTitre: 'Notre mission',
+publicMissionTexte: 'Créer un cadre de rencontre, de formation et de coopération permettant aux jeunes de développer leurs compétences, leur leadership et leur capacité à contribuer positivement à la société.',
+
+publicVisionTitre: 'Notre vision',
+publicVisionTexte: 'Construire un réseau international de jeunes responsables, solidaires et engagés, capables de créer des ponts entre les peuples et de participer au développement de leurs communautés.',
+
+publicValeursTitre: 'Nos valeurs',
+publicValeursTexte: 'Respect, responsabilité, solidarité, coopération, intégrité, engagement et ouverture aux autres constituent les principes qui orientent nos actions.',
+
+publicObjectifsTitre: 'Nos objectifs',
+publicObjectifsTexte: 'Organiser des formations, conférences, rencontres, actions sociales et projets favorisant l’épanouissement des jeunes, les échanges internationaux et le développement des communautés.',
     deconnexion: 'Déconnexion',
 
     vueEnsemble: 'Vue d’ensemble de la gestion AIJEB.',
@@ -3112,7 +3253,22 @@ operation: 'Opération',
     finances: 'Finances',
     activites: 'Activities',
     galerie: 'Photo gallery',
-    deconnexion: 'Logout',
+    publicAPropos: 'About us',
+publicPresentationTitre: 'Discover AIJEB',
+publicPresentationTexte: 'The International Association of Youth from Europe and Benin (AIJEB) brings together young people, leaders, partners and supporters around initiatives promoting education, leadership, international cooperation, solidarity and development.',
+
+publicMissionTitre: 'Our mission',
+publicMissionTexte: 'Create a framework for meetings, training and cooperation that enables young people to develop their skills, leadership and ability to contribute positively to society.',
+
+publicVisionTitre: 'Our vision',
+publicVisionTexte: 'Build an international network of responsible, supportive and committed young people capable of creating bridges between peoples and contributing to the development of their communities.',
+
+publicValeursTitre: 'Our values',
+publicValeursTexte: 'Respect, responsibility, solidarity, cooperation, integrity, commitment and openness to others are the principles that guide our actions.',
+
+publicObjectifsTitre: 'Our objectives',
+publicObjectifsTexte: 'Organize training sessions, conferences, meetings, social actions and projects that promote youth development, international exchanges and community development.',
+      deconnexion: 'Logout',
 
     vueEnsemble: 'Overview of AIJEB management.',
     membresAJour: 'Members up to date',
@@ -3146,6 +3302,21 @@ operation: 'Transaction',
     finances: 'Finanzas',
     activites: 'Actividades',
     galerie: 'Galería de fotos',
+    publicAPropos: 'Sobre nosotros',
+publicPresentationTitre: 'Descubre AIJEB',
+publicPresentationTexte: 'La Asociación Internacional de Jóvenes de Europa y Benín (AIJEB) reúne a jóvenes, responsables, socios y simpatizantes en torno a iniciativas que promueven la educación, el liderazgo, la cooperación internacional, la solidaridad y el desarrollo.',
+
+publicMissionTitre: 'Nuestra misión',
+publicMissionTexte: 'Crear un espacio de encuentro, formación y cooperación que permita a los jóvenes desarrollar sus competencias, su liderazgo y su capacidad para contribuir positivamente a la sociedad.',
+
+publicVisionTitre: 'Nuestra visión',
+publicVisionTexte: 'Construir una red internacional de jóvenes responsables, solidarios y comprometidos, capaces de crear vínculos entre los pueblos y contribuir al desarrollo de sus comunidades.',
+
+publicValeursTitre: 'Nuestros valores',
+publicValeursTexte: 'El respeto, la responsabilidad, la solidaridad, la cooperación, la integridad, el compromiso y la apertura hacia los demás son los principios que orientan nuestras acciones.',
+
+publicObjectifsTitre: 'Nuestros objetivos',
+publicObjectifsTexte: 'Organizar formaciones, conferencias, encuentros, acciones sociales y proyectos que favorezcan el desarrollo de los jóvenes, los intercambios internacionales y el desarrollo de las comunidades.',
     deconnexion: 'Cerrar sesión',
 
     vueEnsemble: 'Resumen de la gestión de AIJEB.',
@@ -3180,6 +3351,21 @@ operation: 'Operación',
     finances: 'Finanzen',
     activites: 'Aktivitäten',
     galerie: 'Fotogalerie',
+    publicAPropos: 'Über uns',
+publicPresentationTitre: 'Entdecken Sie AIJEB',
+publicPresentationTexte: 'Die Internationale Vereinigung der Jugend Europas und Benins (AIJEB) bringt junge Menschen, Verantwortliche, Partner und Unterstützer zusammen, um Initiativen in den Bereichen Bildung, Führung, internationale Zusammenarbeit, Solidarität und Entwicklung zu fördern.',
+
+publicMissionTitre: 'Unsere Mission',
+publicMissionTexte: 'Einen Rahmen für Begegnung, Ausbildung und Zusammenarbeit schaffen, der jungen Menschen ermöglicht, ihre Fähigkeiten, ihre Führungsqualitäten und ihre Fähigkeit zur positiven Mitgestaltung der Gesellschaft zu entwickeln.',
+
+publicVisionTitre: 'Unsere Vision',
+publicVisionTexte: 'Ein internationales Netzwerk verantwortungsbewusster, solidarischer und engagierter junger Menschen aufbauen, die Brücken zwischen den Völkern schaffen und zur Entwicklung ihrer Gemeinschaften beitragen können.',
+
+publicValeursTitre: 'Unsere Werte',
+publicValeursTexte: 'Respekt, Verantwortung, Solidarität, Zusammenarbeit, Integrität, Engagement und Offenheit gegenüber anderen sind die Grundsätze, die unser Handeln leiten.',
+
+publicObjectifsTitre: 'Unsere Ziele',
+publicObjectifsTexte: 'Schulungen, Konferenzen, Begegnungen, soziale Aktionen und Projekte organisieren, die die Entwicklung junger Menschen, den internationalen Austausch und die Entwicklung der Gemeinschaften fördern.',
     deconnexion: 'Abmelden',
 
     vueEnsemble: 'Übersicht über die AIJEB-Verwaltung.',
@@ -3214,6 +3400,21 @@ operation: 'Transaktion',
     finances: '財務',
     activites: '活動',
     galerie: '写真ギャラリー',
+    publicAPropos: '私たちについて',
+publicPresentationTitre: 'AIJEBについて',
+publicPresentationTexte: 'ヨーロッパとベナンの若者国際協会（AIJEB）は、教育、リーダーシップ、国際協力、連帯、地域社会の発展を促進する取り組みを通じて、若者、責任者、パートナー、支援者をつなぐ団体です。',
+
+publicMissionTitre: '私たちの使命',
+publicMissionTexte: '若者が能力、リーダーシップ、社会に積極的に貢献する力を身につけられるよう、交流、研修、協力の場を提供することです。',
+
+publicVisionTitre: '私たちのビジョン',
+publicVisionTexte: '責任感、連帯、行動力を持つ若者の国際的なネットワークを築き、人々の間に架け橋をつくり、地域社会の発展に貢献することです。',
+
+publicValeursTitre: '私たちの価値観',
+publicValeursTexte: '尊重、責任、連帯、協力、誠実さ、積極的な参加、そして他者への開かれた姿勢を、私たちの活動を導く基本原則としています。',
+
+publicObjectifsTitre: '私たちの目標',
+publicObjectifsTexte: '研修、会議、交流会、社会貢献活動、プロジェクトを実施し、若者の成長、国際交流、地域社会の発展を促進することです。',
     deconnexion: 'ログアウト',
 
     vueEnsemble: 'AIJEB管理の概要。',
@@ -3241,7 +3442,29 @@ operation: '取引',
 };
   function appliquerLangue(langue) {
   const t = traductions[langue] || traductions.fr;
+const publicAPropos = document.getElementById('publicAPropos');
+const publicPresentationTitre = document.getElementById('publicPresentationTitre');
+const publicPresentationTexte = document.getElementById('publicPresentationTexte');
+const publicMissionTitre = document.getElementById('publicMissionTitre');
+const publicMissionTexte = document.getElementById('publicMissionTexte');
+const publicVisionTitre = document.getElementById('publicVisionTitre');
+const publicVisionTexte = document.getElementById('publicVisionTexte');
+const publicValeursTitre = document.getElementById('publicValeursTitre');
+const publicValeursTexte = document.getElementById('publicValeursTexte');
+const publicObjectifsTitre = document.getElementById('publicObjectifsTitre');
+const publicObjectifsTexte = document.getElementById('publicObjectifsTexte');
 
+if (publicAPropos) publicAPropos.textContent = t.publicAPropos;
+if (publicPresentationTitre) publicPresentationTitre.textContent = t.publicPresentationTitre;
+if (publicPresentationTexte) publicPresentationTexte.textContent = t.publicPresentationTexte;
+if (publicMissionTitre) publicMissionTitre.textContent = t.publicMissionTitre;
+if (publicMissionTexte) publicMissionTexte.textContent = t.publicMissionTexte;
+if (publicVisionTitre) publicVisionTitre.textContent = t.publicVisionTitre;
+if (publicVisionTexte) publicVisionTexte.textContent = t.publicVisionTexte;
+if (publicValeursTitre) publicValeursTitre.textContent = t.publicValeursTitre;
+if (publicValeursTexte) publicValeursTexte.textContent = t.publicValeursTexte;
+if (publicObjectifsTitre) publicObjectifsTitre.textContent = t.publicObjectifsTitre;
+if (publicObjectifsTexte) publicObjectifsTexte.textContent = t.publicObjectifsTexte;
   document.documentElement.lang = langue;
 document.querySelector('.language-selector label').textContent = t.langue;
   document.querySelector('.dashboard-active').textContent = t.tableauBord;
@@ -3290,9 +3513,23 @@ document.querySelector('.language-selector label').textContent = t.langue;
 }
 
 languageSelect.addEventListener('change', function () {
+ if (publicLanguageSelect) {
+  publicLanguageSelect.value = languageSelect.value;
+}
   appliquerLangue(languageSelect.value);
 chargerStatsDashboard();
 });
+  const publicLanguageSelect =
+  document.getElementById('publicLanguageSelect');
+
+if (publicLanguageSelect) {
+  publicLanguageSelect.value = languageSelect.value;
+
+  publicLanguageSelect.addEventListener('change', function () {
+    languageSelect.value = publicLanguageSelect.value;
+    appliquerLangue(publicLanguageSelect.value);
+  });
+}
 currencySelect.addEventListener('change', function () {
  localStorage.setItem('aijebDevise', currencySelect.value);
   mettreAJourLibellesDevise();
