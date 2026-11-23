@@ -7795,7 +7795,23 @@ const publicPageAIJEB =
 
 const btnPersonnelDepuisPublic =
   document.getElementById('btnPersonnelDepuisPublic');
+const publicAdhesionConsentement =
+  document.getElementById('publicAdhesionConsentement');
 
+const btnPublicDevenirMembre =
+  document.getElementById('btnPublicDevenirMembre');
+
+if (publicAdhesionConsentement && btnPublicDevenirMembre) {
+  publicAdhesionConsentement.addEventListener('change', function () {
+    const actif = publicAdhesionConsentement.checked;
+
+    btnPublicDevenirMembre.disabled = !actif;
+    btnPublicDevenirMembre.style.opacity = actif ? '1' : '.45';
+    btnPublicDevenirMembre.style.cursor = actif ? 'pointer' : 'not-allowed';
+  });
+}
+const btnPublicDevenirMembre =
+  document.getElementById('btnPublicDevenirMembre');
 if (boutonEntrerPublicAIJEB) {
   boutonEntrerPublicAIJEB.onclick = function () {
 
