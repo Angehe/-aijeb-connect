@@ -8026,9 +8026,23 @@ if (btnSoumettreAdhesion) {
         }
       );
 
-      if (error) {
-        throw error;
+     if (error) {
+  let messageErreur = error.message || 'Une erreur est survenue.';
+
+  try {
+    if (error.context) {
+      const details = await error.context.json();
+
+      if (details && details.error) {
+        messageErreur = details.error;
       }
+    }
+  } catch (e) {
+    console.error('Impossible de lire le détail de l’erreur :', e);
+  }
+
+  throw new Error(messageErreur);
+}
 
       if (data && data.error) {
         throw new Error(data.error);
