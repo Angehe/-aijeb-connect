@@ -7955,8 +7955,110 @@ const adhTypePaiement =
 
 const adhMontant =
   document.getElementById('adhMontant');
+const btnSoumettreAdhesion =
+  document.getElementById('btnSoumettreAdhesion');
 
-if (btnPublicDevenirMembre && publicFormAdhesion) {
+const adhNom = document.getElementById('adhNom');
+const adhPrenom = document.getElementById('adhPrenom');
+const adhSexe = document.getElementById('adhSexe');
+const adhDateNaissance = document.getElementById('adhDateNaissance');
+const adhPays = document.getElementById('adhPays');
+const adhVille = document.getElementById('adhVille');
+const adhTelephone = document.getElementById('adhTelephone');
+const adhEmail = document.getElementById('adhEmail');
+const adhProfession = document.getElementById('adhProfession');
+const adhMotivation = document.getElementById('adhMotivation');
+const adhConnuAIJEB = document.getElementById('adhConnuAIJEB');
+const adhNumeroMtn = document.getElementById('adhNumeroMtn');
+if (btnSoumettreAdhesion) {
+  btnSoumettreAdhesion.addEventListener('click', async function () {
+
+    const nom = adhNom.value.trim();
+    const prenoms = adhPrenom.value.trim();
+    const sexe = adhSexe.value;
+    const dateNaissance = adhDateNaissance.value;
+    const pays = adhPays.value.trim();
+    const ville = adhVille.value.trim();
+    const telephone = adhTelephone.value.trim();
+    const email = adhEmail.value.trim();
+    const profession = adhProfession.value.trim();
+    const motivation = adhMotivation.value.trim();
+    const connuAIJEB = adhConnuAIJEB.value.trim();
+    const typePaiement = adhTypePaiement.value;
+    const numeroMtn = adhNumeroMtn.value.trim();
+
+    if (
+      !nom ||
+      !prenoms ||
+      !telephone ||
+      !email ||
+      !typePaiement ||
+      !numeroMtn
+    ) {
+      alert('Merci de remplir tous les champs obligatoires.');
+      return;
+    }
+
+    btnSoumettreAdhesion.disabled = true;
+    btnSoumettreAdhesion.textContent = 'Enregistrement en cours...';
+
+    try {
+
+      const { data, error } = await sb.functions.invoke(
+        'create-membership-request',
+        {
+          body: {
+            nom: nom,
+            prenoms: prenoms,
+            sexe: sexe,
+            date_naissance: dateNaissance,
+            pays: pays,
+            ville: ville,
+            telephone: telephone,
+            email: email,
+            profession: profession,
+            motivation: motivation,
+            connu_aijeb: connuAIJEB,
+            type_paiement: typePaiement,
+            numero_mtn: numeroMtn,
+            consentement: true
+          }
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+
+      alert(
+        'Votre demande a bien été enregistrée. Nous allons maintenant poursuivre avec le paiement MTN Mobile Money.'
+      );
+
+      console.log('Demande AIJEB enregistrée :', data);
+
+    } catch (erreur) {
+
+      console.error(erreur);
+
+      alert(
+        erreur.message ||
+        'Une erreur est survenue pendant l’enregistrement.'
+      );
+
+    } finally {
+
+      btnSoumettreAdhesion.disabled = false;
+      btnSoumettreAdhesion.textContent = 'Continuer vers le paiement';
+
+    }
+
+  });
+}
+  if (btnPublicDevenirMembre && publicFormAdhesion) {
   btnPublicDevenirMembre.addEventListener('click', function () {
     publicFormAdhesion.style.display = 'block';
 
