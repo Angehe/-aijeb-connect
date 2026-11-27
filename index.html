@@ -8289,11 +8289,170 @@ if (btnPersonnelDepuisPublic) {
     });
   };
 }
+  async function chargerActivitesPubliques() {
+  const publicActivitesListe =
+    document.getElementById('publicActivitesListe');
+
+  if (!publicActivitesListe) return;
+
+  publicActivitesListe.innerHTML = `
+    <div style="color:#667085;">
+      Chargement des activités...
+    </div>
+  `;
+
+  const { data, error } = await sb
+    .from('activites')
+    .select(`
+      id,
+      titre,
+      description,
+      date_activite,
+      lieu,
+      statut,
+      photo_principale_url
+    `)
+    .order('date_activite', { ascending: false })
+    .limit(3);
+
+  if (error) {
+    console.error('Erreur chargement activités publiques :', error);
+
+    publicActivitesListe.innerHTML = `
+      <div style="color:#b42318;">
+        Impossible de charger les activités pour le moment.
+      </div>
+    `;
+
+    return;
+  }
+
+  publicActivitesListe.innerHTML = '';
+
+  if (!data || data.length === 0) {
+    publicActivitesListe.innerHTML = `
+      <div style="color:#667085;">
+        Aucune activité disponible pour le moment.
+      </div>
+    `;
+    return;
+  }
+
+  data.forEach(function (activite) {
+    const carte = document.createElement('div');
+
+    carte.style.background = '#ffffff';
+    carte.style.border = '1px solid #e5e9e6';
+    carte.style.borderRadius = '18px';
+    carte.style.overflow = 'hidden';
+    carte.style.boxShadow = '0 6px 20px rgba(16,36,62,.06)';
+
+    const imageUrl = activite.photo_principale_url || '';
+
+    const dateTexte = activite.date_activite
+      ? new Date(
+          activite.date_activite + 'T00:00:00'
+        ).toLocaleDateString('fr-FR', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        })
+      : 'Date non renseignée';
+
+    const descriptionCourte =
+      activite.description && activite.description.length > 180
+        ? activite.description.substring(0, 180) + '...'
+        : (activite.description || 'Aucune description disponible.');
+
+    carte.innerHTML = `
+      ${
+        imageUrl
+          ? `
+            <img
+              src="${imageUrl}"
+              alt="${activite.titre || 'Activité AIJEB'}"
+              style="
+                width:100%;
+                height:210px;
+                object-fit:cover;
+                display:block;
+              "
+            >
+          `
+          : ''
+      }
+
+      <div style="padding:22px;">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          align-items:center;
+          margin-bottom:12px;
+          font-size:13px;
+        ">
+          <span style="
+            color:#0b6b3a;
+            font-weight:700;
+          ">
+            ${dateTexte}
+          </span>
+
+          <span style="
+            padding:5px 9px;
+            border-radius:999px;
+            background:#eef5ef;
+            color:#0b6b3a;
+            font-weight:700;
+          ">
+            ${activite.statut || 'activité'}
+          </span>
+        </div>
+
+        <h3 style="
+          margin:0 0 12px;
+          color:#10243e;
+          font-size:20px;
+          line-height:1.3;
+        ">
+          ${activite.titre || 'Activité AIJEB'}
+        </h3>
+
+        <p style="
+          margin:0 0 14px;
+          color:#667085;
+          line-height:1.6;
+          font-size:14px;
+        ">
+          ${descriptionCourte}
+        </p>
+
+        ${
+          activite.lieu
+            ? `
+              <div style="
+                color:#475467;
+                font-size:13px;
+                font-weight:600;
+              ">
+                Lieu : ${activite.lieu}
+              </div>
+            `
+            : ''
+        }
+
+      </div>
+    `;
+
+    publicActivitesListe.appendChild(carte);
+  });
+}
   // =========================
 // ETAT INITIAL AIJEB CONNECT
 // =========================
 window.addEventListener('load', function () {
-
+chargerActivitesPubliques();
   const accueil = document.getElementById('welcomePage');
   const publicPage = document.getElementById('publicPageAIJEB');
 
