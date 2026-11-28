@@ -2613,17 +2613,21 @@ padding-top:150px;
         Galerie
       </h2>
 
-      <div id="publicGalerieListe" style="
-        min-height:120px;
-        border:1px dashed #cfd8d2;
-        border-radius:18px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color:#98a2b3;
-      ">
-        Les photos publiques apparaîtront ici.
-      </div>
+     <div id="publicGalerieListe" style="
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  min-height:120px;
+">
+  <div style="
+    color:#98a2b3;
+    text-align:center;
+    grid-column:1/-1;
+  ">
+    Chargement des photos...
+  </div>
+</div>
+      
 
     </div>
 
@@ -8471,11 +8475,129 @@ if (btnPersonnelDepuisPublic) {
     publicActivitesListe.appendChild(carte);
   });
 }
+  async function chargerGaleriePublique() {
+  const publicGalerieListe =
+    document.getElementById('publicGalerieListe');
+
+  if (!publicGalerieListe) return;
+
+  const { data, error } = await sb
+    .from('activites')
+    .select(`
+      titre,
+      photo_principale_url,
+      galerie_photos_urls
+    `)
+    .eq('statut', 'realisee')
+    .order('date_activite', { ascending: false });
+
+  if (error) {
+    console.error('Erreur chargement galerie :', error);
+
+    publicGalerieListe.innerHTML = `
+      <div style="
+        color:#b42318;
+        grid-column:1/-1;
+        text-align:center;
+      ">
+        Impossible de charger les photos pour le moment.
+      </div>
+    `;
+    return;
+  }
+
+  publicGalerieListe.innerHTML = '';
+
+  const photos = [];
+
+  (data || []).forEach(function (activite) {
+
+    if (activite.photo_principale_url) {
+      photos.push({
+        url: activite.photo_principale_url,
+        titre: activite.titre || 'Activité AIJEB'
+      });
+    }
+
+    if (
+      Array.isArray(activite.galerie_photos_urls) &&
+      activite.galerie_photos_urls.length > 0
+    ) {
+      activite.galerie_photos_urls.forEach(function (url) {
+        if (url) {
+          photos.push({
+            url: url,
+            titre: activite.titre || 'Activité AIJEB'
+          });
+        }
+      });
+    }
+
+  });
+
+  if (photos.length === 0) {
+    publicGalerieListe.innerHTML = `
+      <div style="
+        color:#98a2b3;
+        grid-column:1/-1;
+        text-align:center;
+      ">
+        Aucune photo disponible pour le moment.
+      </div>
+    `;
+    return;
+  }
+
+  photos.forEach(function (photo) {
+
+    const carte = document.createElement('div');
+
+    carte.style.position = 'relative';
+    carte.style.borderRadius = '16px';
+    carte.style.overflow = 'hidden';
+    carte.style.height = '230px';
+    carte.style.background = '#f2f4f7';
+
+    carte.innerHTML = `
+      <img
+        src="${photo.url}"
+        alt="${photo.titre}"
+        loading="lazy"
+        style="
+          width:100%;
+          height:100%;
+          object-fit:cover;
+          display:block;
+        "
+      >
+
+      <div style="
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        padding:35px 15px 14px;
+        color:white;
+        font-weight:700;
+        font-size:14px;
+        background:linear-gradient(
+          transparent,
+          rgba(0,0,0,.75)
+        );
+      ">
+        ${photo.titre}
+      </div>
+    `;
+
+    publicGalerieListe.appendChild(carte);
+  });
+}
   // =========================
 // ETAT INITIAL AIJEB CONNECT
 // =========================
 window.addEventListener('load', function () {
 chargerActivitesPubliques();
+    chargerGaleriePublique();
   const accueil = document.getElementById('welcomePage');
   const publicPage = document.getElementById('publicPageAIJEB');
 
