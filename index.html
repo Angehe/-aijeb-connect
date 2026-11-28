@@ -7544,7 +7544,6 @@ document.getElementById('logout').onclick = async function () {
 sb.auth.onAuthStateChange(async function(event, session) {
 
   if (!session) {
-    loginBox.classList.remove('hidden');
     connectedBox.classList.add('hidden');
     return;
   }
@@ -7558,35 +7557,14 @@ sb.auth.onAuthStateChange(async function(event, session) {
   if (!profil || profil.actif !== true) {
     await sb.auth.signOut();
 
-    loginBox.classList.remove('hidden');
     connectedBox.classList.add('hidden');
-
     return;
   }
 
-  loginBox.classList.add('hidden');
-
-  const publicPageAIJEB =
-    document.getElementById('publicPageAIJEB');
-
-  const welcomePage =
-    document.getElementById('welcomePage');
-
-  if (publicPageAIJEB) {
-    publicPageAIJEB.classList.add('hidden');
-  }
-
-  if (welcomePage) {
-    welcomePage.style.display = 'none';
-  }
-
-  connectedBox.classList.remove('hidden');
-
-  verifierAccesSuperAdmin();
-  chargerStatsDashboard();
-  chargerActivites();
+  // La session reste active,
+  // mais on ne force pas l'ouverture du tableau de bord.
+  // La page d'accueil publique reste affichée.
 });
-
  
 // =========================
 // FINANCES
